@@ -14,3 +14,7 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: member
+          uri: lb://MEMBER
+          predicates:
+            - Path=/member/**
