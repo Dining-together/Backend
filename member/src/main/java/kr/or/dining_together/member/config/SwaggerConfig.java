@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder().title("Member API Documentation")
-                .description("회원  API 문서")
+                .description("회원 API 문서")
                 .version("1").build();
     }
 }

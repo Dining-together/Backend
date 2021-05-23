@@ -1,6 +1,6 @@
 package kr.or.dining_together.member.controller;
 
-import kr.or.dining_together.member.advice.exception.CAuthenticationEntryPointException;
+import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
 import kr.or.dining_together.member.model.CommonResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,7 +15,7 @@ public class ExceptionController {
 
     @GetMapping(value = "/entrypoint")
     public CommonResult entrypointException() {
-        throw new CAuthenticationEntryPointException();
+        throw new AuthenticationEntryPointException();
     }
 
     @GetMapping(value = "/accessdenied")

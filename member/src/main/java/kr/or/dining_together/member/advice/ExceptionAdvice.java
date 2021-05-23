@@ -1,7 +1,8 @@
 package kr.or.dining_together.member.advice;
 
-import kr.or.dining_together.member.advice.exception.CEmailloginFailedException;
-import kr.or.dining_together.member.advice.exception.CUserNotFoundException;
+import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
+import kr.or.dining_together.member.advice.exception.loginFailedException;
+import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +25,22 @@ public class ExceptionAdvice {
         return responseService.getFailResult(500,"실패");
     }
 
-    @ExceptionHandler(CUserNotFoundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult userNotFound(HttpServletRequest request, CUserNotFoundException e) {
+    protected CommonResult userNotFound(HttpServletRequest request, UserNotFoundException e) {
         return responseService.getFailResult(501,"사용자가 존재하지 않습니다.");
     }
 
-    @ExceptionHandler(CEmailloginFailedException.class)
+    @ExceptionHandler(loginFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult userNotFound(HttpServletRequest request, CEmailloginFailedException e) {
-        return responseService.getFailResult(502,"이메일을 확인해주세요.");
+    protected CommonResult emailloginFailed(HttpServletRequest request, loginFailedException e) {
+        return responseService.getFailResult(502,"로그인 실패했습니다..");
+    }
+
+    @ExceptionHandler(AuthenticationEntryPointException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public CommonResult authenticationEntryPointException(HttpServletRequest request, AuthenticationEntryPointException e) {
+        return responseService.getFailResult(401, "권한이 없습니다");
     }
 
 

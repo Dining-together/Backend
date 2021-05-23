@@ -1,6 +1,6 @@
 package kr.or.dining_together.member.service;
 
-import kr.or.dining_together.member.advice.exception.CEmailloginFailedException;
+import kr.or.dining_together.member.advice.exception.loginFailedException;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.jpa.entity.User;
@@ -11,8 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -22,9 +20,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDto login(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(CEmailloginFailedException::new);
+        User user = userRepository.findByEmail(email).orElseThrow(loginFailedException::new);
         if (!passwordEncoder.matches(password, user.getPassword()))
-            throw new CEmailloginFailedException();
+            throw new loginFailedException();
         return modelMapper.map(user,UserDto.class);
 
     }
