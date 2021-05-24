@@ -29,12 +29,14 @@ public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
     private String SECRET_KEY;
 
-    private long tokenValidMilisecond = 1000L * 60 * 60; // 1시간만 토큰 유효
+    private long EXPIRATION_TIME;
 
 
     @PostConstruct
     protected void init() {
         SECRET_KEY = Base64.getEncoder().encodeToString(env.getProperty("spring.jwt.secret").getBytes());
+        EXPIRATION_TIME= Long.parseLong(env.getProperty("spring.jwt.expiration_time"));
+
     }
 
     // Jwt 토큰 생성
@@ -45,7 +47,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims) // 데이터
                 .setIssuedAt(now) // 토큰 발행일자
-                .setExpiration(new Date(now.getTime() + tokenValidMilisecond)) // set Expire Time
+                .setExpiration(new Date(now.getTime() + EXPIRATION_TIME)) // set Expire Time
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 암호화 알고리즘, secret값 세팅
                 .compact();
     }
