@@ -1,10 +1,10 @@
 package kr.or.dining_together.member.service;
 
-import kr.or.dining_together.member.advice.exception.loginFailedException;
+import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.vo.RequestLogin;
+import kr.or.dining_together.member.vo.LoginRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 
@@ -20,10 +20,10 @@ public class UserService {
     private ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDto login(RequestLogin requestLogin) {
-        User user = userRepository.findByEmail(requestLogin.getEmail()).orElseThrow(loginFailedException::new);
-        if (!passwordEncoder.matches(requestLogin.getPassword(), user.getPassword()))
-            throw new loginFailedException();
+    public UserDto login(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()))
+            throw new LoginFailedException();
         return modelMapper.map(user,UserDto.class);
 
     }

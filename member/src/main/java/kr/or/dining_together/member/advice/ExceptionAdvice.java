@@ -1,7 +1,7 @@
 package kr.or.dining_together.member.advice;
 
 import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
-import kr.or.dining_together.member.advice.exception.loginFailedException;
+import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.service.ResponseService;
@@ -27,13 +27,13 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult userNotFound(HttpServletRequest request, UserNotFoundException e) {
+    protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
         return responseService.getFailResult(501,"사용자가 존재하지 않습니다.");
     }
 
-    @ExceptionHandler(loginFailedException.class)
+    @ExceptionHandler(LoginFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult emailloginFailed(HttpServletRequest request, loginFailedException e) {
+    protected CommonResult loginFailedException(HttpServletRequest request, LoginFailedException e) {
         return responseService.getFailResult(502,"로그인 실패했습니다..");
     }
 

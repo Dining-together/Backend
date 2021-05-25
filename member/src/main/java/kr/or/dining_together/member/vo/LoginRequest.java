@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-public class RequestLogin {
+public class LoginRequest {
     @NotNull(message = "이메일은 빈칸일수 없습니다.")
     @Email
     private String email;

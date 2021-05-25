@@ -1,15 +1,15 @@
 package kr.or.dining_together.member.advice.exception;
 
-public class loginFailedException extends RuntimeException  {
-    public loginFailedException(String msg, Throwable t) {
+public class LoginFailedException extends RuntimeException  {
+    public LoginFailedException(String msg, Throwable t) {
         super(msg, t);
     }
 
-    public loginFailedException(String msg) {
+    public LoginFailedException(String msg) {
         super(msg);
     }
 
-    public loginFailedException() {
+    public LoginFailedException() {
         super();
     }
 }
