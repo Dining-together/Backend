@@ -4,6 +4,20 @@ server:
 spring:
   application:
     name: user-service
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+    datasource:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb
+  jwt:
+    secret: secret_token
+    expiration_time: 86400000
+
+
 
 eureka:
   instance:
@@ -13,3 +27,6 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
+
+
+
