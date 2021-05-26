@@ -13,6 +13,13 @@ spring:
     datasource:
       driver-class-name: org.h2.Driver
       url: jdbc:h2:mem:testdb
+    jpa:
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: true
+
   jwt:
     secret: secret_token
     expiration_time: 86400000
