@@ -11,12 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableDiscoveryClient
 public class MemberApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(MemberApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(MemberApplication.class, args);
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
 }

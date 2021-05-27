@@ -1,4 +1,4 @@
-package kr.or.dining_together.member.jpa.repo;
+package kr.or.dining_together.member.service;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -10,19 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
 import lombok.extern.java.Log;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Log
-public class UserRepositoryTest {
+public class UserServiceTest {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	UserService userService;
+
 	@Test
 	public void insertTest() {
+		//given
 		List<String> roles = Arrays.asList("USER");
 		User user = User.builder()
 			.id(1L)
@@ -34,14 +40,18 @@ public class UserRepositoryTest {
 			.roles(roles)
 			.build();
 
+		//when
 		userRepository.save(user);
 
 		LoginRequest loginRequest = new LoginRequest();
 		loginRequest.setEmail("qja9605@naver.com");
 		loginRequest.setPassword("1234");
 
-		System.out.println(user);
+		UserDto userDto = userService.login(loginRequest);
+		//then
 
+		System.out.println(user);
+		System.out.println(userDto);
 	}
 
 }
