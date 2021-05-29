@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.member.dto.UserDto;
@@ -22,9 +23,10 @@ import lombok.extern.java.Log;
 public class UserServiceTest {
 	@Autowired
 	UserRepository userRepository;
-
 	@Autowired
 	UserService userService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Test
 	public void insertTest() {
@@ -34,7 +36,7 @@ public class UserServiceTest {
 			.id(1L)
 			.email("qja9605@naver.com")
 			.name("신태범")
-			.password("1234")
+			.password(passwordEncoder.encode("1234"))
 			.phoneNo("010-2691-3895")
 			.joinDate(new Date())
 			.roles(roles)
@@ -43,9 +45,7 @@ public class UserServiceTest {
 		//when
 		userRepository.save(user);
 
-		LoginRequest loginRequest = new LoginRequest();
-		loginRequest.setEmail("qja9605@naver.com");
-		loginRequest.setPassword("1234");
+		LoginRequest loginRequest = new LoginRequest("qja9605@naver.com", "1234");
 
 		UserDto userDto = userService.login(loginRequest);
 		//then

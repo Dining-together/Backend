@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.config.security.JwtTokenProvider;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
@@ -43,9 +44,9 @@ public class SignController {
 
 	@ApiOperation(value = "회원가입", notes = "UserDto 객체를 입력 받아 회원가입 한다.")
 	@PostMapping(value = "/user/registeration")
-	public void userSignUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) UserDto userDto) {
+	public CommonResult userSignUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) UserDto userDto) {
 		userService.save(userDto);
-		return;
+		return responseService.getSuccessResult();
 	}
 
 }

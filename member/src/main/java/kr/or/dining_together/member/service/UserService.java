@@ -1,7 +1,6 @@
 package kr.or.dining_together.member.service;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	private ModelMapper modelMapper;
+	private final ModelMapper modelMapper;
 
 	public UserDto login(LoginRequest loginRequest) {
 		User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
@@ -28,12 +27,9 @@ public class UserService {
 	}
 
 	public Long save(UserDto userDto) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		userDto.setPassword(encoder.encode(userDto.getPassword()));
-
 		return userRepository.save(User.builder()
 			.email(userDto.getEmail())
-			.password(userDto.getPassword())
+			.password(passwordEncoder.encode(userDto.getPassword()))
 			.name(userDto.getName())
 			.phoneNo(userDto.getPhoneNo())
 			.roles(userDto.getRoles())
