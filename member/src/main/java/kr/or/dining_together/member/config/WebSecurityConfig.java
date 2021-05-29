@@ -3,6 +3,7 @@ package kr.or.dining_together.member.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtTokenProvider jwtTokenProvider;
@@ -33,10 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.httpBasic().disable()    // security에서 기본으로 생성하는 login페이지 사용 안 함
 			.csrf().disable()    // REST API 사용하기 때문에 csrf 사용 안 함
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)    // JWT인증사용하므로 세션 생성 안함
-			.and()
-			.authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
-			.antMatchers("/auth/**", "/*/user/registeration", "/h2-console/**").permitAll() // 가입 및 인증 주소는 누구나 접근가능
-			.anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
+			// .and()
+			// .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
+			// .antMatchers("/auth/**", "/*/user/registeration", "/h2-console/**").permitAll() // 가입 및 인증 주소는 누구나 접근가능
+			// .anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
 			.and()
 			.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 			.and()

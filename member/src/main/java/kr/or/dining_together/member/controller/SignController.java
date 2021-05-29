@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = {"1. Sign"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/member/auth")
 public class SignController {
 	/*
 	로그인 회원가입 로직
@@ -34,7 +34,7 @@ public class SignController {
 	private final UserService userService;
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
-	@PostMapping(value = "/user")
+	@PostMapping(value = "/signin")
 	public SingleResult<String> userlogin(
 		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest) {
 		UserDto userDto = userService.login(loginRequest);
@@ -43,7 +43,7 @@ public class SignController {
 	}
 
 	@ApiOperation(value = "회원가입", notes = "UserDto 객체를 입력 받아 회원가입 한다.")
-	@PostMapping(value = "/user/registeration")
+	@PostMapping(value = "/signup")
 	public CommonResult userSignUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) UserDto userDto) {
 		userService.save(userDto);
 		return responseService.getSuccessResult();
