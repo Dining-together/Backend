@@ -1,6 +1,7 @@
 package kr.or.dining_together.member.service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,23 @@ public class UserServiceTest {
 
 		System.out.println(user);
 		System.out.println(userDto);
+	}
+
+	@Test
+	public void updatePassword() {
+
+		User user = User.builder()
+			.id(1L)
+			.email("jifrozen@naver.com")
+			.name("문지언")
+			.password(passwordEncoder.encode("test1111"))
+			.phoneNo("010-1234-5678")
+			.joinDate(new Date())
+			.roles(Collections.singletonList("ROLE_USER"))
+			.build();
+		System.out.println(passwordEncoder.matches("test1111", user.getPassword()));
+		userRepository.save(user);
+
 	}
 
 }

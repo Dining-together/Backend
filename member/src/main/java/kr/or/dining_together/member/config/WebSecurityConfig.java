@@ -16,6 +16,15 @@ import kr.or.dining_together.member.config.security.JwtAuthenticationFilter;
 import kr.or.dining_together.member.config.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * @package : kr.or.dining_together.member.config
+ * @name: WebSecurityConfig.java
+ * @date : 2021/05/26 12:45 오전
+ * @author : jifrozen
+ * @version : 1.0.0
+ * @description : 스프링 시큐리티 설정 파일
+ * @modified :
+ **/
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor

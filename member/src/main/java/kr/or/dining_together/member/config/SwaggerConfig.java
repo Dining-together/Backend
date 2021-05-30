@@ -11,6 +11,15 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @package : kr.or.dining_together.member.config
+ * @name: SwaggerConfig.java
+ * @date : 2021/05/26 12:44 오전
+ * @author : jifrozen
+ * @version : 1.0.0
+ * @description : swagger 설정 파일
+ * @modified :
+ **/
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -19,7 +28,7 @@ public class SwaggerConfig {
 	public Docket swaggerApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(swaggerInfo()).select()
 			.apis(RequestHandlerSelectors.basePackage("kr.or.dining_together.member.controller"))
-			.paths(PathSelectors.ant("/auth/**"))
+			.paths(PathSelectors.ant("/member/**"))
 			.build()
 			.useDefaultResponseMessages(false); // 기본으로 세팅되는 200,401,403,404 메시지를 표시 하지 않음
 	}

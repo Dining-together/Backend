@@ -15,7 +15,7 @@ spring:
       url: jdbc:h2:mem:testdb
     jpa:
       hibernate:
-        ddl-auto: create
+        ddl-auto: update
       properties:
         hibernate:
           format_sql: true

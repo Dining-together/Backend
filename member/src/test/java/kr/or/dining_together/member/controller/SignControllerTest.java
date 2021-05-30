@@ -69,7 +69,7 @@ public class SignControllerTest {
 		//given
 		String content = objectMapper.writeValueAsString(new LoginRequest("jifrozen@naver.com", "test1111"));
 		//when//then
-		mockMvc.perform(post("/auth/user")
+		mockMvc.perform(post("/member/auth/signin")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
@@ -95,7 +95,7 @@ public class SignControllerTest {
 		String content = gson.toJson(userDto);
 
 		//when//then
-		mockMvc.perform(post("/auth/user/registeration")
+		mockMvc.perform(post("/member/auth/signup")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))

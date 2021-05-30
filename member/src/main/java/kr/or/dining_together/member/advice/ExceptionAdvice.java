@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
+import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.service.ResponseService;
@@ -43,6 +44,13 @@ public class ExceptionAdvice {
 	public CommonResult authenticationEntryPointException(HttpServletRequest request,
 		AuthenticationEntryPointException e) {
 		return responseService.getFailResult(401, "권한이 없습니다");
+	}
+
+	@ExceptionHandler(PasswordNotMatchedException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public CommonResult passwordNotMatchedException(HttpServletRequest request,
+		AuthenticationEntryPointException e) {
+		return responseService.getFailResult(400, "패스워드가 맞지 않습니다.");
 	}
 
 }
