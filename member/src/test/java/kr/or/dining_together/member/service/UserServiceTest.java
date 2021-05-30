@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
 import lombok.extern.java.Log;
@@ -39,6 +40,7 @@ public class UserServiceTest {
 			.password(passwordEncoder.encode("1234"))
 			.phoneNo("010-2691-3895")
 			.joinDate(new Date())
+			.type(UserType.USER)
 			.roles(roles)
 			.build();
 

@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,6 +63,10 @@ public class User implements UserDetails {
 
 	@Column(length = 100)
 	private String phoneNo;
+
+	@Enumerated(EnumType.STRING)
+	@ApiModelProperty(notes = "사용자 타입을 선택해 주세요")
+	private UserType type;
 
 	@Past
 	@ApiModelProperty(notes = "등록일을 입력해 주세요")

@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import kr.or.dining_together.member.jpa.entity.UserType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,9 @@ public class UserDto {
 
 	@ApiModelProperty(value = "모바일 번호")
 	private String phoneNo;
+
+	@ApiModelProperty(value = "사용자 종류")
+	private UserType userType;
 
 	@ApiModelProperty(value = "사용자 권한", required = false)
 	private List<String> roles = new ArrayList<>();

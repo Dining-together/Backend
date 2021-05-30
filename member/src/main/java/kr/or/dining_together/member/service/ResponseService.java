@@ -41,13 +41,27 @@ public class ResponseService {
 		result.setMsg(CommonResponse.SUCCESS.getMsg());
 	}
 
-	// 실패 결과만 처리
+	// 실패 코드와, msg받아 실패결과 처리
 	public CommonResult getFailResult(int code, String msg) {
 		CommonResult result = new CommonResult();
 		result.setSuccess(false);
 		result.setCode(code);
 		result.setMsg(msg);
 		return result;
+	}
+
+	// 실패 결과만 처리
+	public CommonResult getDefaultFailResult() {
+		CommonResult result = new CommonResult();
+		setFailResult(result);
+		return result;
+	}
+
+	// 실패하면 api 실패 데이터 세팅
+	private void setFailResult(CommonResult result) {
+		result.setSuccess(false);
+		result.setCode(CommonResponse.FAIL.getCode());
+		result.setMsg(CommonResponse.FAIL.getMsg());
 	}
 
 	public enum CommonResponse {

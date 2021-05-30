@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.entity.UserType;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -37,6 +38,7 @@ public class UserRepositoryTest {
 			.password(passwordEncoder.encode("test1111"))
 			.phoneNo("010-1234-5678")
 			.joinDate(new Date())
+			.type(UserType.USER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build());
 		//when

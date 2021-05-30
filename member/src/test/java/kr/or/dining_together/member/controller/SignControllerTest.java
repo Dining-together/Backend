@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
 
@@ -59,6 +60,7 @@ public class SignControllerTest {
 			.password(passwordEncoder.encode("test1111"))
 			.phoneNo("010-1234-5678")
 			.joinDate(new Date())
+			.type(UserType.USER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build());
 
@@ -88,6 +90,7 @@ public class SignControllerTest {
 			.password("test2222")
 			.phoneNo("010-1234-1222")
 			.joinDate(new Date())
+			.type(UserType.USER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 		UserDto userDto = modelMapper.map(user, UserDto.class);
