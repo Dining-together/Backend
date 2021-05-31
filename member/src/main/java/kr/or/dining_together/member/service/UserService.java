@@ -11,7 +11,6 @@ import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.PasswordRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -51,19 +50,18 @@ public class UserService {
 
 	}
 
-	public boolean isValidPassword(String email, PasswordRequest passwordRequest) {
+	public boolean isValidPassword(String email, String password) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		if (passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
-			return true;
-		} else {
+		if (!passwordEncoder.matches(password, user.getPassword())) {
 			throw new PasswordNotMatchedException();
 		}
+		return true;
 
 	}
 
-	public void updatePassword(String email, PasswordRequest passwordRequest) {
+	public void updatePassword(String email, String newPassword) {
 		User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		user.updatePassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
+		user.updatePassword(passwordEncoder.encode(newPassword));
 	}
 
 	// public UserDto modify(UserDto userDto,String email) {

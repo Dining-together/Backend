@@ -47,9 +47,9 @@ public class ExceptionAdvice {
 	}
 
 	@ExceptionHandler(PasswordNotMatchedException.class)
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public CommonResult passwordNotMatchedException(HttpServletRequest request,
-		AuthenticationEntryPointException e) {
+		PasswordNotMatchedException e) {
 		return responseService.getFailResult(400, "패스워드가 맞지 않습니다.");
 	}
 

@@ -4,9 +4,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -14,12 +15,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
-import kr.or.dining_together.member.vo.PasswordRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -92,13 +93,27 @@ public class UserController {
 	})
 	@PutMapping(value = "/password")
 	public CommonResult changePassword(
-		@RequestBody @ApiParam(value = "비밀번호 변경", required = true) PasswordRequest passwordRequest) {
+		@ApiParam(value = "새로운 비밀번호", required = true) @RequestParam String newPassword) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
-		if (userService.isValidPassword(email, passwordRequest)) {
-			userService.updatePassword(email, passwordRequest);
+		userService.updatePassword(email, newPassword);
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "비밀번호 변경")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+	})
+	@PostMapping(value = "/password/verification")
+	public CommonResult verifyPassword(@ApiParam(value = "비밀번호 확인", required = true) @RequestParam String password){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		if (!userService.isValidPassword(email, password)) {
+			throw new PasswordNotMatchedException();
+
 		}
 		return responseService.getSuccessResult();
 	}
+
 
 }

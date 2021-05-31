@@ -25,13 +25,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.PasswordRequest;
 
 /**
  * @package : kr.or.dining_together.member.controller
@@ -106,24 +107,34 @@ class UserControllerTest {
 	}
 
 	@Test
-	void changePassword() throws Exception {
-		//given
+	void verifyPassword() throws Exception{
 		Optional<User> user = userRepository.findByEmail("jifrozen@naver.com");
-		String content = objectMapper.writeValueAsString(new PasswordRequest("test1111", "test2222"));
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("password", "test1111");
 
-		assertTrue(passwordEncoder.matches("test1111", user.get().getPassword()));
-		//when//then
-		mockMvc.perform(put("/member/password")
+		mockMvc.perform(MockMvcRequestBuilders
+			.put("/member/password/verification")
 			.header("X-AUTH-TOKEN", token)
-			.content(content)
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.msg").exists())
-			.andDo(print());
+			.params(params))
+			.andDo(print())
+			.andExpect(status().isOk());
 
-		assertTrue(passwordEncoder.matches("test2222", user.get().getPassword()));
+	}
 
+	@Test
+	void changePassword() throws Exception {
+		Optional<User> user = userRepository.findByEmail("jifrozen@naver.com");
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("newPassword", "test111");
+
+		mockMvc.perform(MockMvcRequestBuilders
+			.put("/member/password")
+			.header("X-AUTH-TOKEN", token)
+			.params(params))
+			.andDo(print())
+			.andExpect(status().isOk());
+
+		assertTrue(passwordEncoder.matches("test111",user.get().getPassword()));
 	}
 
 	@Test
