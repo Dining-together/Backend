@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Past;
@@ -42,6 +44,8 @@ import lombok.ToString;
 @ToString
 @Table(name = "user")
 @ApiModel(description = "사용자 상세 정보를 위한 도메인 객체")
+@Inheritance(strategy = InheritanceType.JOINED)
+// @DiscriminatorColumn(name="type")
 public class User implements UserDetails {
 	@Id // pk
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,8 +65,8 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "사용자 이름을 입력해 주세요")
 	private String name;
 
-	@Column(length = 100)
-	private String phoneNo;
+	// @Column(length = 100)
+	// private String phoneNo;
 
 	@Enumerated(EnumType.STRING)
 	@ApiModelProperty(notes = "사용자 타입을 선택해 주세요")

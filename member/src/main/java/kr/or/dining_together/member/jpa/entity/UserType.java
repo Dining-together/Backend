@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum UserType {
-	USER("USER", "일반사용자"),
-	SELLER("SELLER", "가게"),
+	CUSTOMER("CUSTOMER", "일반사용자"),
+	STORE("STORE", "가게"),
 	ADMIN("ADMIN", "관리자");
 
 	private final String key;

@@ -58,9 +58,8 @@ public class SignControllerTest {
 			.email("jifrozen@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.phoneNo("010-1234-5678")
 			.joinDate(new Date())
-			.type(UserType.USER)
+			.type(UserType.CUSTOMER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build());
 
@@ -71,7 +70,7 @@ public class SignControllerTest {
 		//given
 		String content = objectMapper.writeValueAsString(new LoginRequest("jifrozen@naver.com", "test1111"));
 		//when//then
-		mockMvc.perform(post("/auth/user")
+		mockMvc.perform(post("/member/auth/signin")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
@@ -88,9 +87,8 @@ public class SignControllerTest {
 			.email("jifrozen1@naver.com")
 			.name("문지언1")
 			.password("test2222")
-			.phoneNo("010-1234-1222")
 			.joinDate(new Date())
-			.type(UserType.USER)
+			.type(UserType.CUSTOMER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 		UserDto userDto = modelMapper.map(user, UserDto.class);
@@ -98,7 +96,7 @@ public class SignControllerTest {
 		String content = gson.toJson(userDto);
 
 		//when//then
-		mockMvc.perform(post("/auth/user/registeration")
+		mockMvc.perform(post("/member/auth/signup")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))

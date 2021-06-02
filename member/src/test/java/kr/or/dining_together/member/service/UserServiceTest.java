@@ -38,9 +38,8 @@ public class UserServiceTest {
 			.email("qja9605@naver.com")
 			.name("신태범")
 			.password(passwordEncoder.encode("1234"))
-			.phoneNo("010-2691-3895")
 			.joinDate(new Date())
-			.type(UserType.USER)
+			.type(UserType.CUSTOMER)
 			.roles(roles)
 			.build();
 

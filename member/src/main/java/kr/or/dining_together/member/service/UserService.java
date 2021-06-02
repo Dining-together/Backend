@@ -31,7 +31,6 @@ public class UserService {
 			.email(userDto.getEmail())
 			.password(passwordEncoder.encode(userDto.getPassword()))
 			.name(userDto.getName())
-			.phoneNo(userDto.getPhoneNo())
 			.roles(userDto.getRoles())
 			.build()).getId();
 	}

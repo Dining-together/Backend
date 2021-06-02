@@ -36,9 +36,8 @@ public class UserRepositoryTest {
 			.email(email)
 			.name(name)
 			.password(passwordEncoder.encode("test1111"))
-			.phoneNo("010-1234-5678")
 			.joinDate(new Date())
-			.type(UserType.USER)
+			.type(UserType.CUSTOMER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build());
 		//when

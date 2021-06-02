@@ -36,7 +36,7 @@ public class SignController {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
-	
+
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
 	public SingleResult<String> userlogin(
@@ -51,9 +51,9 @@ public class SignController {
 	public CommonResult userSignUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) UserDto userDto) {
 		Long singUpResult = userService.save(userDto);
 		if (singUpResult == null) {
-			return responseService.getSuccessResult();
-		} else {
 			return responseService.getDefaultFailResult();
+		} else {
+			return responseService.getSuccessResult();
 		}
 	}
 

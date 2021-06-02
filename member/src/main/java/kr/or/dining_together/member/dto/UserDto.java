@@ -26,9 +26,6 @@ public class UserDto {
 	@ApiModelProperty(value = "비밀번호")
 	private String password;
 
-	@ApiModelProperty(value = "모바일 번호")
-	private String phoneNo;
-
 	@ApiModelProperty(value = "사용자 종류")
 	private UserType userType;
 
