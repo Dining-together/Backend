@@ -19,7 +19,7 @@ public class SwaggerConfig {
 	public Docket swaggerApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(swaggerInfo()).select()
 			.apis(RequestHandlerSelectors.basePackage("kr.or.dining_together.member.controller"))
-			.paths(PathSelectors.any())
+			.paths(PathSelectors.ant("/member/**"))
 			.build()
 			.useDefaultResponseMessages(false); // 기본으로 세팅되는 200,401,403,404 메시지를 표시 하지 않음
 	}

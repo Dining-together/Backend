@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.service;
 
+import java.util.Optional;
 import java.util.Random;
 
 import org.modelmapper.ModelMapper;
@@ -9,9 +10,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.or.dining_together.member.dto.EmailInfoDto;
+import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
+import kr.or.dining_together.member.advice.exception.UserDuplicationException;
+import kr.or.dining_together.member.advice.exception.VerificationFailedException;
 import kr.or.dining_together.member.jpa.entity.EmailInfo;
+import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.EmailInfoRepository;
+import kr.or.dining_together.member.jpa.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,18 +25,20 @@ public class EmailService {
 
 	private final JavaMailSender emailSender;
 	private final EmailInfoRepository emailInfoRepository;
+	private final UserRepository userRepository;
 	private final ModelMapper modelMapper;
 
 	@Transactional
 	@Async
-	public Long sendAuthMail(String to) {
+	public void sendAuthMail(String to) {
 		String key = makeRandomKey();
-		EmailInfoDto emailInfoDto = new EmailInfoDto();
-		emailInfoDto.setKey(key);
-		emailInfoDto.setEmail(to);
-		emailInfoDto.setUsed(false);
+		EmailInfo emailInfo = EmailInfo.builder()
+			.key(key)
+			.email(to)
+			.used(false)
+			.build();
 
-		Long savedEmailId = emailInfoRepository.save(modelMapper.map(emailInfoDto, EmailInfo.class)).getId();
+		Long savedEmailId = emailInfoRepository.save(emailInfo).getId();
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(to);
@@ -39,11 +46,30 @@ public class EmailService {
 		message.setText("인증번호는 " + key + " 입니다");
 		emailSender.send(message);
 
-		return savedEmailId;
+		if (savedEmailId == null) {
+			throw new DataSaveFailedException();
+		}
+		return;
 	}
 
-	public Boolean checkEmailVerificationKey(String email, String key) {
-		return (emailInfoRepository.findByKey(key).equals(emailInfoRepository.findByEmail(email)));
+	public void checkEmailVerificationKey(String email, String key) {
+		Optional<EmailInfo> emailInfoByKey = emailInfoRepository.findByKey(key);
+		Optional<EmailInfo> emailInfoByEmail = emailInfoRepository.findByEmail(email);
+		if (emailInfoByKey.isEmpty() || emailInfoByEmail.isEmpty()) {
+			throw new VerificationFailedException();
+		}
+		if (emailInfoByKey.get().getId() != emailInfoByEmail.get().getId()) {
+			throw new VerificationFailedException();
+		}
+		return;
+	}
+
+	public void checkEmailExistence(String email) {
+		Optional<User> user = userRepository.findByEmail(email);
+		if (user.isPresent()) {
+			throw new UserDuplicationException();
+		}
+		return;
 	}
 
 	private String makeRandomKey() {

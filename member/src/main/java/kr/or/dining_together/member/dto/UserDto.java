@@ -1,17 +1,21 @@
 package kr.or.dining_together.member.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import kr.or.dining_together.member.jpa.entity.UserType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "UserDto", description = "사용자")
+@Builder
 public class UserDto {
 
 	@ApiModelProperty(value = "사용자 pk")
@@ -26,8 +30,8 @@ public class UserDto {
 	@ApiModelProperty(value = "비밀번호")
 	private String password;
 
-	@ApiModelProperty(value = "사용자 종류")
-	private UserType userType;
+	@ApiModelProperty(notes = "사용자 등록일")
+	private Date joinDate;
 
 	@ApiModelProperty(value = "사용자 권한", required = false)
 	private List<String> roles = new ArrayList<>();

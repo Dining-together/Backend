@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @ApiModel(value = "EmailInfoDto", description = "이메일 인증정보 저장")
 public class EmailInfoDto {
 
+	@ApiModelProperty(value = "이메일 pk")
+	private long id;
+
 	@ApiModelProperty(value = "아이디(이메일)")
 	private String email;
 

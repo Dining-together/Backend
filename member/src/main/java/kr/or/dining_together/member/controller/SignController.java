@@ -49,34 +49,24 @@ public class SignController {
 	@ApiOperation(value = "회원가입", notes = "UserDto 객체를 입력 받아 회원가입 한다.")
 	@PostMapping(value = "/signup")
 	public CommonResult userSignUp(@RequestBody @ApiParam(value = "회원가입 정보", required = true) UserDto userDto) {
-		Long singUpResult = userService.save(userDto);
-		if (singUpResult == null) {
-			return responseService.getDefaultFailResult();
-		} else {
-			return responseService.getSuccessResult();
-		}
+		userService.save(userDto);
+		return responseService.getSuccessResult();
 	}
 
 	@ApiOperation(value = "이메일 중복확인", notes = "이메일 string을 입력받아 존재하는 email인지 확인한다.")
 	@GetMapping(value = "/signup")
 	public CommonResult userSignUpCheckEmail(
 		@RequestParam @ApiParam(value = "등록하려는 이메일", required = true) String email) {
-		if (userRepository.findByEmail(email) == null) {
-			return responseService.getSuccessResult();
-		} else {
-			return responseService.getDefaultFailResult();
-		}
+		emailService.checkEmailExistence(email);
+		return responseService.getSuccessResult();
 	}
 
 	@ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
 	@PostMapping(value = "/signup/verification")
 	public CommonResult userSignUpSendCodeToEmail(
 		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) {
-		if (emailService.sendAuthMail(email) == null) {
-			return responseService.getSuccessResult();
-		} else {
-			return responseService.getDefaultFailResult();
-		}
+		emailService.sendAuthMail(email);
+		return responseService.getSuccessResult();
 	}
 
 	@ApiOperation(value = "이메일 키값 인증", notes = "이메일과 키값을 받아 맞는지 확인한다.")
@@ -84,10 +74,7 @@ public class SignController {
 	public CommonResult userSignUpVerification(
 		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
 		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
-		if (emailService.checkEmailVerificationKey(email, key)) {
-			return responseService.getSuccessResult();
-		} else {
-			return responseService.getDefaultFailResult();
-		}
+		emailService.checkEmailVerificationKey(email, key);
+		return responseService.getSuccessResult();
 	}
 }

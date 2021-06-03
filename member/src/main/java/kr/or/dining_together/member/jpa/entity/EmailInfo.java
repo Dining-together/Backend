@@ -11,19 +11,21 @@ import javax.validation.constraints.Email;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Builder
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "email")
+@Table(name = "emailinfo")
 @ApiModel(description = "이메일 인증을 위한 도메인 객체")
 public class EmailInfo {
-	@Id // pk
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
@@ -35,7 +37,6 @@ public class EmailInfo {
 	@ApiModelProperty(notes = "이메일 인증키")
 	private String key;
 
-	@Column(nullable = false)
 	@ApiModelProperty(notes = "인증 여부")
 	private Boolean used;
 }

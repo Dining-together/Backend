@@ -8,13 +8,14 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.jpa.entity.UserType;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -25,6 +26,9 @@ public class UserRepositoryTest {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Test
 	public void findByEmail() {
@@ -37,11 +41,15 @@ public class UserRepositoryTest {
 			.name(name)
 			.password(passwordEncoder.encode("test1111"))
 			.joinDate(new Date())
-			.type(UserType.CUSTOMER)
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build());
+
 		//when
 		Optional<User> user = userRepository.findByEmail(email);
+		System.out.println(user.get());
+		System.out.println(modelMapper.map(user.get(), UserDto.class));
+		System.out.println(modelMapper.map(modelMapper.map(user.get(), UserDto.class), User.class));
+
 		//then
 		assertNotNull(user);
 		assertTrue(user.isPresent());

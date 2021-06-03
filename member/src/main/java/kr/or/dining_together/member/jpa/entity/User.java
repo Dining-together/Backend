@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Past;
@@ -47,7 +47,7 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.JOINED)
 // @DiscriminatorColumn(name="type")
 public class User implements UserDetails {
-	@Id // pk
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
@@ -68,21 +68,35 @@ public class User implements UserDetails {
 	// @Column(length = 100)
 	// private String phoneNo;
 
-	@Enumerated(EnumType.STRING)
-	@ApiModelProperty(notes = "사용자 타입을 선택해 주세요")
-	private UserType type;
-
 	@Past
-	@ApiModelProperty(notes = "등록일을 입력해 주세요")
+	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
 	private Date joinDate;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();
 
+	@Column(name = "createdDate")
+	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
+	public Date createdDate;
+
+	@Column(name = "updatedDate")
+	@ApiModelProperty(notes = "테이블의 수정일 정보입니다. 자동으로 입력됩니다.")
+	public Date updatedDate;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	}
+
+	@PrePersist
+	void joinDate() {
+		this.joinDate = this.createdDate = this.updatedDate = new Date();
+	}
+
+	@PreUpdate
+	void updateDate() {
+		this.updatedDate = new Date();
 	}
 
 	//  json 출력 안함

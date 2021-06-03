@@ -9,7 +9,7 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
-      path: /h2-console
+      path: /member/h2-console
   jpa:
     hibernate:
       ddl-auto: create
@@ -23,22 +23,22 @@ spring:
   jwt:
     secret: secret_token
     expiration_time: 86400000
-  #mail 인증을 위한 정보.
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: moamoa202105@gmail.com
-    password: moa1234!
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-            required: true
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+#mail 인증을 위한 정보.
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: moamoa202105@gmail.com
+  password: moa1234!
+  properties:
+    mail:
+      smtp:
+        starttls:
+          enable: true
+          required: true
+        auth: true
+        connectiontimeout: 5000
+        timeout: 5000
+        writetimeout: 5000
 logging:
   level:
     org.hibernate.SQL: debug
