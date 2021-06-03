@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,6 @@ public class EmailService {
 	private final JavaMailSender emailSender;
 	private final EmailInfoRepository emailInfoRepository;
 	private final UserRepository userRepository;
-	private final ModelMapper modelMapper;
 
 	@Transactional
 	@Async

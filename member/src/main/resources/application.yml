@@ -23,6 +23,17 @@ spring:
   jwt:
     secret: secret_token
     expiration_time: 86400000
+  social:
+    kakao:
+      client_id: cce7add11392983e7402a4bb7ad6fd07
+      redirect: /member/social/login/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
+  url:
+    base: http://localhost:8000
+
 #mail 인증을 위한 정보.
 mail:
   host: smtp.gmail.com
@@ -39,9 +50,14 @@ mail:
         connectiontimeout: 5000
         timeout: 5000
         writetimeout: 5000
+
+
 logging:
   level:
     org.hibernate.SQL: debug
+
+
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

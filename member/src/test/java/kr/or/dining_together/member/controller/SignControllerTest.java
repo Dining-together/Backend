@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.netflix.discovery.converters.Auto;
 
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
@@ -35,6 +36,7 @@ import kr.or.dining_together.member.vo.LoginRequest;
 @Transactional
 public class SignControllerTest {
 
+	@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
@@ -43,6 +45,7 @@ public class SignControllerTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
 	private ObjectMapper objectMapper;
 
 	@Autowired
@@ -83,7 +86,6 @@ public class SignControllerTest {
 			.email("jifrozen1@naver.com")
 			.name("문지언1")
 			.password("test2222")
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 		UserDto userDto = modelMapper.map(user, UserDto.class);
