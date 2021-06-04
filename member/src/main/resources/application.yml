@@ -9,20 +9,52 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
-      path: /h2-console
-    datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:testdb
-    jpa:
+      path: /member/h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          format_sql: true
-
+        format_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining
+    username: sa
   jwt:
     secret: secret_token
     expiration_time: 86400000
+  social:
+    kakao:
+      client_id: cce7add11392983e7402a4bb7ad6fd07
+      redirect: /member/social/login/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
+  url:
+    base: http://localhost:8000
+
+#mail 인증을 위한 정보.
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: moamoa202105@gmail.com
+  password: moa1234!
+  properties:
+    mail:
+      smtp:
+        starttls:
+          enable: true
+          required: true
+        auth: true
+        connectiontimeout: 5000
+        timeout: 5000
+        writetimeout: 5000
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug
 
 
 
@@ -33,7 +65,5 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
-
-
+      defaultZone: http://localhost:8761/eureka
 

@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import kr.or.dining_together.member.jpa.entity.User;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository<T extends User> extends JpaRepository<T, Long> {
 	@Override
-	Optional<User> findById(Long id);
+	Optional<T> findById(Long id);
 
-	Optional<User> findByEmail(String email);
+	Optional<T> findByEmail(String email);
+
+	Optional<T> findByEmailAndProvider(String email, String provider);
 }
