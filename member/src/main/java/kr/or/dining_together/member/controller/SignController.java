@@ -1,7 +1,5 @@
 package kr.or.dining_together.member.controller;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,22 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.config.security.JwtTokenProvider;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
-import kr.or.dining_together.member.service.KakaoService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
-import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.LoginRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -86,14 +79,15 @@ public class SignController {
 		return responseService.getSuccessResult();
 	}
 
-	@ApiOperation(value="소셜 로그인", notes = " 소셜 회원 로그인을 한다.")
+	@ApiOperation(value = "소셜 로그인", notes = " 소셜 회원 로그인을 한다.")
 	@PostMapping(value = "/signin/{provider}")
 	public SingleResult<String> signinByProvider(
-		@ApiParam(value = "서비스 제공자 provider", required = true,defaultValue = "kakao") @PathVariable String provider,
-		@ApiParam(value = "소셜 access token",required = true) @RequestParam String accessToken) {
+		@ApiParam(value = "서비스 제공자 provider", required = true, defaultValue = "kakao") @PathVariable String provider,
+		@ApiParam(value = "소셜 access token", required = true) @RequestParam String accessToken) {
 
-		User signedUser = userService.signupByKakao(accessToken,provider);
-		return responseService.getSingleResult(jwtTokenProvider.createToken(String.valueOf(signedUser.getEmail()), signedUser.getRoles()));
+		User signedUser = userService.signupByKakao(accessToken, provider);
+		return responseService.getSingleResult(
+			jwtTokenProvider.createToken(String.valueOf(signedUser.getEmail()), signedUser.getRoles()));
 
 	}
 }

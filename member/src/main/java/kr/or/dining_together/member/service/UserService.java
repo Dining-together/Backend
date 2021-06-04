@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.dto.UserDto;
-import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.CustomerRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.KakaoProfile;
-import kr.or.dining_together.member.vo.KakaoProfile.Kakao_properties;
 import kr.or.dining_together.member.vo.LoginRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -38,7 +36,7 @@ public class UserService {
 	}
 
 	public void save(UserDto userDto) {
-		User user=User.builder()
+		User user = User.builder()
 			.email(userDto.getEmail())
 			.password(passwordEncoder.encode(userDto.getPassword()))
 			.name(userDto.getName())
@@ -54,14 +52,14 @@ public class UserService {
 		return;
 	}
 
-	public User signupByKakao(String accessToken, String provider){
-		KakaoProfile profile=kakaoService.getKakaoProfile(accessToken);
+	public User signupByKakao(String accessToken, String provider) {
+		KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
 		KakaoProfile.Kakao_account kakaoAccount = profile.getKakao_account();
-		Optional<User> user=userRepository.findByEmailAndProvider(String.valueOf(kakaoAccount.getEmail()),provider);
-		if(user.isPresent()){
+		Optional<User> user = userRepository.findByEmailAndProvider(String.valueOf(kakaoAccount.getEmail()), provider);
+		if (user.isPresent()) {
 			return user.get();
-		}else{
-			User kakaoUser=User.builder()
+		} else {
+			User kakaoUser = User.builder()
 				.email(String.valueOf(kakaoAccount.getEmail()))
 				.name(kakaoAccount.getEmail())
 				.provider(provider)

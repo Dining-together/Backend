@@ -13,11 +13,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 
+import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.RetKakaoAuth;
-import kr.or.dining_together.member.advice.exception.CComunicationException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -40,7 +39,7 @@ public class KakaoService {
 	/**
 	 * 카카오 플랫폼에서 사용자 정보를 요청한다.
 	 **/
-	public KakaoProfile getKakaoProfile(String accessToken){
+	public KakaoProfile getKakaoProfile(String accessToken) {
 		// Set header : Content-type: application/x-www-form-urlencoded
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -50,13 +49,14 @@ public class KakaoService {
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, headers);
 		try {
 			// Request profile
-			ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.kakao.url.profile"), request, String.class);
+			ResponseEntity<String> response = restTemplate.postForEntity(
+				env.getProperty("spring.social.kakao.url.profile"), request, String.class);
 			if (response.getStatusCode() == HttpStatus.OK)
 				return gson.fromJson(response.getBody(), KakaoProfile.class);
 		} catch (Exception e) {
-			throw new CComunicationException();
+			throw new ComunicationException();
 		}
-		throw new CComunicationException();
+		throw new ComunicationException();
 	}
 
 	/**
@@ -74,11 +74,12 @@ public class KakaoService {
 		params.add("code", code);
 		// Set http entity
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-		ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.kakao.url.token"), request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.kakao.url.token"),
+			request, String.class);
 		if (response.getStatusCode() == HttpStatus.OK) {
 			return gson.fromJson(response.getBody(), RetKakaoAuth.class);
 		}
 		return null;
 	}
-	
+
 }

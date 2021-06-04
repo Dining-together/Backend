@@ -1,7 +1,5 @@
 package kr.or.dining_together.member.vo;
 
-import java.util.Properties;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,7 +11,6 @@ public class KakaoProfile {
 	private Long id;
 	private Kakao_properties kakao_properties;
 	private Kakao_account kakao_account;
-
 
 	@Getter
 	@Setter

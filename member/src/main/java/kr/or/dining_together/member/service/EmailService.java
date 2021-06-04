@@ -3,9 +3,7 @@ package kr.or.dining_together.member.service;
 import java.util.Optional;
 import java.util.Random;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
-
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

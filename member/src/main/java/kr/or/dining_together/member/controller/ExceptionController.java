@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = {"2. Exception"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/exception")
+@RequestMapping(value = "/member/exception")
 public class ExceptionController {
 
 	@GetMapping(value = "/entrypoint")

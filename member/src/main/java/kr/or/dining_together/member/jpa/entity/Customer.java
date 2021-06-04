@@ -1,14 +1,14 @@
 package kr.or.dining_together.member.jpa.entity;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @RequiredArgsConstructor
-// @DiscriminatorValue("CUSTOMER")
+@DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
 
 	@Column(length = 100)

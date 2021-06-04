@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
+import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
-import kr.or.dining_together.member.advice.exception.CComunicationException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
@@ -67,10 +67,9 @@ public class ExceptionAdvice {
 		return responseService.getFailResult(HttpStatus.UNAUTHORIZED.value(), "권한이 없습니다");
 	}
 
-
-	@ExceptionHandler(CComunicationException.class)
+	@ExceptionHandler(ComunicationException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	protected CommonResult comunicationException(HttpServletRequest request, CComunicationException e) {
+	protected CommonResult comunicationException(HttpServletRequest request, ComunicationException e) {
 		return responseService.getFailResult(502, "통신 중 오류가 발생했습니다.");
 	}
 

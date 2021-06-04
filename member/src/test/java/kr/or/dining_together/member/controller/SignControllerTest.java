@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.netflix.discovery.converters.Auto;
 
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;

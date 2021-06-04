@@ -37,13 +37,13 @@ public class MemberApplication {
 	}
 
 	@Bean
-	public RestTemplate getRestTemplate(){
+	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
 
 	@Bean
 	public JavaMailSender javaMailSender() {
-		JavaMailSender javaMailSender=new JavaMailSender() {
+		JavaMailSender javaMailSender = new JavaMailSender() {
 			@Override
 			public MimeMessage createMimeMessage() {
 				return null;

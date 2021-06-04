@@ -15,14 +15,14 @@ import kr.or.dining_together.member.service.KakaoService;
 import lombok.RequiredArgsConstructor;
 
 /**
-* @package : kr.or.dining_together.member.controller
-* @name: SocialController.java
-* @date : 2021/06/03 1:24 오전
-* @author : jifrozen
-* @version : 1.0.0
-* @description : 소셜 로그인을 위해 요청
-* @modified :
-**/
+ * @package : kr.or.dining_together.member.controller
+ * @name: SocialController.java
+ * @date : 2021/06/03 1:24 오전
+ * @author : jifrozen
+ * @version : 1.0.0
+ * @description : 소셜 로그인을 위해 요청
+ * @modified :
+ **/
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("member/auth/")
@@ -33,7 +33,6 @@ public class SocialController {
 	private final Gson gson;
 	private final KakaoService kakaoService;
 
-
 	@Value("${spring.url.base}")
 	private String baseUrl;
 	@Value("${spring.social.kakao.client_id}")
@@ -41,29 +40,24 @@ public class SocialController {
 	@Value("${spring.social.kakao.redirect}")
 	private String kakaoRedirect;
 
-
 	@GetMapping
-	public ModelAndView socialLogin(ModelAndView mav){
-		StringBuilder loginUrl=new StringBuilder()
+	public ModelAndView socialLogin(ModelAndView mav) {
+		StringBuilder loginUrl = new StringBuilder()
 			.append(env.getProperty("spring.social.kakao.url.login"))
 			.append("?client_id=").append(kakaoClientId)
 			.append("&response_type=code")
 			.append("&redirect_uri=").append(baseUrl).append(kakaoRedirect);
 
-		mav.addObject("loginUrl",loginUrl);
+		mav.addObject("loginUrl", loginUrl);
 		mav.setViewName("social/login");
 		return mav;
 	}
 
 	@GetMapping(value = "/kakao")
-	public ModelAndView redirectKakao(ModelAndView mav, @RequestParam String code){
-		mav.addObject("authInfo",kakaoService.getKakaoTokenInfo(code));
+	public ModelAndView redirectKakao(ModelAndView mav, @RequestParam String code) {
+		mav.addObject("authInfo", kakaoService.getKakaoTokenInfo(code));
 		mav.setViewName("social/redirectKakao");
 		return mav;
 	}
-
-
-
-
 
 }
