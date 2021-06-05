@@ -18,3 +18,7 @@ spring:
           uri: lb://MEMBER
           predicates:
             - Path=/member/**
+        - id: auction
+          uri: lb://AUCTION
+          predicates:
+            - Path=/auction/**
