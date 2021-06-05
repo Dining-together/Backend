@@ -85,7 +85,18 @@ public class SignController {
 		@ApiParam(value = "서비스 제공자 provider", required = true, defaultValue = "kakao") @PathVariable String provider,
 		@ApiParam(value = "소셜 access token", required = true) @RequestParam String accessToken) {
 
-		User signedUser = userService.signupByKakao(accessToken, provider);
+		User signedUser = null;
+
+		switch (provider) {
+			case "naver":
+				signedUser = userService.signupByNaver(accessToken, provider);
+				;
+				break;
+			case "kakao":
+				signedUser = userService.signupByKakao(accessToken, provider);
+				;
+				break;
+		}
 		return responseService.getSingleResult(
 			jwtTokenProvider.createToken(String.valueOf(signedUser.getEmail()), signedUser.getRoles()));
 
