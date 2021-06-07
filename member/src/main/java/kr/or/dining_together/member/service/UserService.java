@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
+import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Store;
@@ -32,6 +33,14 @@ public class UserService {
 	private final KakaoService kakaoService;
 	private final CustomerRepository customerRepository;
 
+	public Long getUserId(String email) {
+		Optional<User> user = userRepository.findByEmail(email);
+		if (user.isEmpty()) {
+			throw new UserNotFoundException();
+		}
+		return user.get().getId();
+	}
+
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
 		User user = (User)userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
 		if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
@@ -40,7 +49,6 @@ public class UserService {
 		return modelMapper.map(user, UserDto.class);
 	}
 
-	@SuppressWarnings("checkstyle:RegexpSingleline")
 	@Transactional
 	public void save(SignUpRequest signUpRequest) {
 		String userType = signUpRequest.getUserType().getValue();

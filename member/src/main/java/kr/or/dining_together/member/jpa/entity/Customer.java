@@ -23,15 +23,4 @@ public class Customer extends User {
 	private String dateOfBirth;
 	@Column(length = 100)
 	private String gender;
-
-	// @Builder
-	// public Customer(String email, String password,
-	// 	String name,
-	// 	List<String> roles,
-	// 	String phoneNo, String dateOfBirth, String gender) {
-	// 	super(email, password, name, roles);
-	// 	this.phoneNo = phoneNo;
-	// 	this.dateOfBirth = dateOfBirth;
-	// 	this.gender = gender;
-	// }
 }
