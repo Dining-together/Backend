@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,12 @@ public class ExceptionAdvice {
 	protected CommonResult defaultException(HttpServletRequest request, Exception e) {
 		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "실패");
 	}
+
+	@ExceptionHandler(ResourceNotExistException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	protected CommonResult resourceNotExistException(HttpServletRequest request, ResourceNotExistException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "요청한 자원이 전재 하지 않습니다.");
+	}
+
 
 }

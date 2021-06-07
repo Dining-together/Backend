@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
  **/
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("member/auth/")
+@RequestMapping("/member/social/login")
 public class SocialController {
 
 	private final Environment env;
@@ -49,7 +49,7 @@ public class SocialController {
 			.append("&redirect_uri=").append(baseUrl).append(kakaoRedirect);
 
 		mav.addObject("loginUrl", loginUrl);
-		mav.setViewName("social/login");
+		mav.setViewName("/member/social/login");
 		return mav;
 	}
 
