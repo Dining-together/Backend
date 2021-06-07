@@ -36,6 +36,7 @@ import kr.or.dining_together.member.vo.SignUpRequest;
 @Transactional
 public class SignControllerTest {
 
+	@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
@@ -44,6 +45,7 @@ public class SignControllerTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
 	private ObjectMapper objectMapper;
 
 	@Autowired

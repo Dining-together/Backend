@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
+import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
@@ -65,4 +66,11 @@ public class ExceptionAdvice {
 		AuthenticationEntryPointException e) {
 		return responseService.getFailResult(HttpStatus.UNAUTHORIZED.value(), "권한이 없습니다");
 	}
+
+	@ExceptionHandler(ComunicationException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	protected CommonResult comunicationException(HttpServletRequest request, ComunicationException e) {
+		return responseService.getFailResult(502, "통신 중 오류가 발생했습니다.");
+	}
+
 }

@@ -55,8 +55,8 @@ public class UserRepositoryTest {
 		Store newStore = new Store();
 		Customer newCustomer = new Customer();
 		try {
-			newStore = userRepository.save(store);
-			newCustomer = userRepository.save(customer);
+			newStore = (Store)userRepository.save(store);
+			newCustomer = (Customer)userRepository.save(customer);
 		} catch (DataIntegrityViolationException e) {
 			System.out.println("history already exist");
 		}

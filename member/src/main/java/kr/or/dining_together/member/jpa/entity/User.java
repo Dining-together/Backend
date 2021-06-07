@@ -50,42 +50,39 @@ import lombok.experimental.SuperBuilder;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "UserType", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
+	@Column(name = "createdDate")
+	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
+	public Date createdDate;
+	@Column(name = "updatedDate")
+	@ApiModelProperty(notes = "테이블의 수정일 정보입니다. 자동으로 입력됩니다.")
+	public Date updatedDate;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
 	@Email
 	@Column(nullable = false, unique = true, length = 100)
 	private String email;
 
+	// @Column(length = 100)
+	// private String phoneNo;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(length = 100)
 	@ApiModelProperty(notes = "패스워드을 입력해 주세요")
 	private String password;
-
 	@Column(length = 100)
 	@Size(min = 2, message = "Name은 2글자 이상 입력.")
 	@ApiModelProperty(notes = "사용자 이름을 입력해 주세요")
 	private String name;
-
-	// @Column(length = 100)
-	// private String phoneNo;
-
 	@Past
 	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
 	private Date joinDate;
 
+	@Column(length = 100)
+	private String provider;
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();
-
-	@Column(name = "createdDate")
-	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
-	public Date createdDate;
-
-	@Column(name = "updatedDate")
-	@ApiModelProperty(notes = "테이블의 수정일 정보입니다. 자동으로 입력됩니다.")
-	public Date updatedDate;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

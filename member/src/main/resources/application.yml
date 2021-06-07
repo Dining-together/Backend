@@ -42,6 +42,16 @@ spring:
   logging:
     level:
       org.hibernate.SQL: debug
+  url:
+    base: http://localhost:8000
+  social:
+    kakao:
+      client_id: cce7add11392983e7402a4bb7ad6fd07
+      redirect: /member/social/login/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
 
 eureka:
   instance:
