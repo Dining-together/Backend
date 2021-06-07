@@ -1,6 +1,6 @@
 package kr.or.dining_together.auction.advice.exception;
 
-public class ResourceNotExistException extends RuntimeException{
+public class ResourceNotExistException extends RuntimeException {
 	public ResourceNotExistException() {
 		super();
 	}

@@ -9,14 +9,14 @@ import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
 
 /**
-* @package : kr.or.dining_together.auction.service
-* @name: ResponseService.java
-* @date : 2021/06/05 10:00 오후
-* @author : jifrozen
-* @version : 1.0.0
-* @description : 결과 처리
-* @modified :
-**/
+ * @package : kr.or.dining_together.auction.service
+ * @name: ResponseService.java
+ * @date : 2021/06/05 10:00 오후
+ * @author : jifrozen
+ * @version : 1.0.0
+ * @description : 결과 처리
+ * @modified :
+ **/
 @Service
 public class ResponseService {
 

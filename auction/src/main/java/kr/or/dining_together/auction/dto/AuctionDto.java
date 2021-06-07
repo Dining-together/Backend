@@ -2,9 +2,6 @@ package kr.or.dining_together.auction.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -19,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "AuctionDto",description = "공고")
+@ApiModel(value = "AuctionDto", description = "공고")
 @Builder
 public class AuctionDto {
 

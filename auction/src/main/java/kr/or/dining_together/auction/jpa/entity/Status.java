@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum Status {
 	PROCEEDING("PROCEEDING", "진행중"),
 	END("END", "마감"),
-	CANCEL("CANCEL","취소");
+	CANCEL("CANCEL", "취소");
 
 	private final String key;
 	private final String title;
