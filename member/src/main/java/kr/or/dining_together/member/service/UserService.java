@@ -20,6 +20,7 @@ import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.SignUpRequest;
+import kr.or.dining_together.member.vo.NaverProfile;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,6 +31,7 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final ModelMapper modelMapper;
 	private final KakaoService kakaoService;
+	private final NaverService naverService;
 	private final CustomerRepository customerRepository;
 
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
@@ -88,6 +90,26 @@ public class UserService {
 
 			userRepository.save(kakaoUser);
 			return kakaoUser;
+		}
+	}
+
+	public User signupByNaver(String provider, String accessToken) {
+		NaverProfile naverProfile = naverService.getNaverProfile(accessToken);
+		NaverProfile.Response naverAccount = naverProfile.getResponse();
+		Optional<User> user = userRepository.findByEmailAndProvider(naverAccount.getEmail(), provider);
+		if (user.isPresent()) {
+			return user.get();
+		} else {
+			User naverUser = User.builder()
+				.email(naverAccount.getEmail())
+				.name(naverAccount.getName())
+				.provider(provider)
+				.roles(Collections.singletonList("ROLE_USER"))
+				.build();
+
+			userRepository.save(naverUser);
+
+			return naverUser;
 		}
 	}
 
