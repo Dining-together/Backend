@@ -58,8 +58,7 @@ public class SignControllerTest {
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
 			.roles(Collections.singletonList("ROLE_USER"))
-			.phoneNo("010-2626-2626")
-			.dateOfBirth("1996-05-04")
+			.age(23)
 			.gender("FEMALE")
 			.build());
 	}
@@ -92,8 +91,7 @@ public class SignControllerTest {
 		SignUpRequest signUpRequest = SignUpRequest.builder()
 			.userDto(userDto)
 			.userType(UserType.CUSTOMER)
-			.phoneNo("010-2626-2626")
-			.dateOfBirth("1996-05-04")
+			.age(23)
 			.gender("FEMALE")
 			.build();
 

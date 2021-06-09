@@ -21,10 +21,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-	
+
 	private final JavaMailSender emailSender;
 	private final EmailInfoRepository emailInfoRepository;
 	private final UserRepository userRepository;
+	private static final String FROM_ADDRESS = "moamoa202105@gmail.com";
 
 	@Transactional
 	@Async
@@ -40,6 +41,7 @@ public class EmailService {
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setTo(to);
+		message.setFrom(EmailService.FROM_ADDRESS);
 		message.setSubject("[From 회식모아] 이메일 인증");
 		message.setText("인증번호는 " + key + " 입니다");
 		emailSender.send(message);

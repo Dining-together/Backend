@@ -18,7 +18,6 @@ import lombok.Setter;
 public class SignUpRequest {
 	private UserDto userDto;
 	private UserType userType;
-	private String phoneNo;
-	private String dateOfBirth;
+	private int age;
 	private String gender;
 }
