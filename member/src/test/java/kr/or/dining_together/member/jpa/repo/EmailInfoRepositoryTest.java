@@ -27,17 +27,20 @@ public class EmailInfoRepositoryTest {
 	public void findByEmail() {
 		String email = "qja9605@naver.com";
 		String key = "1234";
+		//given
 		EmailInfo emailInfo = EmailInfo.builder()
 			.key(key)
 			.email(email)
 			.used(false)
 			.build();
 
+		//when
 		System.out.println(emailInfo);
 		emailInfoRepository.save(emailInfo);
 		Optional<EmailInfo> emailInfo1 = emailInfoRepository.findByEmail(email);
 
-		assertNotNull(emailInfo1);
+		//then
+		assertNotNull(emailInfo1.get());
 		assertTrue(emailInfo1.isPresent());
 		assertEquals(emailInfo1.get().getEmail(), email);
 	}

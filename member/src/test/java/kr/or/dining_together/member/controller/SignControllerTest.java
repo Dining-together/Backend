@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -25,9 +24,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import kr.or.dining_together.member.dto.UserDto;
-import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.entity.Customer;
+import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
+import kr.or.dining_together.member.vo.SignUpRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,26 +53,28 @@ public class SignControllerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		userRepository.save(User.builder()
-			.id(1L)
+		userRepository.save(Customer.builder()
 			.email("jifrozen@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
+			.phoneNo("010-2626-2626")
+			.dateOfBirth("1996-05-04")
+			.gender("FEMALE")
 			.build());
-
 	}
 
 	@Test
-	public void signin() throws Exception {
+	public void signIn() throws Exception {
 		//given
 		String content = objectMapper.writeValueAsString(new LoginRequest("jifrozen@naver.com", "test1111"));
-		//when//then
+		System.out.println(content);
+		//when
 		mockMvc.perform(post("/member/auth/signin")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
+			//then
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(status().isOk());
@@ -80,17 +83,24 @@ public class SignControllerTest {
 	@Test
 	public void signup() throws Exception {
 		//given
-		User user = User.builder()
-			.id(1L)
+		UserDto userDto = UserDto.builder()
 			.email("jifrozen1@naver.com")
 			.name("문지언1")
 			.password("test2222")
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
-		UserDto userDto = modelMapper.map(user, UserDto.class);
+		SignUpRequest signUpRequest = SignUpRequest.builder()
+			.userDto(userDto)
+			.userType(UserType.CUSTOMER)
+			.phoneNo("010-2626-2626")
+			.dateOfBirth("1996-05-04")
+			.gender("FEMALE")
+			.build();
+
 		Gson gson = new Gson();
 		String content = gson.toJson(userDto);
 
+		System.out.println(content);
 		//when//then
 		mockMvc.perform(post("/member/auth/signup")
 			.content(content)
@@ -98,7 +108,6 @@ public class SignControllerTest {
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(print());
-
 	}
 
 }

@@ -1,7 +1,8 @@
 package kr.or.dining_together.member.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.vo.SignUpRequest;
 import lombok.extern.java.Log;
 
 @RunWith(SpringRunner.class)
@@ -33,20 +36,26 @@ public class UserServiceTest {
 		//given
 		List<String> roles = Arrays.asList("USER");
 		UserDto userDto = UserDto.builder()
-			.id(1L)
 			.email("qja9605@naver.com")
 			.name("신태범")
-			.password(passwordEncoder.encode("1234"))
-			.joinDate(new Date())
+			.password("1234")
 			.roles(roles)
+			.build();
+		SignUpRequest signUpRequest = SignUpRequest.builder()
+			.userDto(userDto)
+			.userType(UserType.CUSTOMER)
+			.dateOfBirth("1996-05-04")
+			.gender("MALE")
+			.phoneNo("010-2691-3895")
 			.build();
 
 		//when
-		userService.save(userDto);
+		userService.save(signUpRequest);
 		Optional<User> user = userRepository.findByEmail("qja9605@naver.com");
 
 		//then
 		System.out.println(user);
+		assertEquals(user.get().getEmail(), "qja9605@naver.com");
 	}
 
 }

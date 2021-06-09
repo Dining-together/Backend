@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-
+	
 	private final JavaMailSender emailSender;
 	private final EmailInfoRepository emailInfoRepository;
 	private final UserRepository userRepository;

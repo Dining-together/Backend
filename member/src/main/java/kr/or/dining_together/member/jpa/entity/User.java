@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,8 +37,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Entity
 @Getter
 @NoArgsConstructor
@@ -46,7 +48,7 @@ import lombok.ToString;
 @Table(name = "user")
 @ApiModel(description = "사용자 상세 정보를 위한 도메인 객체")
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type")
+@DiscriminatorColumn(name = "UserType", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
 	@Column(name = "createdDate")
 	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
@@ -74,8 +76,10 @@ public class User implements UserDetails {
 	@Past
 	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
 	private Date joinDate;
+
 	@Column(length = 100)
 	private String provider;
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();

@@ -1,7 +1,6 @@
 package kr.or.dining_together.member.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -29,10 +28,7 @@ public class UserDto {
 
 	@ApiModelProperty(value = "비밀번호")
 	private String password;
-
-	@ApiModelProperty(notes = "사용자 등록일")
-	private Date joinDate;
-
+	
 	@ApiModelProperty(value = "사용자 권한", required = false)
 	private List<String> roles = new ArrayList<>();
 }

@@ -6,15 +6,20 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.dto.UserDto;
+import kr.or.dining_together.member.jpa.entity.Customer;
+import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.CustomerRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.LoginRequest;
+import kr.or.dining_together.member.vo.SignUpRequest;
 import kr.or.dining_together.member.vo.NaverProfile;
 import lombok.RequiredArgsConstructor;
 
@@ -37,18 +42,33 @@ public class UserService {
 		return modelMapper.map(user, UserDto.class);
 	}
 
-	public void save(UserDto userDto) {
-		User user = User.builder()
-			.email(userDto.getEmail())
-			.password(passwordEncoder.encode(userDto.getPassword()))
-			.name(userDto.getName())
-			.roles(userDto.getRoles())
-			.build();
+	@SuppressWarnings("checkstyle:RegexpSingleline")
+	@Transactional
+	public void save(SignUpRequest signUpRequest) {
+		String userType = signUpRequest.getUserType().getValue();
+		UserDto userDto = signUpRequest.getUserDto();
 
-		userRepository.save(user);
+		if (userType == UserType.CUSTOMER.getValue()) {
+			userRepository.save(Customer.builder()
+				.email(userDto.getEmail())
+				.password(passwordEncoder.encode(userDto.getPassword()))
+				.name(userDto.getName())
+				.roles(userDto.getRoles())
+				.gender(signUpRequest.getGender())
+				.dateOfBirth(signUpRequest.getDateOfBirth())
+				.phoneNo(signUpRequest.getPhoneNo())
+				.build());
+		} else if (userType == UserType.STORE.getValue()) {
+			userRepository.save(Store.builder()
+				.email(userDto.getEmail())
+				.password(passwordEncoder.encode(userDto.getPassword()))
+				.name(userDto.getName())
+				.roles(userDto.getRoles())
+				.documentChecked(false)
+				.build());
+		}
 
-		Long saveResult = user.getId();
-		if (saveResult == null) {
+		if (userRepository.findByEmail(userDto.getEmail()).isEmpty()) {
 			throw new DataSaveFailedException();
 		}
 		return;
@@ -57,7 +77,8 @@ public class UserService {
 	public User signupByKakao(String accessToken, String provider) {
 		KakaoProfile profile = kakaoService.getKakaoProfile(accessToken);
 		KakaoProfile.Kakao_account kakaoAccount = profile.getKakao_account();
-		Optional<User> user = userRepository.findByEmailAndProvider(String.valueOf(kakaoAccount.getEmail()), provider);
+		Optional<User> user = userRepository.findByEmailAndProvider(String.valueOf(kakaoAccount.getEmail()),
+			provider);
 		if (user.isPresent()) {
 			return user.get();
 		} else {
@@ -70,7 +91,6 @@ public class UserService {
 
 			userRepository.save(kakaoUser);
 			return kakaoUser;
-
 		}
 	}
 

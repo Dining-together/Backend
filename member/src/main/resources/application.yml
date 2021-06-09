@@ -10,19 +10,40 @@ spring:
       settings:
         web-allow-others: true
       path: /member/h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining
+    username: sa
   jpa:
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
         format_sql: true
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:dining
-    username: sa
   jwt:
     secret: secret_token
     expiration_time: 86400000
+  #mail 인증을 위한 정보.
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: moamoa202105@gmail.com
+    password: moa1234!
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+  logging:
+    level:
+      org.hibernate.SQL: debug
+  url:
+    base: http://localhost:8000
   social:
     kakao:
       client_id: cce7add11392983e7402a4bb7ad6fd07
@@ -31,7 +52,6 @@ spring:
         login: https://kauth.kakao.com/oauth/authorize
         token: https://kauth.kakao.com/oauth/token
         profile: https://kapi.kakao.com/v2/user/me
-
     naver:
       client_id: St2h1wPlAy2EZHfwNfzT
       client_secret: BB6yF03ond
@@ -42,30 +62,6 @@ spring:
         profile: https://openapi.naver.com/v1/nid/me
   url:
     base: http://localhost:8000
-
-#mail 인증을 위한 정보.
-mail:
-  host: smtp.gmail.com
-  port: 587
-  username: moamoa202105@gmail.com
-  password: moa1234!
-  properties:
-    mail:
-      smtp:
-        starttls:
-          enable: true
-          required: true
-        auth: true
-        connectiontimeout: 5000
-        timeout: 5000
-        writetimeout: 5000
-
-
-logging:
-  level:
-    org.hibernate.SQL: debug
-
-
 
 eureka:
   instance:
