@@ -47,8 +47,7 @@ public class UserRepositoryTest {
 			.name(name2)
 			.password(passwordEncoder.encode("test1111"))
 			.roles(Collections.singletonList("ROLE_USER"))
-			.dateOfBirth("1996-05-04")
-			.phoneNo("010-2691-3895")
+			.age(23)
 			.gender("MALE")
 			.build();
 		//when

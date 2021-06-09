@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +20,6 @@ public class EmailServiceTest {
 	@Autowired
 	EmailInfoRepository emailInfoRepository;
 
-	JavaMailSender javaMailSender;
-
 	@Autowired
 	EmailService emailService;
 
@@ -30,7 +27,7 @@ public class EmailServiceTest {
 	public void mailSendAndCheckTest() {
 		//given
 		String email = "qja9605@naver.com";
-		String notTypedEmail = "qja9605@gmail.com";
+		String notTypedEmail = "qja9605@google.com";
 
 		//when
 		emailService.sendAuthMail(email);

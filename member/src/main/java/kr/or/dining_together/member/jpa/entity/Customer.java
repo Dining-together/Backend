@@ -18,9 +18,7 @@ import lombok.experimental.SuperBuilder;
 public class Customer extends User {
 
 	@Column(length = 100)
-	private String phoneNo;
-	@Column(length = 100)
-	private String dateOfBirth;
+	private int age;
 	@Column(length = 100)
 	private String gender;
 }

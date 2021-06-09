@@ -41,12 +41,12 @@ public class UserServiceTest {
 			.password("1234")
 			.roles(roles)
 			.build();
+
 		SignUpRequest signUpRequest = SignUpRequest.builder()
 			.userDto(userDto)
 			.userType(UserType.CUSTOMER)
-			.dateOfBirth("1996-05-04")
+			.age(24)
 			.gender("MALE")
-			.phoneNo("010-2691-3895")
 			.build();
 
 		//when

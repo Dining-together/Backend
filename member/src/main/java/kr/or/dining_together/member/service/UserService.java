@@ -55,8 +55,7 @@ public class UserService {
 				.name(userDto.getName())
 				.roles(userDto.getRoles())
 				.gender(signUpRequest.getGender())
-				.dateOfBirth(signUpRequest.getDateOfBirth())
-				.phoneNo(signUpRequest.getPhoneNo())
+				.age(signUpRequest.getAge())
 				.build());
 		} else if (userType == UserType.STORE.getValue()) {
 			userRepository.save(Store.builder()
