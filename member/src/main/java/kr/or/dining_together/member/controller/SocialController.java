@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 
 import kr.or.dining_together.member.service.KakaoService;
+import kr.or.dining_together.member.service.NaverService;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -35,6 +36,7 @@ public class SocialController {
 	private final RestTemplate restTemplate;
 	private final Gson gson;
 	private final KakaoService kakaoService;
+	private final NaverService naverService;
 
 	@Value("${spring.url.base}")
 	private String baseUrl;
@@ -42,6 +44,14 @@ public class SocialController {
 	private String kakaoClientId;
 	@Value("${spring.social.kakao.redirect}")
 	private String kakaoRedirect;
+	@Value("${spring.social.naver.client_id}")
+	private String naverClientId;
+
+	@Value("${spring.social.naver.client_secret}")
+	private String naverClientSecret;
+
+	@Value("${spring.social.naver.redirect}")
+	private String naverRedirect;
 
 	@GetMapping
 	public ModelAndView socialLogin(ModelAndView mav) {
@@ -52,6 +62,7 @@ public class SocialController {
 			.append("&redirect_uri=").append(baseUrl).append(kakaoRedirect);
 
 		mav.addObject("kakaoLoginUrl", kakaoLoginUrl);
+
 		SecureRandom random = new SecureRandom();
 		String state = new BigInteger(130, random).toString();
 
@@ -64,7 +75,9 @@ public class SocialController {
 
 		mav.addObject("naverLoginUrl", naverLoginUrl);
 
+
 		mav.setViewName("/member/social/login");
+
 		return mav;
 	}
 
@@ -72,6 +85,13 @@ public class SocialController {
 	public ModelAndView redirectKakao(ModelAndView mav, @RequestParam String code) {
 		mav.addObject("authInfo", kakaoService.getKakaoTokenInfo(code));
 		mav.setViewName("social/redirectKakao");
+		return mav;
+	}
+
+	@GetMapping(value = "/naver")
+	public ModelAndView redirectNaver(ModelAndView mav, @RequestParam String code, @RequestParam String state) {
+		mav.addObject("authInfo", naverService.getNaverTokenInfo(code, state));
+		mav.setViewName("social/redirectNaver");
 		return mav;
 	}
 
