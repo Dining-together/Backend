@@ -1,5 +1,8 @@
 package kr.or.dining_together.member.controller;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -42,13 +45,25 @@ public class SocialController {
 
 	@GetMapping
 	public ModelAndView socialLogin(ModelAndView mav) {
-		StringBuilder loginUrl = new StringBuilder()
+		StringBuilder kakaoLoginUrl = new StringBuilder()
 			.append(env.getProperty("spring.social.kakao.url.login"))
 			.append("?client_id=").append(kakaoClientId)
 			.append("&response_type=code")
 			.append("&redirect_uri=").append(baseUrl).append(kakaoRedirect);
 
-		mav.addObject("loginUrl", loginUrl);
+		mav.addObject("kakaoLoginUrl", kakaoLoginUrl);
+		SecureRandom random = new SecureRandom();
+		String state = new BigInteger(130, random).toString();
+
+		StringBuilder naverLoginUrl = new StringBuilder()
+			.append(env.getProperty("spring.social.naver.url.login"))
+			.append("?response_type=code")
+			.append("&client_id=").append(naverClientId)
+			.append("&redirect_uri=").append(baseUrl).append(naverRedirect)
+			.append("&state=").append(state);
+
+		mav.addObject("naverLoginUrl", naverLoginUrl);
+
 		mav.setViewName("/member/social/login");
 		return mav;
 	}
