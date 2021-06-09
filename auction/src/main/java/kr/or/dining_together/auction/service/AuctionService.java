@@ -40,8 +40,8 @@ public class AuctionService {
 			.auctionId(auctionDto.getAuctionId())
 			.title(auctionDto.getTitle())
 			.content(auctionDto.getContent())
-			.max_price(auctionDto.getMax_price())
-			.min_price(auctionDto.getMin_price())
+			.maxPrice(auctionDto.getMaxPrice())
+			.minPrice(auctionDto.getMinPrice())
 			.userType(auctionDto.getUserType())
 			.reservation(auctionDto.getReservation())
 			.deadline(auctionDto.getDeadline())
@@ -52,8 +52,8 @@ public class AuctionService {
 
 	public Auction updateAuction(long auctionId, AuctionDto auctionDto) {
 		Auction auction = getAuction(auctionId);
-		auction.setUpdate(auctionDto.getTitle(), auctionDto.getContent(), auctionDto.getMin_price(),
-			auctionDto.getUserType(), auction.getMax_price(), auctionDto.getReservation(), auctionDto.getDeadline());
+		auction.setUpdate(auctionDto.getTitle(), auctionDto.getContent(), auctionDto.getMinPrice(),
+			auctionDto.getUserType(), auction.getMaxPrice(), auctionDto.getReservation(), auctionDto.getDeadline());
 		return auction;
 	}
 

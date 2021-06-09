@@ -43,9 +43,9 @@ public class Auction {
 	@Column(length = 500)
 	private String content;
 	@ApiModelProperty(notes = "공고 최대 가격")
-	private String max_price;
+	private String maxPrice;
 	@ApiModelProperty(notes = "공고 최소 가격")
-	private String min_price;
+	private String minPrice;
 	@ApiModelProperty(notes = "공고 상태")
 	private Status status;
 	@ApiModelProperty(notes = "단체유형")
@@ -65,13 +65,13 @@ public class Auction {
 		this.updatedDate = new Date();
 	}
 
-	public void setUpdate(String title, String content, String min_price, String userType, String max_price,
+	public void setUpdate(String title, String content, String minPrice, String userType, String maxPrice,
 		Date reservation, Date deadline) {
 		this.title = title;
 		this.content = content;
-		this.min_price = min_price;
+		this.minPrice = minPrice;
 		this.userType = userType;
-		this.max_price = max_price;
+		this.maxPrice = maxPrice;
 		this.reservation = reservation;
 		this.deadline = deadline;
 	}
