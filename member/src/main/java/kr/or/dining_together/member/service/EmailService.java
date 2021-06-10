@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailService {
 
+	private static final String FROM_ADDRESS = "moamoa202105@gmail.com";
 	private final JavaMailSender emailSender;
 	private final EmailInfoRepository emailInfoRepository;
 	private final UserRepository userRepository;

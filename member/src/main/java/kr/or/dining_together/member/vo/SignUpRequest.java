@@ -20,4 +20,5 @@ public class SignUpRequest {
 	private UserType userType;
 	private int age;
 	private String gender;
+
 }

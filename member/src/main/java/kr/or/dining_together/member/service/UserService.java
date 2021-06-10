@@ -17,6 +17,7 @@ import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.CustomerRepository;
+import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.LoginRequest;
@@ -34,6 +35,7 @@ public class UserService {
 	private final KakaoService kakaoService;
 	private final NaverService naverService;
 	private final CustomerRepository customerRepository;
+	private final StoreRepository storeRepository;
 
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
 		User user = (User)userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
@@ -68,10 +70,9 @@ public class UserService {
 				.build());
 		}
 
-		if (userRepository.findByEmail(userDto.getEmail()).isEmpty()) {
+		if (userRepository.findByEmail(signUpRequest.getSignUserDto().getEmail()).isEmpty()) {
 			throw new DataSaveFailedException();
 		}
-		return;
 	}
 
 	public User signupByKakao(String accessToken, String provider) {

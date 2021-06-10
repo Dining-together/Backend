@@ -2,8 +2,6 @@ package kr.or.dining_together.member.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -33,8 +31,6 @@ public class UserServiceTest {
 
 	@Test
 	public void signUpTest() {
-		//given
-		List<String> roles = Arrays.asList("USER");
 		SignUserDto signUserDto = SignUserDto.builder()
 			.email("qja9605@naver.com")
 			.name("신태범")
@@ -56,4 +52,5 @@ public class UserServiceTest {
 		System.out.println(user);
 		assertEquals(user.get().getEmail(), "qja9605@naver.com");
 	}
+
 }
