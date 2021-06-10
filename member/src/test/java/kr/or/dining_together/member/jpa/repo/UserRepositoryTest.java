@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,7 +26,6 @@ public class UserRepositoryTest {
 	private PasswordEncoder passwordEncoder;
 
 	@Before
-	@Test
 	public void save() {
 		//given
 		String email = "jifrozen@naver.com";
@@ -47,23 +45,13 @@ public class UserRepositoryTest {
 			.name(name2)
 			.password(passwordEncoder.encode("test1111"))
 			.roles(Collections.singletonList("ROLE_USER"))
-			.dateOfBirth("1996-05-04")
-			.phoneNo("010-2691-3895")
+			.age(23)
 			.gender("MALE")
 			.build();
 		//when
-		Store newStore = new Store();
-		Customer newCustomer = new Customer();
-		try {
-			newStore = (Store)userRepository.save(store);
-			newCustomer = (Customer)userRepository.save(customer);
-		} catch (DataIntegrityViolationException e) {
-			System.out.println("history already exist");
-		}
+		userRepository.save(store);
+		userRepository.save(customer);
 
-		//then
-		assertEquals(store.getName(), newStore.getName());
-		assertEquals(customer.getName(), newCustomer.getName());
 	}
 
 	@Test

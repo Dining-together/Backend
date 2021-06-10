@@ -2,8 +2,6 @@ package kr.or.dining_together.member.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -13,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import kr.or.dining_together.member.dto.UserDto;
+import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
@@ -33,20 +31,17 @@ public class UserServiceTest {
 
 	@Test
 	public void signUpTest() {
-		//given
-		List<String> roles = Arrays.asList("USER");
-		UserDto userDto = UserDto.builder()
+		SignUserDto signUserDto = SignUserDto.builder()
 			.email("qja9605@naver.com")
 			.name("신태범")
 			.password("1234")
-			.roles(roles)
 			.build();
+
 		SignUpRequest signUpRequest = SignUpRequest.builder()
-			.userDto(userDto)
+			.signUserDto(signUserDto)
 			.userType(UserType.CUSTOMER)
-			.dateOfBirth("1996-05-04")
+			.age(24)
 			.gender("MALE")
-			.phoneNo("010-2691-3895")
 			.build();
 
 		//when

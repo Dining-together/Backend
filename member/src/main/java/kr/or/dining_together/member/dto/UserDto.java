@@ -16,10 +16,6 @@ import lombok.NoArgsConstructor;
 @ApiModel(value = "UserDto", description = "사용자")
 @Builder
 public class UserDto {
-
-	@ApiModelProperty(value = "사용자 pk")
-	private long id;
-
 	@ApiModelProperty(value = "아이디(이메일)")
 	private String email;
 
@@ -28,7 +24,7 @@ public class UserDto {
 
 	@ApiModelProperty(value = "비밀번호")
 	private String password;
-	
+
 	@ApiModelProperty(value = "사용자 권한", required = false)
 	private List<String> roles = new ArrayList<>();
 }

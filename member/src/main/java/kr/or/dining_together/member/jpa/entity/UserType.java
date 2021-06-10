@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum UserType {
 	CUSTOMER(Values.CUSTOMER),
 	STORE(Values.STORE),
+	SOCIALUSER(Values.SOCIALUSER),
 	ADMIN(Values.ADMIN);
 
 	private String value;
@@ -22,5 +23,6 @@ public enum UserType {
 		public static final String CUSTOMER = "CUSTOMER";
 		public static final String STORE = "STORE";
 		public static final String ADMIN = "ADMIN";
+		public static final String SOCIALUSER = "SOCIALUSER";
 	}
 }

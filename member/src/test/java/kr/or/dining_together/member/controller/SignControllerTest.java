@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
-import kr.or.dining_together.member.dto.UserDto;
+import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
@@ -58,8 +58,7 @@ public class SignControllerTest {
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
 			.roles(Collections.singletonList("ROLE_USER"))
-			.phoneNo("010-2626-2626")
-			.dateOfBirth("1996-05-04")
+			.age(23)
 			.gender("FEMALE")
 			.build());
 	}
@@ -83,22 +82,21 @@ public class SignControllerTest {
 	@Test
 	public void signup() throws Exception {
 		//given
-		UserDto userDto = UserDto.builder()
+		SignUserDto signUserDto = SignUserDto.builder()
 			.email("jifrozen1@naver.com")
 			.name("문지언1")
 			.password("test2222")
-			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
+
 		SignUpRequest signUpRequest = SignUpRequest.builder()
-			.userDto(userDto)
+			.signUserDto(signUserDto)
 			.userType(UserType.CUSTOMER)
-			.phoneNo("010-2626-2626")
-			.dateOfBirth("1996-05-04")
+			.age(23)
 			.gender("FEMALE")
 			.build();
 
 		Gson gson = new Gson();
-		String content = gson.toJson(userDto);
+		String content = gson.toJson(signUpRequest);
 
 		System.out.println(content);
 		//when//then
