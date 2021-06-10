@@ -48,7 +48,7 @@ public class SignController {
 			jwtTokenProvider.createToken(String.valueOf(userDto.getEmail()), userDto.getRoles()));
 	}
 
-	@ApiOperation(value = "회원가입", notes = "UserDto 객체를 입력 받아 회원가입 한다.")
+	@ApiOperation(value = "회원가입", notes = "CustomerSignUpRequest 객체를 입력 받아 회원가입 한다.")
 	@PostMapping(value = "/signup")
 	public CommonResult userSignUp(
 		@RequestBody @ApiParam(value = "회원가입 정보", required = true) SignUpRequest signUpRequest) {
@@ -92,13 +92,12 @@ public class SignController {
 		switch (provider) {
 			case "naver":
 				signedUser = userService.signupByNaver(accessToken, provider);
-				;
 				break;
 			case "kakao":
 				signedUser = userService.signupByKakao(accessToken, provider);
-				;
 				break;
 		}
+
 		return responseService.getSingleResult(
 			jwtTokenProvider.createToken(String.valueOf(signedUser.getEmail()), signedUser.getRoles()));
 
