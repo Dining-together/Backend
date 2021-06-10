@@ -59,6 +59,7 @@ public class UserService {
 				.gender(signUpRequest.getGender())
 				.age(signUpRequest.getAge())
 				.provider("application")
+				.roles(Collections.singletonList("ROLE_USER"))
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
@@ -67,6 +68,7 @@ public class UserService {
 				.name(userDto.getName())
 				.documentChecked(false)
 				.provider("application")
+				.roles(Collections.singletonList("ROLE_USER"))
 				.build());
 		}
 
