@@ -14,13 +14,14 @@ import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.CustomerRepository;
+import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.vo.CustomerSignUpRequest;
 import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.SignUpRequest;
 import kr.or.dining_together.member.vo.NaverProfile;
+import kr.or.dining_together.member.vo.StoreSignUpRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,6 +34,7 @@ public class UserService {
 	private final KakaoService kakaoService;
 	private final NaverService naverService;
 	private final CustomerRepository customerRepository;
+	private final StoreRepository storeRepository;
 
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
 		User user = (User)userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
@@ -44,33 +46,34 @@ public class UserService {
 
 	@SuppressWarnings("checkstyle:RegexpSingleline")
 	@Transactional
-	public void save(SignUpRequest signUpRequest) {
-		String userType = signUpRequest.getUserType().getValue();
-		UserDto userDto = signUpRequest.getUserDto();
+	public void customerSave(CustomerSignUpRequest signUpRequest) {
 
-		if (userType == UserType.CUSTOMER.getValue()) {
-			userRepository.save(Customer.builder()
-				.email(userDto.getEmail())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.name(userDto.getName())
-				.roles(userDto.getRoles())
-				.gender(signUpRequest.getGender())
-				.age(signUpRequest.getAge())
-				.build());
-		} else if (userType == UserType.STORE.getValue()) {
-			userRepository.save(Store.builder()
-				.email(userDto.getEmail())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.name(userDto.getName())
-				.roles(userDto.getRoles())
-				.documentChecked(false)
-				.build());
-		}
+		customerRepository.save(Customer.builder()
+			.email(signUpRequest.getEmail())
+			.password(passwordEncoder.encode(signUpRequest.getPassword()))
+			.name(signUpRequest.getName())
+			.gender(signUpRequest.getGender())
+			.age(signUpRequest.getAge())
+			.provider("application")
+			.build());
 
-		if (userRepository.findByEmail(userDto.getEmail()).isEmpty()) {
+	}
+
+	@SuppressWarnings("checkstyle:RegexpSingleline")
+	@Transactional
+	public void storeSave(StoreSignUpRequest signUpRequest) {
+
+		storeRepository.save(Store.builder()
+			.email(signUpRequest.getEmail())
+			.password(passwordEncoder.encode(signUpRequest.getPassword()))
+			.name(signUpRequest.getName())
+			.documentChecked(false)
+			.provider("application")
+			.build());
+
+		if (userRepository.findByEmail(signUpRequest.getEmail()).isEmpty()) {
 			throw new DataSaveFailedException();
 		}
-		return;
 	}
 
 	public User signupByKakao(String accessToken, String provider) {
@@ -81,7 +84,7 @@ public class UserService {
 		if (user.isPresent()) {
 			return user.get();
 		} else {
-			User kakaoUser = User.builder()
+			Customer kakaoUser = Customer.builder()
 				.email(String.valueOf(kakaoAccount.getEmail()))
 				.name(kakaoAccount.getEmail())
 				.provider(provider)
@@ -100,7 +103,7 @@ public class UserService {
 		if (user.isPresent()) {
 			return user.get();
 		} else {
-			User naverUser = User.builder()
+			Customer naverUser = Customer.builder()
 				.email(naverAccount.getEmail())
 				.name(naverAccount.getName())
 				.provider(provider)

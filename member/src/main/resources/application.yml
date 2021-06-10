@@ -43,7 +43,7 @@ spring:
     level:
       org.hibernate.SQL: debug
   url:
-    base: http://localhost:8000
+    base: https://localhost:8000
   social:
     kakao:
       client_id: cce7add11392983e7402a4bb7ad6fd07

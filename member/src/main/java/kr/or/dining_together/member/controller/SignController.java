@@ -20,8 +20,9 @@ import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
+import kr.or.dining_together.member.vo.CustomerSignUpRequest;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.SignUpRequest;
+import kr.or.dining_together.member.vo.StoreSignUpRequest;
 import lombok.RequiredArgsConstructor;
 
 @Api(tags = {"1. Sign"})
@@ -48,11 +49,19 @@ public class SignController {
 			jwtTokenProvider.createToken(String.valueOf(userDto.getEmail()), userDto.getRoles()));
 	}
 
-	@ApiOperation(value = "회원가입", notes = "UserDto 객체를 입력 받아 회원가입 한다.")
-	@PostMapping(value = "/signup")
+	@ApiOperation(value = "회원가입", notes = "CustomerSignUpRequest 객체를 입력 받아 회원가입 한다.")
+	@PostMapping(value = "/signup/customer")
 	public CommonResult userSignUp(
-		@RequestBody @ApiParam(value = "회원가입 정보", required = true) SignUpRequest signUpRequest) {
-		userService.save(signUpRequest);
+		@RequestBody @ApiParam(value = "회원가입 정보", required = true) CustomerSignUpRequest signUpRequest) {
+		userService.customerSave(signUpRequest);
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "회원가입", notes = "StoreSignUpRequest 객체를 입력 받아 회원가입 한다.")
+	@PostMapping(value = "/signup/store")
+	public CommonResult userSignUp(
+		@RequestBody @ApiParam(value = "회원가입 정보", required = true) StoreSignUpRequest signUpRequest) {
+		userService.storeSave(signUpRequest);
 		return responseService.getSuccessResult();
 	}
 
@@ -92,13 +101,12 @@ public class SignController {
 		switch (provider) {
 			case "naver":
 				signedUser = userService.signupByNaver(accessToken, provider);
-				;
 				break;
 			case "kakao":
 				signedUser = userService.signupByKakao(accessToken, provider);
-				;
 				break;
 		}
+
 		return responseService.getSingleResult(
 			jwtTokenProvider.createToken(String.valueOf(signedUser.getEmail()), signedUser.getRoles()));
 

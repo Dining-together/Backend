@@ -75,8 +75,7 @@ public class SocialController {
 
 		mav.addObject("naverLoginUrl", naverLoginUrl);
 
-
-		mav.setViewName("/member/social/login");
+		mav.setViewName("member/social/login");
 
 		return mav;
 	}
@@ -84,14 +83,14 @@ public class SocialController {
 	@GetMapping(value = "/kakao")
 	public ModelAndView redirectKakao(ModelAndView mav, @RequestParam String code) {
 		mav.addObject("authInfo", kakaoService.getKakaoTokenInfo(code));
-		mav.setViewName("social/redirectKakao");
+		mav.setViewName("member/social/redirectKakao");
 		return mav;
 	}
 
 	@GetMapping(value = "/naver")
 	public ModelAndView redirectNaver(ModelAndView mav, @RequestParam String code, @RequestParam String state) {
 		mav.addObject("authInfo", naverService.getNaverTokenInfo(code, state));
-		mav.setViewName("social/redirectNaver");
+		mav.setViewName("member/social/redirectNaver");
 		return mav;
 	}
 
