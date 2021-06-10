@@ -77,7 +77,7 @@ public class User implements UserDetails {
 	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
 	private Date joinDate;
 
-	@Column(length = 100)
+	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
 	private String provider;
 
 	@ElementCollection(fetch = FetchType.EAGER)

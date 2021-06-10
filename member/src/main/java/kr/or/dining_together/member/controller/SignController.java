@@ -92,11 +92,9 @@ public class SignController {
 		switch (provider) {
 			case "naver":
 				signedUser = userService.signupByNaver(accessToken, provider);
-				;
 				break;
 			case "kakao":
 				signedUser = userService.signupByKakao(accessToken, provider);
-				;
 				break;
 		}
 		return responseService.getSingleResult(
