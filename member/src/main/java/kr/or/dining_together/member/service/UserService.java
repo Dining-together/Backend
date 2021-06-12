@@ -2,6 +2,7 @@ package kr.or.dining_together.member.service;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.dto.SignUserDto;
+import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
+import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.dto.UserDto;
+import kr.or.dining_together.member.dto.UserIdDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.User;
@@ -50,6 +54,8 @@ public class UserService {
 	public void save(SignUpRequest signUpRequest) {
 		UserType userType = signUpRequest.getUserType();
 		SignUserDto userDto = signUpRequest.getSignUserDto();
+
+
 
 		if (userType == UserType.CUSTOMER) {
 			userRepository.save(Customer.builder()
@@ -116,5 +122,41 @@ public class UserService {
 			return naverUser;
 		}
 	}
+
+	public UserIdDto getUserId(String email) throws Throwable {
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return modelMapper.map(user, UserIdDto.class);
+	}
+
+	public UserDto getUser(String email) throws Throwable {
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return modelMapper.map(user, UserDto.class);
+
+	}
+
+	public void delete(String email) throws Throwable {
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		userRepository.deleteById(user.getId());
+
+	}
+
+	public boolean isValidPassword(String email, String password) throws Throwable {
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		if (!passwordEncoder.matches(password, user.getPassword())) {
+			throw new PasswordNotMatchedException();
+		}
+		return true;
+
+	}
+
+	public void updatePassword(String email, String newPassword) throws Throwable {
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		user.updatePassword(passwordEncoder.encode(newPassword));
+	}
+
+	// public UserDto modify(UserDto userDto,String email) {
+	// 	User user=userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+	//
+	// }
 
 }

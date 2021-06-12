@@ -11,6 +11,15 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @package : kr.or.dining_together.member.config
+ * @name: SwaggerConfig.java
+ * @date : 2021/05/26 12:44 오전
+ * @author : jifrozen
+ * @version : 1.0.0
+ * @description : swagger 설정 파일
+ * @modified :
+ **/
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

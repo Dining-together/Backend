@@ -1,8 +1,13 @@
 package kr.or.dining_together.member.service;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
+
+import java.util.Collections;
+import java.util.Date;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +56,22 @@ public class UserServiceTest {
 		//then
 		System.out.println(user);
 		assertEquals(user.get().getEmail(), "qja9605@naver.com");
+	}
+
+	@Test
+	public void updatePassword() {
+
+		User user = User.builder()
+			.id(1L)
+			.email("jifrozen@naver.com")
+			.name("문지언")
+			.password(passwordEncoder.encode("test1111"))
+			.joinDate(new Date())
+			.roles(Collections.singletonList("ROLE_USER"))
+			.build();
+		System.out.println(passwordEncoder.matches("test1111", user.getPassword()));
+		userRepository.save(user);
+
 	}
 
 }
