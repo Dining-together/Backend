@@ -5,9 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.websocket.server.ServerEndpoint;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,16 +16,14 @@ import lombok.Setter;
 public class AuctionStoreType {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-
 	@ManyToOne
-	@JoinColumn(name="auctionId")
+	@JoinColumn(name = "auctionId")
 	private Auction auction;
 
-
 	@ManyToOne
-	@JoinColumn(name="storetypeId")
+	@JoinColumn(name = "storetypeId")
 	private StoreType storeType;
 }

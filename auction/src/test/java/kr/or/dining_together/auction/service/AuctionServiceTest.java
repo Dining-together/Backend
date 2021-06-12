@@ -67,11 +67,11 @@ class AuctionServiceTest {
 	}
 
 	@Test
-	void getAuctionsByUserId(){
-		String userId="1";
-		List<Auction> auctions=auctionService.getAuctionsByUserId(userId);
+	void getAuctionsByUserId() {
+		String userId = "1";
+		List<Auction> auctions = auctionService.getAuctionsByUserId(userId);
 
-		assertEquals(auctions.get(0).getUserId(),userId);
+		assertEquals(auctions.get(0).getUserId(), userId);
 
 	}
 
@@ -92,7 +92,6 @@ class AuctionServiceTest {
 			.build();
 
 		AuctionDto auctionDto = modelMapper.map(auction, AuctionDto.class);
-
 
 		assertEquals(auctionRepository.findById(auctionId).get().getAuctionId(), auction.getAuctionId());
 

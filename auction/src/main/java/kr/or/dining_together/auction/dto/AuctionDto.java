@@ -44,7 +44,6 @@ public class AuctionDto {
 	@ApiModelProperty(notes = "공고 종료 시간")
 	private Date deadline;
 
-
 	@ApiModelProperty(notes = "사용자 id")
 	private String userId;
 

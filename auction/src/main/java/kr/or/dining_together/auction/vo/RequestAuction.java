@@ -2,8 +2,6 @@ package kr.or.dining_together.auction.vo;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.Data;
 
 @Data

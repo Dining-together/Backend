@@ -64,7 +64,6 @@ public class Auction {
 	@OneToMany(mappedBy = "auction")
 	private List<AuctionStoreType> auctionStoreTypes = new ArrayList<>();
 
-
 	@PrePersist
 	void joinDate() {
 		this.createdDate = this.updatedDate = new Date();

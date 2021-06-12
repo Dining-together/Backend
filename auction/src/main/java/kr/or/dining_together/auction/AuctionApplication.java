@@ -25,7 +25,7 @@ public class AuctionApplication {
 	}
 
 	@Bean
-	public FeignErrorDecoder getFeignErrorDecoder(){
+	public FeignErrorDecoder getFeignErrorDecoder() {
 		return new FeignErrorDecoder();
 	}
 

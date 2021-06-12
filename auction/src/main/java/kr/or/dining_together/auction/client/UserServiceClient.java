@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import kr.or.dining_together.auction.dto.UserIdDto;
 
-@FeignClient(name="member")
+@FeignClient(name = "member")
 public interface UserServiceClient {
 	@GetMapping(value = "/member/userId")
 	public UserIdDto getUserId(@RequestHeader("X-AUTH-TOKEN") String xAuthToken);

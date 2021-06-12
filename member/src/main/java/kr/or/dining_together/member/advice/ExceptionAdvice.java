@@ -71,14 +71,14 @@ public class ExceptionAdvice {
 	@ExceptionHandler(ComunicationException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	protected CommonResult comunicationException(HttpServletRequest request, ComunicationException e) {
-		return responseService.getFailResult(502, "통신 중 오류가 발생했습니다.");
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "통신 중 오류가 발생했습니다.");
 	}
 
 	@ExceptionHandler(PasswordNotMatchedException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public CommonResult passwordNotMatchedException(HttpServletRequest request,
 		PasswordNotMatchedException e) {
-		return responseService.getFailResult(400, "패스워드가 맞지 않습니다.");
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "패스워드가 맞지 않습니다.");
 	}
 
 }

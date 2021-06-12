@@ -1,12 +1,9 @@
 package kr.or.dining_together.auction.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
@@ -40,12 +37,12 @@ public class AuctionService {
 		return auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 	}
 
-	public List<Auction> getAuctionsByUserId(String userId){
+	public List<Auction> getAuctionsByUserId(String userId) {
 		return auctionRepository.findAllByUserId(userId);
 	}
 
-	public Auction writeAuction(UserIdDto user,RequestAuction requestAuction) {
-		Auction auction= Auction.builder()
+	public Auction writeAuction(UserIdDto user, RequestAuction requestAuction) {
+		Auction auction = Auction.builder()
 			.content(requestAuction.getContent())
 			.title(requestAuction.getTitle())
 			.deadline(requestAuction.getDeadline())
