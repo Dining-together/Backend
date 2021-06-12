@@ -51,7 +51,6 @@ public class AuctionService {
 			.userId(user.getId())
 			.userType(requestAuction.getUserType())
 			.reservation(requestAuction.getReservation())
-			.status("PROCEEDING")
 			.build();
 
 		return auctionRepository.save(auction);

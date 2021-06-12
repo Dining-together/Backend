@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.Past;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -63,10 +64,10 @@ public class Auction {
 	@ApiModelProperty(notes = "선호 메뉴")
 	@OneToMany(mappedBy = "auction")
 	private List<AuctionStoreType> auctionStoreTypes = new ArrayList<>();
-
 	@PrePersist
-	void joinDate() {
+	void prePersist() {
 		this.createdDate = this.updatedDate = new Date();
+		this.status="PROCEEDING";
 	}
 
 	@PreUpdate
