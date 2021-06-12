@@ -138,4 +138,11 @@ public class User implements UserDetails {
 		return true;
 	}
 
+	//수정용
+	//public User update()
+
+	public void updatePassword(String password) {
+		this.password = password;
+	}
+
 }

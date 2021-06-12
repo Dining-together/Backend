@@ -67,8 +67,12 @@ public class SignControllerTest {
 	public void signIn() throws Exception {
 		//given
 		String content = objectMapper.writeValueAsString(new LoginRequest("jifrozen@naver.com", "test1111"));
+
 		System.out.println(content);
 		//when
+
+		//when//then
+
 		mockMvc.perform(post("/member/auth/signin")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)

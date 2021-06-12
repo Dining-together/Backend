@@ -12,6 +12,7 @@ import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
+import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
 import kr.or.dining_together.member.model.CommonResult;
@@ -71,6 +72,13 @@ public class ExceptionAdvice {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	protected CommonResult comunicationException(HttpServletRequest request, ComunicationException e) {
 		return responseService.getFailResult(502, "통신 중 오류가 발생했습니다.");
+	}
+
+	@ExceptionHandler(PasswordNotMatchedException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public CommonResult passwordNotMatchedException(HttpServletRequest request,
+		PasswordNotMatchedException e) {
+		return responseService.getFailResult(400, "패스워드가 맞지 않습니다.");
 	}
 
 }
