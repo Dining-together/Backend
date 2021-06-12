@@ -1,6 +1,6 @@
 package kr.or.dining_together.member.service;
 
- 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;

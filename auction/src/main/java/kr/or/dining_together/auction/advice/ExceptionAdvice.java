@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.auction.advice.exception.UserNotFoundException;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -39,4 +40,9 @@ public class ExceptionAdvice {
 		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "요청한 자원이 전재 하지 않습니다.");
 	}
 
+	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "사용자가 존재하지 않습니다.");
+	}
 }

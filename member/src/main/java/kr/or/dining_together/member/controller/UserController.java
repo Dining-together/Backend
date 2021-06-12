@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.dto.UserDto;
+import kr.or.dining_together.member.dto.UserIdDto;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.ResponseService;
@@ -114,6 +115,16 @@ public class UserController {
 
 		}
 		return responseService.getSuccessResult();
+	}
+
+
+	@ApiOperation(value = "회원 정보 조회 (다른 서비스 호출)", notes = "인증된 사용자 조회")
+	@GetMapping(value = "/userId")
+	public UserIdDto getUserId() throws Throwable {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+
+		return userService.getUserId(email);
 	}
 
 

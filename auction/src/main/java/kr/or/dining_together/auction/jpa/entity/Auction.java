@@ -1,12 +1,15 @@
 package kr.or.dining_together.auction.jpa.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -47,13 +50,20 @@ public class Auction {
 	@ApiModelProperty(notes = "공고 최소 가격")
 	private String minPrice;
 	@ApiModelProperty(notes = "공고 상태")
-	private Status status;
+	private String status;
 	@ApiModelProperty(notes = "단체유형")
 	private String userType;
 	@ApiModelProperty(notes = "예약 시간")
 	private Date reservation;
 	@ApiModelProperty(notes = "공고 종료 시간")
 	private Date deadline;
+	@ApiModelProperty(notes = "사용자 id")
+	private String userId;
+
+	@ApiModelProperty(notes = "선호 메뉴")
+	@OneToMany(mappedBy = "auction")
+	private List<AuctionStoreType> auctionStoreTypes = new ArrayList<>();
+
 
 	@PrePersist
 	void joinDate() {
