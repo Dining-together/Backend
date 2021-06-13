@@ -2,7 +2,6 @@ package kr.or.dining_together.member.service;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
-import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
+import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.dto.UserIdDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
@@ -23,10 +22,14 @@ import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.CustomerRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.vo.CustomerProfileRequest;
+import kr.or.dining_together.member.vo.CustomerProfileResponse;
 import kr.or.dining_together.member.vo.KakaoProfile;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.NaverProfile;
 import kr.or.dining_together.member.vo.SignUpRequest;
+import kr.or.dining_together.member.vo.StoreProfileRequest;
+import kr.or.dining_together.member.vo.StoreProfileResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -54,8 +57,6 @@ public class UserService {
 	public void save(SignUpRequest signUpRequest) {
 		UserType userType = signUpRequest.getUserType();
 		SignUserDto userDto = signUpRequest.getSignUserDto();
-
-
 
 		if (userType == UserType.CUSTOMER) {
 			userRepository.save(Customer.builder()
@@ -128,9 +129,15 @@ public class UserService {
 		return modelMapper.map(user, UserIdDto.class);
 	}
 
-	public UserDto getUser(String email) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		return modelMapper.map(user, UserDto.class);
+	public Customer getCustomer(String email) throws Throwable {
+		Customer user = (Customer)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return user;
+
+	}
+
+	public Store getStore(String email) throws Throwable {
+		Store user = (Store)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return user;
 
 	}
 
@@ -149,14 +156,45 @@ public class UserService {
 
 	}
 
-	public void updatePassword(String email, String newPassword) throws Throwable {
+	// public void updatePassword(String email, String newPassword) throws Throwable {
+	// 	User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+	// 	user.updatePassword(passwordEncoder.encode(newPassword));
+	// }
+
+	public CustomerProfileResponse modify(CustomerProfileRequest customerProfileRequest, String email) throws
+		Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		user.updatePassword(passwordEncoder.encode(newPassword));
+		Customer customer = (Customer)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		user.update(customerProfileRequest.getPassword(), customerProfileRequest.getName(),
+			customerProfileRequest.getPhoneNum());
+		customer.update(customerProfileRequest.getAge(), customerProfileRequest.getGender());
+
+		userRepository.save(user);
+		customerRepository.save(customer);
+
+		CustomerProfileResponse customerProfileResponse = CustomerProfileResponse.builder()
+			.email(email)
+			.age(customer.getAge())
+			.gender(customer.getGender())
+			.name(user.getName())
+			.phoneNum(user.getPhoneNum())
+			.build();
+
+		return customerProfileResponse;
 	}
 
-	// public UserDto modify(UserDto userDto,String email) {
-	// 	User user=userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-	//
-	// }
+	public StoreProfileResponse modify(StoreProfileRequest storeProfileRequest, String email) throws Throwable {
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		user.update(storeProfileRequest.getPassword(), storeProfileRequest.getName(),
+			storeProfileRequest.getPhoneNum());
+		userRepository.save(user);
+		StoreProfileResponse storeProfileResponse = StoreProfileResponse.builder()
+			.email(email)
+			.name(user.getName())
+			.phoneNum(user.getPhoneNum())
+			.build();
+
+		return storeProfileResponse;
+	}
 
 }

@@ -11,8 +11,8 @@ import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointExc
 import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
-import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
+import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
 import kr.or.dining_together.member.model.CommonResult;

@@ -1,15 +1,14 @@
 package kr.or.dining_together.member.service;
 
-
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Optional;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
-
+import org.junit.After;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +16,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.member.dto.SignUserDto;
+import kr.or.dining_together.member.dto.UserIdDto;
+import kr.or.dining_together.member.jpa.entity.Customer;
+import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.vo.CustomerProfileRequest;
+import kr.or.dining_together.member.vo.CustomerProfileResponse;
 import kr.or.dining_together.member.vo.SignUpRequest;
+import kr.or.dining_together.member.vo.StoreProfileRequest;
+import kr.or.dining_together.member.vo.StoreProfileResponse;
 import lombok.extern.java.Log;
 
 @RunWith(SpringRunner.class)
@@ -33,6 +39,37 @@ public class UserServiceTest {
 	UserService userService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@BeforeEach
+	void setUp() throws Exception {
+		Customer user = Customer.builder()
+			.id(1L)
+			.email("jifrozen@naver.com")
+			.name("문지언")
+			.password(passwordEncoder.encode("test1111"))
+			.joinDate(new Date())
+			.roles(Collections.singletonList("ROLE_USER"))
+			.build();
+
+		userRepository.save(user);
+
+		Store user1 = Store.builder()
+			.id(2L)
+			.email("jifrozen1@naver.com")
+			.name("문지언")
+			.password(passwordEncoder.encode("test1111"))
+			.joinDate(new Date())
+			.roles(Collections.singletonList("ROLE_USER"))
+			.build();
+
+		userRepository.save(user1);
+
+	}
+
+	@After
+	public void tearDown() throws Exception {
+
+	}
 
 	@Test
 	public void signUpTest() {
@@ -59,19 +96,106 @@ public class UserServiceTest {
 	}
 
 	@Test
-	public void updatePassword() {
+	public void getUserId() throws Throwable {
 
-		User user = User.builder()
-			.id(1L)
-			.email("jifrozen@naver.com")
+		String email = "jifrozen@naver.com";
+		Optional<User> user = userRepository.findByEmail(email);
+
+		UserIdDto userIdDto = userService.getUserId(email);
+
+		assertEquals(user.get().getId(), userIdDto.getId());
+
+	}
+
+	@Test
+	public void getCustomer() throws Throwable {
+		String email = "jifrozen@naver.com";
+		Optional<User> user = userRepository.findByEmail(email);
+		Customer userIdDto = userService.getCustomer(email);
+
+		assertEquals(user.get().getId(), userIdDto.getId());
+
+	}
+
+	@Test
+	public void getStore() throws Throwable {
+
+		String email = "jifrozen1@naver.com";
+		Optional<User> user = userRepository.findByEmail(email);
+		Store userIdDto = userService.getStore(email);
+
+		assertEquals(user.get().getId(), userIdDto.getId());
+
+	}
+
+	@Test
+	public void customerModify() throws Throwable {
+		Customer user = Customer.builder()
+			.id(4L)
+			.email("jifrozen33@naver.com")
+			.name("문지언")
+			.password(passwordEncoder.encode("test1111"))
+			.age(2)
+			.joinDate(new Date())
+			.roles(Collections.singletonList("ROLE_USER"))
+			.build();
+
+		userRepository.save(user);
+		String email = "jifrozen33@naver.com";
+
+		CustomerProfileRequest customerProfileRequest =
+			CustomerProfileRequest.builder()
+				.age(1)
+				.gender("male")
+				.name("test11")
+				.password(user.getPassword())
+				.phoneNum("010")
+				.build();
+
+		CustomerProfileResponse customerProfileResponse = userService.modify(customerProfileRequest, email);
+		assertEquals(customerProfileResponse.getName(), "test11");
+
+	}
+
+	@Test
+	public void storeModify() throws Throwable {
+		Store user = Store.builder()
+			.id(5L)
+			.email("jifrozen22@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
 			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
-		System.out.println(passwordEncoder.matches("test1111", user.getPassword()));
+
 		userRepository.save(user);
+		String email = "jifrozen22@naver.com";
+
+		StoreProfileRequest storeProfileRequest =
+			StoreProfileRequest.builder()
+				.name("test11111")
+				.password(user.getPassword())
+				.phoneNum("010")
+				.build();
+
+		StoreProfileResponse storeProfileResponse = userService.modify(storeProfileRequest, email);
+		assertEquals(storeProfileResponse.getName(), "test11111");
 
 	}
+	// @Test
+	// public void updatePassword() {
+	//
+	// 	User user = User.builder()
+	// 		.id(1L)
+	// 		.email("jifrozen@naver.com")
+	// 		.name("문지언")
+	// 		.password(passwordEncoder.encode("test1111"))
+	// 		.joinDate(new Date())
+	// 		.roles(Collections.singletonList("ROLE_USER"))
+	// 		.build();
+	// 	System.out.println(passwordEncoder.matches("test1111", user.getPassword()));
+	// 	userRepository.save(user);
+	//
+	// }
 
 }
