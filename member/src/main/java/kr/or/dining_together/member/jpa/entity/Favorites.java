@@ -41,7 +41,11 @@ public class Favorites {
 	@ApiModelProperty(notes = "userId")
 	private long userId;
 
-	@Column(name = "objectId")
-	@ApiModelProperty(notes = "경매 또는 가게 Id")
-	private long objectId;
+	@Column(name = "auctionId")
+	@ApiModelProperty(notes = "경매 Id")
+	private long auctionId;
+
+	@Column(name = "storeId")
+	@ApiModelProperty(notes = "가게 Id")
+	private long storeId;
 }

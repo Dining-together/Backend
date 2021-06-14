@@ -14,11 +14,17 @@ public interface FavoritesRepository extends JpaRepository<Favorites, Long> {
 	@Override
 	Optional<Favorites> findById(Long id);
 
-	Optional<Favorites> findByObjectId(Long objectId);
-
 	List<Favorites> findAllByUserId(Long userId);
+
+	Favorites findByAuctionId(Long auctionId);
+
+	Favorites findByStoreId(Long storeId);
+	
+	@Transactional
+	@Modifying
+	Long deleteByUserIdAndAuctionId(Long userId, Long auctionId);
 
 	@Transactional
 	@Modifying
-	Long deleteByUserIdAndObjectId(Long userId, Long objectId);
+	Long deleteByUserIdAndStoreId(Long userId, Long storeId);
 }

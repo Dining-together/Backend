@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +18,7 @@ import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Favorites;
 import kr.or.dining_together.member.jpa.repo.FavoritesRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.vo.FavoritesRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,36 +35,34 @@ public class FavoritesServiceTest {
 	@Autowired
 	UserRepository userRepository;
 
+	String email = "qja9605@naver.com";
+
 	@Before
 	public void setUp() {
-		Favorites favorites = Favorites.builder()
-			.userId(1L)
-			.objectId(1L)
-			.build();
-
 		Customer customer = Customer.builder()
-			.email("qja9605@naver.com")
+			.email(email)
 			.name("신태범")
 			.password("test1111")
-			.roles(Collections.singletonList("ROLE_USER"))
-			.dateOfBirth("1996-05-04")
-			.phoneNo("010-2691-3895")
+			.age(25)
 			.gender("MALE")
+			.provider("application")
+			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 
-		favoritesRepository.save(favorites);
 		userRepository.save(customer);
 	}
 
 	@Test
 	public void save() {
 		//given
-		String email = "qja9605@google.com";
-		long objectId = 2;
+		FavoritesRequest favoritesRequest = FavoritesRequest.builder()
+			.favoritesType("STORE")
+			.objectid(1L)
+			.build();
 
 		//when
-		favoritesService.saveFavorite(email, objectId);
-		Optional<Favorites> favorites = favoritesRepository.findByObjectId(objectId);
+		favoritesService.saveFavorite(email, favoritesRequest);
+		List<Favorites> favorites = favoritesRepository.findAllByUserId(1L);
 
 		//then
 		assertNotNull(favorites);
@@ -79,19 +77,22 @@ public class FavoritesServiceTest {
 		List<Favorites> userFavorites = favoritesService.getFavoritesAll(email);
 
 		//then
-		assertEquals(userFavorites.get(0).getObjectId(), 1L);
+		assertNotNull(userFavorites);
 	}
 
 	@Test
 	public void delete() {
 		//given
 		String email = "qja9605@naver.com";
-		long objectId = 1;
+		FavoritesRequest favoritesRequest = FavoritesRequest.builder()
+			.favoritesType("STORE")
+			.objectid(1L)
+			.build();
 
 		//when
-		favoritesService.deleteFavorite(email, objectId);
+		favoritesService.deleteFavorite(email, favoritesRequest);
 
 		//then
-		assertNull(favoritesService.getFavoritesAll(email).get(0));
+		assertTrue(favoritesService.getFavoritesAll(email).isEmpty());
 	}
 }

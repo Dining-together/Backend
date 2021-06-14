@@ -1,6 +1,5 @@
 package kr.or.dining_together.member.service;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -66,7 +65,6 @@ public class UserService {
 				.name(userDto.getName())
 				.gender(signUpRequest.getGender())
 				.age(signUpRequest.getAge())
-				.provider("application")
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
@@ -74,7 +72,6 @@ public class UserService {
 				.password(passwordEncoder.encode(userDto.getPassword()))
 				.name(userDto.getName())
 				.documentChecked(false)
-				.provider("application")
 				.build());
 		}
 
@@ -95,7 +92,6 @@ public class UserService {
 				.email(String.valueOf(kakaoAccount.getEmail()))
 				.name(kakaoAccount.getEmail())
 				.provider(provider)
-				.roles(Collections.singletonList("ROLE_USER"))
 				.build();
 
 			userRepository.save(kakaoUser);
@@ -114,7 +110,6 @@ public class UserService {
 				.email(naverAccount.getEmail())
 				.name(naverAccount.getName())
 				.provider(provider)
-				.roles(Collections.singletonList("ROLE_USER"))
 				.build();
 
 			userRepository.save(naverUser);
