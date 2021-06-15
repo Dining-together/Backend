@@ -9,7 +9,6 @@ import kr.or.dining_together.member.jpa.entity.CustomerFavorites;
 import kr.or.dining_together.member.jpa.entity.StoreFavorites;
 import kr.or.dining_together.member.jpa.repo.CustomerFavoritesRepository;
 import kr.or.dining_together.member.jpa.repo.StoreFavoritesRepository;
-import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.FavoritesRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +18,6 @@ public class FavoritesService {
 
 	private final StoreFavoritesRepository storeFavoritesRepository;
 	private final CustomerFavoritesRepository customerFavoritesRepository;
-	private final UserRepository userRepository;
 	private final UserService userService;
 
 	public List<CustomerFavorites> getCustomerFavoritesAll(String email) {
@@ -46,7 +44,6 @@ public class FavoritesService {
 				.storeId(objectId)
 				.build();
 			customerFavoritesRepository.save(customerFavorites);
-			System.out.println(customerFavoritesRepository.findByStoreId(objectId));
 			saveResult = customerFavoritesRepository.findByStoreId(objectId).getId();
 		} else if (requestType.equals("AUCTION")) {
 			StoreFavorites storeFavorites = StoreFavorites.builder()
@@ -54,11 +51,9 @@ public class FavoritesService {
 				.auctionId(objectId)
 				.build();
 			storeFavoritesRepository.save(storeFavorites);
-			System.out.println(storeFavoritesRepository.findByAuctionId(objectId));
 			saveResult = storeFavoritesRepository.findByAuctionId(objectId).getId();
 		}
 
-		System.out.println("SaveResult " + saveResult);
 		if (saveResult == null) {
 			throw new DataSaveFailedException();
 		}
