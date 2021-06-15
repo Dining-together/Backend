@@ -7,5 +7,5 @@ import lombok.Data;
 @Builder
 public class FavoritesRequest {
 	private String favoritesType;
-	private long objectid;
+	private Long objectId;
 }

@@ -15,7 +15,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import kr.or.dining_together.member.jpa.entity.Favorites;
+import kr.or.dining_together.member.jpa.entity.CustomerFavorites;
+import kr.or.dining_together.member.jpa.entity.StoreFavorites;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.service.FavoritesService;
@@ -29,16 +30,26 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/member/favorites")
 public class FavoritesController {
 
-	private FavoritesService favoritesService;
-	private ResponseService responseService;
+	private final FavoritesService favoritesService;
+	private final ResponseService responseService;
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")})
-	@ApiOperation(value = "즐겨찾기 목록 가져오기", notes = "이메일로 즐겨찾기 목록을 가져온다.")
-	@GetMapping
-	public ListResult<Favorites> getAllFavorites() {
+	@ApiOperation(value = "일반회원의 즐겨찾기 목록 가져오기", notes = "이메일로 즐겨찾기 목록을 가져온다.")
+	@GetMapping(value = "/customer")
+	public ListResult<CustomerFavorites> getAllCustomerFavorites() {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		List<Favorites> favorites = favoritesService.getFavoritesAll(email);
+		List<CustomerFavorites> favorites = favoritesService.getCustomerFavoritesAll(email);
+		return responseService.getListResult(favorites);
+	}
+
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")})
+	@ApiOperation(value = "가게회원의 즐겨찾기 목록 가져오기", notes = "이메일로 즐겨찾기 목록을 가져온다.")
+	@GetMapping(value = "/store")
+	public ListResult<StoreFavorites> getAllStoreFavorites() {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		List<StoreFavorites> favorites = favoritesService.getStoreFavoritesAll(email);
 		return responseService.getListResult(favorites);
 	}
 
@@ -49,7 +60,7 @@ public class FavoritesController {
 	public CommonResult postFavorites(
 		@RequestBody @ApiParam(value = "즐겨찾기 요청", required = true) FavoritesRequest favoritesRequest) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		favoritesService.saveFavorite(email, favoritesRequest);
+		favoritesService.saveFavorites(email, favoritesRequest);
 		return responseService.getSuccessResult();
 	}
 
