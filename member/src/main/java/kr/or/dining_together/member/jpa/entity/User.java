@@ -80,6 +80,7 @@ public class User implements UserDetails {
 	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
 	private String provider;
 
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();
@@ -138,11 +139,9 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	//수정용
-	//public User update()
-
-	public void updatePassword(String password) {
+	public void update(String password, String name) {
 		this.password = password;
+		this.name = name;
 	}
 
 }
