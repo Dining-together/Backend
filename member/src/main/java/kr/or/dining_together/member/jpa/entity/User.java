@@ -80,7 +80,6 @@ public class User implements UserDetails {
 	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
 	private String provider;
 
-	private String phoneNum;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
@@ -140,10 +139,9 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public void update(String password, String name, String phoneNum) {
+	public void update(String password, String name) {
 		this.password = password;
 		this.name = name;
-		this.phoneNum = phoneNum;
 	}
 
 }

@@ -43,7 +43,6 @@ public class UserServiceTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		Customer user = Customer.builder()
-			.id(1L)
 			.email("jifrozen@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
@@ -54,7 +53,6 @@ public class UserServiceTest {
 		userRepository.save(user);
 
 		Store user1 = Store.builder()
-			.id(2L)
 			.email("jifrozen1@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
@@ -131,7 +129,6 @@ public class UserServiceTest {
 	@Test
 	public void customerModify() throws Throwable {
 		Customer user = Customer.builder()
-			.id(4L)
 			.email("jifrozen33@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
@@ -149,7 +146,6 @@ public class UserServiceTest {
 				.gender("male")
 				.name("test11")
 				.password(user.getPassword())
-				.phoneNum("010")
 				.build();
 
 		CustomerProfileResponse customerProfileResponse = userService.modify(customerProfileRequest, email);
@@ -160,7 +156,6 @@ public class UserServiceTest {
 	@Test
 	public void storeModify() throws Throwable {
 		Store user = Store.builder()
-			.id(5L)
 			.email("jifrozen22@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
@@ -175,7 +170,6 @@ public class UserServiceTest {
 			StoreProfileRequest.builder()
 				.name("test11111")
 				.password(user.getPassword())
-				.phoneNum("010")
 				.build();
 
 		StoreProfileResponse storeProfileResponse = userService.modify(storeProfileRequest, email);
