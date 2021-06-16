@@ -1,6 +1,5 @@
 package kr.or.dining_together.member.service;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -44,6 +43,14 @@ public class UserService {
 	private final CustomerRepository customerRepository;
 	private final StoreRepository storeRepository;
 
+	public Long getUserId(String email) {
+		Optional<User> user = userRepository.findByEmail(email);
+		if (user.isEmpty()) {
+			throw new UserNotFoundException();
+		}
+		return user.get().getId();
+	}
+
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
 		User user = (User)userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
 		if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
@@ -52,7 +59,6 @@ public class UserService {
 		return modelMapper.map(user, UserDto.class);
 	}
 
-	@SuppressWarnings("checkstyle:RegexpSingleline")
 	@Transactional
 	public void save(SignUpRequest signUpRequest) {
 		UserType userType = signUpRequest.getUserType();
@@ -65,8 +71,6 @@ public class UserService {
 				.name(userDto.getName())
 				.gender(signUpRequest.getGender())
 				.age(signUpRequest.getAge())
-				.provider("application")
-				.roles(Collections.singletonList("ROLE_USER"))
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
@@ -74,8 +78,6 @@ public class UserService {
 				.password(passwordEncoder.encode(userDto.getPassword()))
 				.name(userDto.getName())
 				.documentChecked(false)
-				.provider("application")
-				.roles(Collections.singletonList("ROLE_USER"))
 				.build());
 		}
 
@@ -96,7 +98,6 @@ public class UserService {
 				.email(String.valueOf(kakaoAccount.getEmail()))
 				.name(kakaoAccount.getEmail())
 				.provider(provider)
-				.roles(Collections.singletonList("ROLE_USER"))
 				.build();
 
 			userRepository.save(kakaoUser);
@@ -115,7 +116,6 @@ public class UserService {
 				.email(naverAccount.getEmail())
 				.name(naverAccount.getName())
 				.provider(provider)
-				.roles(Collections.singletonList("ROLE_USER"))
 				.build();
 
 			userRepository.save(naverUser);
