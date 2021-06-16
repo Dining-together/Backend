@@ -21,4 +21,10 @@ public class Customer extends User {
 	private int age;
 	@Column(length = 100)
 	private String gender;
+
+	public void update(int age, String gender) {
+		this.age = age;
+		this.gender = gender;
+
+	}
 }

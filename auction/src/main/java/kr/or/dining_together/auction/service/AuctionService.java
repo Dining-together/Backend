@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.dto.AuctionDto;
+import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
+import kr.or.dining_together.auction.vo.RequestAuction;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -35,16 +37,20 @@ public class AuctionService {
 		return auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 	}
 
-	public Auction writeAuction(AuctionDto auctionDto) {
+	public List<Auction> getAuctionsByUserId(String userId) {
+		return auctionRepository.findAllByUserId(userId);
+	}
+
+	public Auction writeAuction(UserIdDto user, RequestAuction requestAuction) {
 		Auction auction = Auction.builder()
-			.auctionId(auctionDto.getAuctionId())
-			.title(auctionDto.getTitle())
-			.content(auctionDto.getContent())
-			.maxPrice(auctionDto.getMaxPrice())
-			.minPrice(auctionDto.getMinPrice())
-			.userType(auctionDto.getUserType())
-			.reservation(auctionDto.getReservation())
-			.deadline(auctionDto.getDeadline())
+			.content(requestAuction.getContent())
+			.title(requestAuction.getTitle())
+			.deadline(requestAuction.getDeadline())
+			.maxPrice(requestAuction.getMaxPrice())
+			.minPrice(requestAuction.getMinPrice())
+			.userId(user.getId())
+			.userType(requestAuction.getUserType())
+			.reservation(requestAuction.getReservation())
 			.build();
 
 		return auctionRepository.save(auction);

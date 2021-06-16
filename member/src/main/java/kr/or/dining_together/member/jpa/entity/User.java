@@ -81,6 +81,7 @@ public class User implements UserDetails {
 	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
 	private String provider;
 
+
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
 	private List<String> roles = new ArrayList<>();
@@ -139,6 +140,11 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void update(String password, String name) {
+		this.password = password;
+		this.name = name;
 	}
 
 }
