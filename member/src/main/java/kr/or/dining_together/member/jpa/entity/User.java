@@ -63,8 +63,6 @@ public class User implements UserDetails {
 	@Column(nullable = false, unique = true, length = 100)
 	private String email;
 
-	// @Column(length = 100)
-	// private String phoneNo;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(length = 100)
 	@ApiModelProperty(notes = "패스워드을 입력해 주세요")
@@ -79,7 +77,6 @@ public class User implements UserDetails {
 
 	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
 	private String provider;
-
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default

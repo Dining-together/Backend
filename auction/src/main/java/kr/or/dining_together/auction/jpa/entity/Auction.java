@@ -9,11 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.validation.constraints.Past;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,9 +48,9 @@ public class Auction {
 	@Column(length = 500)
 	private String content;
 	@ApiModelProperty(notes = "공고 최대 가격")
-	private String maxPrice;
+	private int maxPrice;
 	@ApiModelProperty(notes = "공고 최소 가격")
-	private String minPrice;
+	private int minPrice;
 	@ApiModelProperty(notes = "공고 상태")
 	private String status;
 	@ApiModelProperty(notes = "단체유형")
@@ -61,13 +62,17 @@ public class Auction {
 	@ApiModelProperty(notes = "사용자 id")
 	private String userId;
 
+	@OneToMany(mappedBy = "auction")
+	private List<Auctioneer> auctioneers = new ArrayList<>();
+
 	@ApiModelProperty(notes = "선호 메뉴")
 	@OneToMany(mappedBy = "auction")
 	private List<AuctionStoreType> auctionStoreTypes = new ArrayList<>();
+
 	@PrePersist
 	void prePersist() {
 		this.createdDate = this.updatedDate = new Date();
-		this.status="PROCEEDING";
+		this.status = "PROCEEDING";
 	}
 
 	@PreUpdate
@@ -75,7 +80,7 @@ public class Auction {
 		this.updatedDate = new Date();
 	}
 
-	public void setUpdate(String title, String content, String minPrice, String userType, String maxPrice,
+	public void setUpdate(String title, String content, int minPrice, String userType, int maxPrice,
 		Date reservation, Date deadline) {
 		this.title = title;
 		this.content = content;
@@ -85,5 +90,6 @@ public class Auction {
 		this.reservation = reservation;
 		this.deadline = deadline;
 	}
+
 
 }
