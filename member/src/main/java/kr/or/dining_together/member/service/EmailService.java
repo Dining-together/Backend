@@ -2,19 +2,18 @@ package kr.or.dining_together.member.service;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
+
+import javax.transaction.Transactional;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
-import kr.or.dining_together.member.jpa.entity.EmailInfo;
 import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.jpa.repo.EmailInfoRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -24,44 +23,9 @@ public class EmailService {
 
 	private static final String FROM_ADDRESS = "moamoa202105@gmail.com";
 	private final JavaMailSender emailSender;
-	private final EmailInfoRepository emailInfoRepository;
 	private final UserRepository userRepository;
-
-	@Transactional
-	@Async
-	public void sendAuthMail(String to) {
-		String key = makeRandomKey();
-		EmailInfo emailInfo = EmailInfo.builder()
-			.emailKey(key)
-			.email(to)
-			.used(false)
-			.build();
-
-		Long savedEmailId = emailInfoRepository.save(emailInfo).getId();
-
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setSubject("[From 회식모아] 이메일 인증");
-		message.setText("인증번호는 " + key + " 입니다");
-		emailSender.send(message);
-
-		if (savedEmailId == null) {
-			throw new DataSaveFailedException();
-		}
-		return;
-	}
-
-	public void checkEmailVerificationKey(String email, String key) {
-		Optional<EmailInfo> emailInfoByKey = emailInfoRepository.findByEmailKey(key);
-		Optional<EmailInfo> emailInfoByEmail = emailInfoRepository.findByEmail(email);
-		if (emailInfoByKey.isEmpty() || emailInfoByEmail.isEmpty()) {
-			throw new VerificationFailedException();
-		}
-		if (emailInfoByKey.get().getId() != emailInfoByEmail.get().getId()) {
-			throw new VerificationFailedException();
-		}
-		return;
-	}
+	private final RedisUtil redisUtil;
+	private final PasswordEncoder passwordEncoder;
 
 	public void checkEmailExistence(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
@@ -69,6 +33,43 @@ public class EmailService {
 			throw new UserDuplicationException();
 		}
 		return;
+	}
+
+	public void sendVerificationMail(String to) {
+		UUID emailKey = UUID.randomUUID();
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(to);
+		message.setSubject("[From 회식모아] 이메일 인증");
+		message.setText("인증번호는 " + emailKey + " 입니다");
+
+		redisUtil.setDataExpire(emailKey.toString(), to, 60 * 30L);
+		emailSender.send(message);
+	}
+
+	public void verifyEmail(String email, String key) {
+		String verifiedEmail = redisUtil.getData(key);
+		if (verifiedEmail == null) {
+			throw new VerificationFailedException();
+		} else if (verifiedEmail.equals(email) == false) {
+			throw new VerificationFailedException();
+		}
+
+		redisUtil.deleteData(key);
+		return;
+	}
+
+	@Transactional
+	public void sendUserPassword(String email) {
+		Optional<User> user = userRepository.findByEmail(email);
+		String newPassword = makeRandomKey();
+		SimpleMailMessage message = new SimpleMailMessage();
+
+		userRepository.updatePassword(passwordEncoder.encode(newPassword), email);
+		message.setTo(email);
+		message.setSubject("[From 회식모아] 비밀번호 찾기");
+		message.setText("귀하의 비밀번호는 " + newPassword + " 입니다");
+
+		emailSender.send(message);
 	}
 
 	private String makeRandomKey() {

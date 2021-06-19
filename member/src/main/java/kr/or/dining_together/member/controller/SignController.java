@@ -64,20 +64,47 @@ public class SignController {
 		return responseService.getSuccessResult();
 	}
 
-	@ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
-	@PostMapping(value = "/signup/verification")
-	public CommonResult userSignUpSendCodeToEmail(
+	// @ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
+	// @PostMapping(value = "/signup/verification")
+	// public CommonResult userSignUpSendCodeToEmail(
+	// 	@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) {
+	// 	emailService.sendAuthMail(email);
+	// 	return responseService.getSuccessResult();
+	// }
+	//
+	// @ApiOperation(value = "이메일 키값 인증", notes = "이메일과 키값을 받아 맞는지 확인한다.")
+	// @GetMapping(value = "/signup/verification")
+	// public CommonResult userSignUpVerification(
+	// 	@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
+	// 	@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
+	// 	emailService.checkEmailVerificationKey(email, key);
+	// 	return responseService.getSuccessResult();
+	// }
+
+	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
+	@PostMapping(value = "/verify")
+	public CommonResult verify(
 		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) {
-		emailService.sendAuthMail(email);
+		emailService.sendVerificationMail(email);
 		return responseService.getSuccessResult();
 	}
 
 	@ApiOperation(value = "이메일 키값 인증", notes = "이메일과 키값을 받아 맞는지 확인한다.")
-	@GetMapping(value = "/signup/verification")
-	public CommonResult userSignUpVerification(
+	@GetMapping(value = "/verify")
+	public CommonResult getVerify(
 		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
 		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
-		emailService.checkEmailVerificationKey(email, key);
+		emailService.verifyEmail(email, key);
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "인증 및 비밀번호 전송", notes = "이메일과 키값을 받아 맞는지 확인하고 맞으면 비밀번호를 전송한다.")
+	@GetMapping(value = "/verify/password")
+	public CommonResult getVerifyAndGetPassword(
+		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
+		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
+		emailService.verifyEmail(email, key);
+		emailService.sendUserPassword(email);
 		return responseService.getSuccessResult();
 	}
 
