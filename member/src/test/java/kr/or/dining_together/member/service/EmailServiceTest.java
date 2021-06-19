@@ -32,8 +32,8 @@ public class EmailServiceTest {
 		//when
 		emailService.sendAuthMail(email);
 		Optional<EmailInfo> emailInfo = emailInfoRepository.findByEmail(email);
-		String key = emailInfo.get().getKey();
-		Optional<EmailInfo> emailInfo1 = emailInfoRepository.findByKey(key);
+		String key = emailInfo.get().getEmailKey();
+		Optional<EmailInfo> emailInfo1 = emailInfoRepository.findByEmailKey(key);
 		Optional<EmailInfo> emailInfo2 = emailInfoRepository.findByEmail(notTypedEmail);
 
 		//then

@@ -4,22 +4,44 @@ server:
 spring:
   application:
     name: member
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /member/h2-console
+  # local test 환경
+  #  jpa:
+  #    hibernate:
+  #      ddl-auto: create
+  #    properties:
+  #      hibernate:
+  #        format_sql: true
+  #  h2:
+  #    console:
+  #      enabled: true
+  #      settings:
+  #        web-allow-others: true
+  #      path: /member/h2-console
+  #  datasource:
+  #    driver-class-name: org.h2.Driver
+  #    url: jdbc:h2:mem:dining
+  #    username: sa
+  # server 테스트 환경
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://101.101.216.26:3306/member?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
   jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
     hibernate:
       ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:dining
-    username: sa
+
+  redis:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+    host: 101.101.216.26
+    port: 6379
   jwt:
     secret: secret_token
     expiration_time: 86400000

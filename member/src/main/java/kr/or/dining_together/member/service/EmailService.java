@@ -32,7 +32,7 @@ public class EmailService {
 	public void sendAuthMail(String to) {
 		String key = makeRandomKey();
 		EmailInfo emailInfo = EmailInfo.builder()
-			.key(key)
+			.emailKey(key)
 			.email(to)
 			.used(false)
 			.build();
@@ -52,7 +52,7 @@ public class EmailService {
 	}
 
 	public void checkEmailVerificationKey(String email, String key) {
-		Optional<EmailInfo> emailInfoByKey = emailInfoRepository.findByKey(key);
+		Optional<EmailInfo> emailInfoByKey = emailInfoRepository.findByEmailKey(key);
 		Optional<EmailInfo> emailInfoByEmail = emailInfoRepository.findByEmail(email);
 		if (emailInfoByKey.isEmpty() || emailInfoByEmail.isEmpty()) {
 			throw new VerificationFailedException();

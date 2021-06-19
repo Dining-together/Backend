@@ -35,7 +35,7 @@ public class EmailInfo {
 
 	@Column(length = 100)
 	@ApiModelProperty(notes = "이메일 인증키")
-	private String key;
+	private String emailKey;
 
 	@ApiModelProperty(notes = "인증 여부")
 	private Boolean used;

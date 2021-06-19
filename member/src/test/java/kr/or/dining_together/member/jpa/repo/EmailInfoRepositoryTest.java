@@ -29,7 +29,7 @@ public class EmailInfoRepositoryTest {
 		String key = "1234";
 		//given
 		EmailInfo emailInfo = EmailInfo.builder()
-			.key(key)
+			.emailKey(key)
 			.email(email)
 			.used(false)
 			.build();
