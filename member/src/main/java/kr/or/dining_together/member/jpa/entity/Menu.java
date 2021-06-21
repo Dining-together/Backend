@@ -1,5 +1,4 @@
 package kr.or.dining_together.member.jpa.entity;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -10,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.validation.constraints.Size;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -23,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 @PrimaryKeyJoinColumn(name = "user_id")
 @SuperBuilder
 @NoArgsConstructor
-public class Menu{
+public class Menu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long menuId;

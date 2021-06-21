@@ -1,0 +1,118 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "auction",
+    "description": "Demo project for Spring Boot",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost"
+    }
+  ],
+  "tags": [],
+  "paths": {
+    "/auction/auctions": {
+      "get": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "getAuctions",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctions1317890811"
+                },
+                "examples": {
+                  "getAuctions": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"list\":[{\"createdDate\":\"2021-06-20T17:17:25.014+00:00\",\"updatedDate\":\"2021-06-20T17:17:25.014+00:00\",\"auctionId\":6,\"title\":\"제목\",\"content\":\"내용\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-20T17:17:25.014+00:00\",\"deadline\":\"2021-06-20T17:17:25.014+00:00\",\"userId\":\"1\",\"auctioneers\":null,\"auctionStoreTypes\":null}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "auction-auctions1317890811": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "updatedDate": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "userId": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Author of the book"
+                },
+                "auctionId": {
+                  "type": "number",
+                  "description": "Title of the book"
+                },
+                "createdDate": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "minPrice": {
+                  "type": "number",
+                  "description": "Title of the book"
+                },
+                "reservation": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "userType": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "maxPrice": {
+                  "type": "number",
+                  "description": "Title of the book"
+                },
+                "deadline": {
+                  "type": "string",
+                  "description": "Title of the book"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "Title of the book"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,16 +1,15 @@
 package kr.or.dining_together.auction.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Date;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.auction.dto.UserIdDto;
@@ -19,7 +18,6 @@ import kr.or.dining_together.auction.jpa.entity.Auctioneer;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.jpa.repo.AuctioneerRepository;
 import kr.or.dining_together.auction.vo.AuctioneerRequest;
-import lombok.RequiredArgsConstructor;
 
 /**
  * @package : kr.or.dining_together.auction.service
@@ -64,7 +62,7 @@ class AuctioneerServiceTest {
 			.reservation(new Date())
 			.build();
 
-		auction=auctionRepository.save(auction1);
+		auction = auctionRepository.save(auction1);
 
 		Auctioneer auctioneer1 = Auctioneer.builder()
 			.content("우리 업체는~")
@@ -74,12 +72,12 @@ class AuctioneerServiceTest {
 			.storeId("1")
 			.build();
 
-		auctioneer= auctioneerRepository.save(auctioneer1);
+		auctioneer = auctioneerRepository.save(auctioneer1);
 	}
 
 	@Test
 	void getAuctioneer() {
-		List<Auctioneer> auctioneers=auctioneerService.getAuctioneer(auction.getAuctionId());
+		List<Auctioneer> auctioneers = auctioneerService.getAuctioneer(auction.getAuctionId());
 		assertFalse(auctioneers.isEmpty());
 	}
 
@@ -91,10 +89,10 @@ class AuctioneerServiceTest {
 			.price(10)
 			.build();
 
-		Auctioneer auctioneer= auctioneerService.registerAuctioneer(auctioneerRequest,userIdDto,auction.getAuctionId());
+		Auctioneer auctioneer = auctioneerService.registerAuctioneer(auctioneerRequest, userIdDto,
+			auction.getAuctionId());
 
-		assertEquals(auctioneer.getContent(),"content");
-
+		assertEquals(auctioneer.getContent(), "content");
 
 	}
 
@@ -106,10 +104,9 @@ class AuctioneerServiceTest {
 			.price(101)
 			.build();
 
-		Auctioneer auctioneer1= auctioneerService.modifyAuctioneer(auctioneerRequest,auctioneer.getAuctioneerId());
+		Auctioneer auctioneer1 = auctioneerService.modifyAuctioneer(auctioneerRequest, auctioneer.getAuctioneerId());
 
-		assertEquals(auctioneer1.getContent(),"content1");
-
+		assertEquals(auctioneer1.getContent(), "content1");
 
 	}
 
