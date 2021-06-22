@@ -21,6 +21,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class Store extends User {
+
+
+
 	@ApiModelProperty(notes = "서류 제출 확인여부를 나타낸다")
 	@Column(columnDefinition = "boolean default false")
 	private Boolean documentChecked;

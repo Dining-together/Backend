@@ -1,6 +1,7 @@
 package kr.or.dining_together.auction.controller;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -17,16 +19,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
+import kr.or.dining_together.auction.dto.UserType;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.service.AuctionService;
+import kr.or.dining_together.auction.vo.LoginRequest;
+import kr.or.dining_together.auction.vo.RequestAuction;
+import kr.or.dining_together.auction.vo.SignUpRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -43,96 +54,256 @@ class AuctionControllerTest {
 	UserServiceClient userServiceClient;
 	@Autowired
 	ModelMapper modelMapper;
-	Auction auction;
+	@Autowired
+	private ObjectMapper objectMapper;
 	UserIdDto userIdDto;
 	@Autowired
 	private MockMvc mockMvc;
+	Auction auction;
+
+	ResponseEntity<String> token;
+	long auctionId;
 
 	@BeforeEach
 	void setUp() {
 
+		// SignUpRequest sign=SignUpRequest.builder()
+		// 	.email("test@test.com")
+		// 	.name("test1")
+		// 	.password("test21")
+		// 	.userType(UserType.CUSTOMER)
+		// 	.age(11)
+		// 	.gender("female")
+		// 	.build();
+		//
+		// userServiceClient.userSignUp(sign);
+		//
+		// LoginRequest loginRequest=new LoginRequest("test@test.com","test21");
+		//
+		// token=userServiceClient.login(loginRequest);
+
+
 		userIdDto = UserIdDto.builder()
-			.id("1")
+			.id(1L)
 			.name("moon")
 			.build();
 
-		auction = Auction.builder()
+		System.out.println(userIdDto.getId());
+		Auction auction1 = Auction.builder()
 			.title("제목")
 			.content("내용")
 			.maxPrice(1000)
 			.minPrice(10)
 			.userType("Family")
-			.userId("1")
+			.userId(1L)
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
 
-		auctionRepository.save(auction);
+		auction=auctionRepository.save(auction1);
+		auctionId=auction.getAuctionId();
+	}
+
+	@AfterEach
+	void tearDown() {
+
 	}
 
 	@Test
 	void auctions() throws Exception {
-		FieldDescriptor[] auction = new FieldDescriptor[] {
-			fieldWithPath("auctionId").description("Title of the book"),
-			fieldWithPath("title").description("Title of the book"),
-			fieldWithPath("content").description("Author of the book"),
-			fieldWithPath("maxPrice").description("Title of the book"),
-			fieldWithPath("minPrice").description("Title of the book"),
-			fieldWithPath("userType").description("Title of the book"),
-			fieldWithPath("userId").description("Title of the book"),
-			fieldWithPath("reservation").description("Title of the book"),
-			fieldWithPath("userId").description("Title of the book"),
-			fieldWithPath("auctioneer").description("Title of the book"),
-			fieldWithPath("auctionStoreTypes").description("Title of the book"),
-			fieldWithPath("createdDate").description("Title of the book"),
-			fieldWithPath("updatedDate").description("Title of the book")
-		};
 
 		mockMvc.perform(RestDocumentationRequestBuilders.
 			get("/auction/auctions"))
 			.andDo(print())
 			.andExpect(status().isOk())
 
-			.andDo(document("getAuctions",
+			.andDo(document("auctions",
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
 					fieldWithPath("msg").description("메시지"),
-					fieldWithPath("list.[].auctionId").description("Title of the book"),
-					fieldWithPath("list.[].title").description("Title of the book"),
-					fieldWithPath("list.[].content").description("Author of the book"),
-					fieldWithPath("list.[].maxPrice").description("Title of the book"),
-					fieldWithPath("list.[].minPrice").description("Title of the book"),
-					fieldWithPath("list.[].userType").description("Title of the book"),
-					fieldWithPath("list.[].userId").description("Title of the book"),
-					fieldWithPath("list.[].reservation").description("Title of the book"),
-					fieldWithPath("list.[].userId").description("Title of the book"),
-					fieldWithPath("list.[].status").description("Title of the book"),
-					fieldWithPath("list.[].deadline").description("Title of the book"),
-					fieldWithPath("list.[].auctioneers").description("Title of the book"),
-					fieldWithPath("list.[].auctionStoreTypes").description("Title of the book"),
-					fieldWithPath("list.[].createdDate").description("Title of the book"),
-					fieldWithPath("list.[].updatedDate").description("Title of the book")
+					fieldWithPath("list.[].auctionId").description("공고 ID"),
+					fieldWithPath("list.[].title").description("공고 제목"),
+					fieldWithPath("list.[].content").description("공고 내용"),
+					fieldWithPath("list.[].maxPrice").description("공고 최대가"),
+					fieldWithPath("list.[].minPrice").description("공고 최소가"),
+					fieldWithPath("list.[].userType").description("공고 사용자 유형(회식, 가족, 친구)"),
+					fieldWithPath("list.[].userId").description("공고 작성자"),
+					fieldWithPath("list.[].reservation").description("공고 예약 시간"),
+					fieldWithPath("list.[].status").description("공고 상태(진행중, 마감, 실패)"),
+					fieldWithPath("list.[].deadline").description("공고 마감시간"),
+					fieldWithPath("list.[].auctioneers").description("공고 경매 참가업체"),
+					fieldWithPath("list.[].auctionStoreTypes").description("공고 선호 업체"),
+					fieldWithPath("list.[].createdDate").description("공고 생성 일자"),
+					fieldWithPath("list.[].updatedDate").description("공고 수정 일자")
+				)));
+	}
+	@Test
+	void deleteAuction() throws Exception {
+		System.out.println(auction.getAuctionId());
+		mockMvc.perform(RestDocumentationRequestBuilders.
+			delete("/auction/{auctionId}",auction.getAuctionId()))
+			.andDo(print())
+			.andExpect(status().isOk())
+
+			.andDo(document("deleteAuction",
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("data").description("성공/실패")
+
+				)));
+
+	}
+	@Test
+	void auction() throws Exception {
+		System.out.println(auction.getAuctionId());
+		mockMvc.perform(RestDocumentationRequestBuilders.
+			get("/auction/{auctionId}",auction.getAuctionId()))
+			.andDo(print())
+			.andExpect(status().isOk())
+
+			.andDo(document("auction",
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("data.auctionId").description("공고 ID"),
+					fieldWithPath("data.title").description("공고 제목"),
+					fieldWithPath("data.content").description("공고 내용"),
+					fieldWithPath("data.maxPrice").description("공고 최대가"),
+					fieldWithPath("data.minPrice").description("공고 최소가"),
+					fieldWithPath("data.userType").description("공고 사용자 유형(회식, 가족, 친구)"),
+					fieldWithPath("data.userId").description("공고 작성자"),
+					fieldWithPath("data.reservation").description("공고 예약 시간"),
+					fieldWithPath("data.status").description("공고 상태(진행중, 마감, 실패)"),
+					fieldWithPath("data.deadline").description("공고 마감시간"),
+					fieldWithPath("data.auctioneers").description("공고 경매 참가업체"),
+					fieldWithPath("data.auctionStoreTypes").description("공고 선호 업체"),
+					fieldWithPath("data.createdDate").description("공고 생성 일자"),
+					fieldWithPath("data.updatedDate").description("공고 수정 일자")
 				)));
 	}
 
 	@Test
-	void auction() {
+	void registerAuction() throws Exception {
+
+
+		RequestAuction auction1 = RequestAuction.builder()
+			.title("제목1")
+			.content("내용1")
+			.maxPrice(1000)
+			.minPrice(10)
+			.userType("Family")
+			.reservation(new Date())
+			.deadline(new Date())
+			.build();
+
+		String content = objectMapper.writeValueAsString(auction1);
+
+		mockMvc.perform(RestDocumentationRequestBuilders.
+			post("/auction")
+			.content(content)
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON)
+			.header("X-AUTH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDM2ODQ1MSwiZXhwIjoxNjI0NDU0ODUxfQ.SbpFIaWYFyji-izTgGqrzP--bCr-fSw4LhDu0JOoPA8"))
+			.andDo(print())
+			.andExpect(status().isOk())
+
+			.andDo(document("registerAuction",
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("data.auctionId").description("공고 ID"),
+					fieldWithPath("data.title").description("공고 제목"),
+					fieldWithPath("data.content").description("공고 내용"),
+					fieldWithPath("data.maxPrice").description("공고 최대가"),
+					fieldWithPath("data.minPrice").description("공고 최소가"),
+					fieldWithPath("data.userType").description("공고 사용자 유형(회식, 가족, 친구)"),
+					fieldWithPath("data.userId").description("공고 작성자"),
+					fieldWithPath("data.reservation").description("공고 예약 시간"),
+					fieldWithPath("data.status").description("공고 상태(진행중, 마감, 실패)"),
+					fieldWithPath("data.deadline").description("공고 마감시간"),
+					fieldWithPath("data.auctioneers").description("공고 경매 참가업체"),
+					fieldWithPath("data.auctionStoreTypes").description("공고 선호 업체"),
+					fieldWithPath("data.createdDate").description("공고 생성 일자"),
+					fieldWithPath("data.updatedDate").description("공고 수정 일자")
+				)));
 	}
 
 	@Test
-	void registerAuction() {
+	void getAuction() throws Exception {
+		System.out.println(auction.getAuctionId());
+		mockMvc.perform(RestDocumentationRequestBuilders.
+			get("/auction/{userId}/auctions","1"))
+			.andDo(print())
+			.andExpect(status().isOk())
+
+			.andDo(document("getAuction",
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("list.[].auctionId").description("공고 ID"),
+					fieldWithPath("list.[].title").description("공고 제목"),
+					fieldWithPath("list.[].content").description("공고 내용"),
+					fieldWithPath("list.[].maxPrice").description("공고 최대가"),
+					fieldWithPath("list.[].minPrice").description("공고 최소가"),
+					fieldWithPath("list.[].userType").description("공고 사용자 유형(회식, 가족, 친구)"),
+					fieldWithPath("list.[].userId").description("공고 작성자"),
+					fieldWithPath("list.[].reservation").description("공고 예약 시간"),
+					fieldWithPath("list.[].status").description("공고 상태(진행중, 마감, 실패)"),
+					fieldWithPath("list.[].deadline").description("공고 마감시간"),
+					fieldWithPath("list.[].auctioneers").description("공고 경매 참가업체"),
+					fieldWithPath("list.[].auctionStoreTypes").description("공고 선호 업체"),
+					fieldWithPath("list.[].createdDate").description("공고 생성 일자"),
+					fieldWithPath("list.[].updatedDate").description("공고 수정 일자")
+				)));
 	}
 
 	@Test
-	void getAuction() {
+	void modifyAuction() throws Exception {
+		System.out.println(auction.getAuctionId());
+
+		AuctionDto auction1 =modelMapper.map(auction,AuctionDto.class);
+
+		auction1.setContent("수정");
+
+		String content = objectMapper.writeValueAsString(auction1);
+
+		mockMvc.perform(RestDocumentationRequestBuilders.
+			put("/auction/{auctionId}",auction.getAuctionId())
+				.content(content)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+
+			.andDo(document("modifyAuction",
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("data.auctionId").description("공고 ID"),
+					fieldWithPath("data.title").description("공고 제목"),
+					fieldWithPath("data.content").description("공고 내용"),
+					fieldWithPath("data.maxPrice").description("공고 최대가"),
+					fieldWithPath("data.minPrice").description("공고 최소가"),
+					fieldWithPath("data.userType").description("공고 사용자 유형(회식, 가족, 친구)"),
+					fieldWithPath("data.userId").description("공고 작성자"),
+					fieldWithPath("data.reservation").description("공고 예약 시간"),
+					fieldWithPath("data.status").description("공고 상태(진행중, 마감, 실패)"),
+					fieldWithPath("data.deadline").description("공고 마감시간"),
+					fieldWithPath("data.auctioneers").description("공고 경매 참가업체"),
+					fieldWithPath("data.auctionStoreTypes").description("공고 선호 업체"),
+					fieldWithPath("data.createdDate").description("공고 생성 일자"),
+					fieldWithPath("data.updatedDate").description("공고 수정 일자")
+				)));
+
+
 	}
 
-	@Test
-	void modifyAuction() {
-	}
 
-	@Test
-	void deleteAuction() {
-	}
 }

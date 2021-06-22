@@ -73,25 +73,19 @@ public class AuctionController {
 	@ApiOperation(value = "사용자별 공고 조회", notes = "사용자별 공고를 불러온다.")
 	@GetMapping(value = "/{userId}/auctions")
 	public ListResult<Auction> getAuction(
-		@PathVariable("userId") String userId) {
+		@PathVariable("userId") long userId) {
 		return responseService.getListResult(auctionService.getAuctionsByUserId(userId));
 	}
 
 	@ApiOperation(value = "공고 수정", notes = "공고 수정 한다.")
 	@PutMapping(value = "/{auctionId}")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
-	})
 	public SingleResult<Auction> modifyAuction(@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
-		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionDto auctionDto) {
-		return responseService.getSingleResult(auctionService.updateAuction(auctionId, auctionDto));
+		@RequestBody @ApiParam(value = "공고정보", required = true) RequestAuction requestAuction) {
+		return responseService.getSingleResult(auctionService.updateAuction(auctionId, requestAuction));
 	}
 
 	@ApiOperation(value = "공고 삭제", notes = "공고 삭제 한다.")
 	@DeleteMapping(value = "/{auctionId}")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
-	})
 	public CommonResult deleteAuction(@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
 		return responseService.getSingleResult(auctionService.deleteAuction(auctionId));
 	}

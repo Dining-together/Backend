@@ -124,7 +124,6 @@ public class SignControllerTest {
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 
-			//여기 고쳐야함
 			.andDo(document("signup",
 				requestFields(
 					fieldWithPath("email").description("유저 아이디(이메일)"),

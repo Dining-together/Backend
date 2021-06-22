@@ -34,7 +34,7 @@ public class Auctioneer {
 	private Auction auction;
 
 	@ApiModelProperty(notes = "업체 id")
-	private String storeId;
+	private long storeId;
 
 	@ApiModelProperty(notes = "업체 메뉴")
 	private String menu;

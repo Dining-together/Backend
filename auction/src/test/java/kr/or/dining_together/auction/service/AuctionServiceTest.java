@@ -44,7 +44,7 @@ class AuctionServiceTest {
 	void setUp() {
 
 		userIdDto = UserIdDto.builder()
-			.id("1")
+			.id(1L)
 			.name("moon")
 			.build();
 
@@ -54,7 +54,7 @@ class AuctionServiceTest {
 			.maxPrice(1000)
 			.minPrice(10)
 			.userType("Family")
-			.userId("1")
+			.userId(1L)
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
@@ -81,7 +81,7 @@ class AuctionServiceTest {
 
 	@Test
 	void getAuctionsByUserId() {
-		String userId = "1";
+		long userId = 1L;
 		List<Auction> auctions = auctionService.getAuctionsByUserId(userId);
 
 		assertEquals(auctions.get(0).getUserId(), userId);
@@ -119,9 +119,9 @@ class AuctionServiceTest {
 			.deadline(new Date())
 			.build();
 
-		AuctionDto auctionDto = modelMapper.map(modifyAuction, AuctionDto.class);
+		RequestAuction requestAuction = modelMapper.map(modifyAuction, RequestAuction.class);
 
-		Auction auction1 = auctionService.updateAuction(auction.getAuctionId(), auctionDto);
+		Auction auction1 = auctionService.updateAuction(auction.getAuctionId(), requestAuction);
 
 		assertEquals(auction1.getTitle(), "제목1");
 

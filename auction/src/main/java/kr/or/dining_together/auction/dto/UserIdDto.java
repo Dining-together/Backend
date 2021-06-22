@@ -19,7 +19,7 @@ import lombok.Setter;
 public class UserIdDto {
 
 	@ApiModelProperty(value = "아이디")
-	private String id;
+	private long id;
 
 	@ApiModelProperty(value = "이름")
 	private String name;

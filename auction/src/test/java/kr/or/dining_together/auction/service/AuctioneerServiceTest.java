@@ -47,7 +47,7 @@ class AuctioneerServiceTest {
 	@BeforeEach
 	void setUp() {
 		userIdDto = UserIdDto.builder()
-			.id("1")
+			.id(1L)
 			.name("moon")
 			.build();
 
@@ -57,7 +57,7 @@ class AuctioneerServiceTest {
 			.deadline(new Date())
 			.maxPrice(10)
 			.minPrice(0)
-			.userId("1")
+			.userId(1L)
 			.userType("회식")
 			.reservation(new Date())
 			.build();
@@ -69,7 +69,7 @@ class AuctioneerServiceTest {
 			.auction(auction)
 			.price(10000)
 			.menu("메뉴")
-			.storeId("1")
+			.storeId(1L)
 			.build();
 
 		auctioneer = auctioneerRepository.save(auctioneer1);
@@ -77,7 +77,7 @@ class AuctioneerServiceTest {
 
 	@Test
 	void getAuctioneer() {
-		List<Auctioneer> auctioneers = auctioneerService.getAuctioneer(auction.getAuctionId());
+		List<Auctioneer> auctioneers = auctioneerService.getAuctioneers(auction.getAuctionId());
 		assertFalse(auctioneers.isEmpty());
 	}
 

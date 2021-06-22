@@ -32,7 +32,7 @@ public class AuctioneerService {
 	private final AuctioneerRepository auctioneerRepository;
 	private final AuctionRepository auctionRepository;
 
-	public List<Auctioneer> getAuctioneer(long auctionId) {
+	public List<Auctioneer> getAuctioneers(long auctionId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 		return auctioneerRepository.findAuctioneersByAuction(auction);
 	}
@@ -54,6 +54,7 @@ public class AuctioneerService {
 	}
 
 	public Auctioneer modifyAuctioneer(AuctioneerRequest auctioneerRequest, long auctioneerId) {
+
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
 
 		auctioneer.update(auctioneerRequest.getContent(), auctioneer.getMenu(), auctioneerRequest.getPrice());
