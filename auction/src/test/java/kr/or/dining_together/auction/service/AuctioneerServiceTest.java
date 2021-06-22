@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import kr.or.dining_together.auction.dto.AuctioneerDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.Auctioneer;
@@ -89,7 +90,7 @@ class AuctioneerServiceTest {
 			.price(10)
 			.build();
 
-		Auctioneer auctioneer = auctioneerService.registerAuctioneer(auctioneerRequest, userIdDto,
+		AuctioneerDto auctioneer = auctioneerService.registerAuctioneer(auctioneerRequest, userIdDto,
 			auction.getAuctionId());
 
 		assertEquals(auctioneer.getContent(), "content");
@@ -104,7 +105,7 @@ class AuctioneerServiceTest {
 			.price(101)
 			.build();
 
-		Auctioneer auctioneer1 = auctioneerService.modifyAuctioneer(auctioneerRequest, auctioneer.getAuctioneerId());
+		AuctioneerDto auctioneer1 = auctioneerService.modifyAuctioneer(auctioneerRequest, auctioneer.getAuctioneerId());
 
 		assertEquals(auctioneer1.getContent(), "content1");
 

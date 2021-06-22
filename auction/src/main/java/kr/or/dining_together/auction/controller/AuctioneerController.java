@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.dto.AuctioneerDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auctioneer;
 import kr.or.dining_together.auction.model.CommonResult;
@@ -45,7 +46,7 @@ public class AuctioneerController {
 	private final UserServiceClient userServiceClient;
 
 	@ApiOperation(value = "참여 업체 리스트 조회", notes = "공고에 참여힌 업체 리스트 조회한다.")
-	@GetMapping(value = "/{auctionId}/store")
+	@GetMapping(value = "/{auctionId}/auctioneers")
 	public ListResult<Auctioneer> auctioneers(
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId
 	) {
@@ -53,11 +54,11 @@ public class AuctioneerController {
 	}
 
 	@ApiOperation(value = "경매에 업체 참여", notes = "경매에 업체가 참여한다.")
-	@PostMapping("/{auctionId}/store")
+	@PostMapping("/{auctionId}/auctioneer")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public SingleResult<Auctioneer> registerAuctioneer(
+	public SingleResult<AuctioneerDto> registerAuctioneer(
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "경매 참여 등록 정보", required = true) AuctioneerRequest auctioneerRequest) {
@@ -68,18 +69,18 @@ public class AuctioneerController {
 	}
 
 	@ApiOperation(value = "참여 업체 수정", notes = "공고에 참여한 업체를 수정 한다.")
-	@PutMapping(value = "/auction/{auctioneerId}")
+	@PutMapping(value = "/auctioneer/{auctioneerId}")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public SingleResult<Auctioneer> modifyAuction(
+	public SingleResult<AuctioneerDto> modifyAuction(
 		@ApiParam(value = "업체id", required = true) @PathVariable long auctioneerId,
 		@RequestBody @ApiParam(value = "경매 참여 등록 정보", required = true) AuctioneerRequest auctioneerRequest) {
 		return responseService.getSingleResult(auctioneerService.modifyAuctioneer(auctioneerRequest, auctioneerId));
 	}
 
 	@ApiOperation(value = "참여 업체 삭제", notes = "공고에 참여한 업체를 삭제 한다.")
-	@DeleteMapping(value = "/auction/{auctioneerId}")
+	@DeleteMapping(value = "/auctioneer/{auctioneerId}")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})

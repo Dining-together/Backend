@@ -4,9 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.auction.dto.AuctioneerDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.Auctioneer;
@@ -34,10 +37,10 @@ public class AuctioneerService {
 
 	public List<Auctioneer> getAuctioneers(long auctionId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
-		return auctioneerRepository.findAuctioneersByAuction(auction);
+		return auction.getAuctioneers();
 	}
 
-	public Auctioneer registerAuctioneer(AuctioneerRequest auctioneerRequest, UserIdDto userIdDto, long auctionId) {
+	public AuctioneerDto registerAuctioneer(AuctioneerRequest auctioneerRequest, UserIdDto userIdDto, long auctionId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 
 		Auctioneer auctioneer = Auctioneer.builder()
@@ -50,18 +53,19 @@ public class AuctioneerService {
 
 		auctioneerRepository.save(auctioneer);
 
-		return auctioneer;
+		return new ModelMapper().map(auctioneer,AuctioneerDto.class);
 	}
 
-	public Auctioneer modifyAuctioneer(AuctioneerRequest auctioneerRequest, long auctioneerId) {
+	public AuctioneerDto modifyAuctioneer(AuctioneerRequest auctioneerRequest, long auctioneerId) {
 
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
 
 		auctioneer.update(auctioneerRequest.getContent(), auctioneer.getMenu(), auctioneerRequest.getPrice());
-		return auctioneer;
+		return new ModelMapper().map(auctioneer,AuctioneerDto.class);
 	}
 
 	public boolean deleteAuctioneer(long auctioneerId) {
+
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
 
 		auctioneerRepository.delete(auctioneer);
