@@ -6,7 +6,6 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.dto.AuctioneerDto;
@@ -53,7 +52,7 @@ public class AuctioneerService {
 
 		auctioneerRepository.save(auctioneer);
 
-		return new ModelMapper().map(auctioneer,AuctioneerDto.class);
+		return new ModelMapper().map(auctioneer, AuctioneerDto.class);
 	}
 
 	public AuctioneerDto modifyAuctioneer(AuctioneerRequest auctioneerRequest, long auctioneerId) {
@@ -61,7 +60,7 @@ public class AuctioneerService {
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
 
 		auctioneer.update(auctioneerRequest.getContent(), auctioneer.getMenu(), auctioneerRequest.getPrice());
-		return new ModelMapper().map(auctioneer,AuctioneerDto.class);
+		return new ModelMapper().map(auctioneer, AuctioneerDto.class);
 	}
 
 	public boolean deleteAuctioneer(long auctioneerId) {

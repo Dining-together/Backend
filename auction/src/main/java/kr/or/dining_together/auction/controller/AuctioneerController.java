@@ -85,7 +85,7 @@ public class AuctioneerController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	public CommonResult deleteAuction(
-		@ApiParam(value = "공고 참여 업체 id", required = true) @PathVariable long auctioneerId){
+		@ApiParam(value = "공고 참여 업체 id", required = true) @PathVariable long auctioneerId) {
 		return responseService.getSingleResult(auctioneerService.deleteAuctioneer(auctioneerId));
 	}
 

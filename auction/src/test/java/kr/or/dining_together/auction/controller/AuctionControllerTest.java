@@ -1,7 +1,6 @@
 package kr.or.dining_together.auction.controller;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,7 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,13 +29,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
-import kr.or.dining_together.auction.dto.UserType;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.service.AuctionService;
-import kr.or.dining_together.auction.vo.LoginRequest;
 import kr.or.dining_together.auction.vo.RequestAuction;
-import kr.or.dining_together.auction.vo.SignUpRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,15 +49,14 @@ class AuctionControllerTest {
 	UserServiceClient userServiceClient;
 	@Autowired
 	ModelMapper modelMapper;
-	@Autowired
-	private ObjectMapper objectMapper;
 	UserIdDto userIdDto;
-	@Autowired
-	private MockMvc mockMvc;
 	Auction auction;
-
 	ResponseEntity<String> token;
 	long auctionId;
+	@Autowired
+	private ObjectMapper objectMapper;
+	@Autowired
+	private MockMvc mockMvc;
 
 	@BeforeEach
 	void setUp() {
@@ -82,7 +76,6 @@ class AuctionControllerTest {
 		//
 		// token=userServiceClient.login(loginRequest);
 
-
 		userIdDto = UserIdDto.builder()
 			.id(1L)
 			.name("moon")
@@ -100,8 +93,8 @@ class AuctionControllerTest {
 			.deadline(new Date())
 			.build();
 
-		auction=auctionRepository.save(auction1);
-		auctionId=auction.getAuctionId();
+		auction = auctionRepository.save(auction1);
+		auctionId = auction.getAuctionId();
 	}
 
 	@AfterEach
@@ -138,11 +131,12 @@ class AuctionControllerTest {
 					fieldWithPath("list.[].updatedDate").description("공고 수정 일자")
 				)));
 	}
+
 	@Test
 	void deleteAuction() throws Exception {
 		System.out.println(auction.getAuctionId());
 		mockMvc.perform(RestDocumentationRequestBuilders.
-			delete("/auction/{auctionId}",auction.getAuctionId()))
+			delete("/auction/{auctionId}", auction.getAuctionId()))
 			.andDo(print())
 			.andExpect(status().isOk())
 
@@ -156,11 +150,12 @@ class AuctionControllerTest {
 				)));
 
 	}
+
 	@Test
 	void auction() throws Exception {
 		System.out.println(auction.getAuctionId());
 		mockMvc.perform(RestDocumentationRequestBuilders.
-			get("/auction/{auctionId}",auction.getAuctionId()))
+			get("/auction/{auctionId}", auction.getAuctionId()))
 			.andDo(print())
 			.andExpect(status().isOk())
 
@@ -189,7 +184,6 @@ class AuctionControllerTest {
 	@Test
 	void registerAuction() throws Exception {
 
-
 		RequestAuction auction1 = RequestAuction.builder()
 			.title("제목1")
 			.content("내용1")
@@ -207,7 +201,8 @@ class AuctionControllerTest {
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
-			.header("X-AUTH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDM2ODQ1MSwiZXhwIjoxNjI0NDU0ODUxfQ.SbpFIaWYFyji-izTgGqrzP--bCr-fSw4LhDu0JOoPA8"))
+			.header("X-AUTH-TOKEN",
+				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDM2ODQ1MSwiZXhwIjoxNjI0NDU0ODUxfQ.SbpFIaWYFyji-izTgGqrzP--bCr-fSw4LhDu0JOoPA8"))
 			.andDo(print())
 			.andExpect(status().isOk())
 
@@ -237,7 +232,7 @@ class AuctionControllerTest {
 	void getAuction() throws Exception {
 		System.out.println(auction.getAuctionId());
 		mockMvc.perform(RestDocumentationRequestBuilders.
-			get("/auction/{userId}/auctions","1"))
+			get("/auction/{userId}/auctions", "1"))
 			.andDo(print())
 			.andExpect(status().isOk())
 
@@ -267,17 +262,17 @@ class AuctionControllerTest {
 	void modifyAuction() throws Exception {
 		System.out.println(auction.getAuctionId());
 
-		AuctionDto auction1 =modelMapper.map(auction,AuctionDto.class);
+		AuctionDto auction1 = modelMapper.map(auction, AuctionDto.class);
 
 		auction1.setContent("수정");
 
 		String content = objectMapper.writeValueAsString(auction1);
 
 		mockMvc.perform(RestDocumentationRequestBuilders.
-			put("/auction/{auctionId}",auction.getAuctionId())
-				.content(content)
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
+			put("/auction/{auctionId}", auction.getAuctionId())
+			.content(content)
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
 			.andDo(print())
 			.andExpect(status().isOk())
 
@@ -302,8 +297,6 @@ class AuctionControllerTest {
 					fieldWithPath("data.updatedDate").description("공고 수정 일자")
 				)));
 
-
 	}
-
 
 }

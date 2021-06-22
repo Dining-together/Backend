@@ -134,6 +134,13 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin><!--Compile the life cycle of skipping test file inspection-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.github.berkleytechnologyservices.restdocs-spec</groupId>
                 <artifactId>restdocs-spec-maven-plugin</artifactId>

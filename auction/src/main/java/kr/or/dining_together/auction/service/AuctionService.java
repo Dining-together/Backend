@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
-import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
@@ -59,7 +58,8 @@ public class AuctionService {
 	public Auction updateAuction(long auctionId, RequestAuction requestAuction) {
 		Auction auction = getAuction(auctionId);
 		auction.setUpdate(requestAuction.getTitle(), requestAuction.getContent(), requestAuction.getMinPrice(),
-			requestAuction.getUserType(), requestAuction.getMaxPrice(), requestAuction.getReservation(), requestAuction.getDeadline());
+			requestAuction.getUserType(), requestAuction.getMaxPrice(), requestAuction.getReservation(),
+			requestAuction.getDeadline());
 		return auction;
 	}
 

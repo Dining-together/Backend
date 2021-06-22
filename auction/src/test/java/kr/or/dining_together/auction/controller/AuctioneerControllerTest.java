@@ -1,12 +1,5 @@
 package kr.or.dining_together.auction.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -30,7 +23,6 @@ import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.Auctioneer;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.jpa.repo.AuctioneerRepository;
-import kr.or.dining_together.auction.service.AuctionService;
 import kr.or.dining_together.auction.service.AuctioneerService;
 
 @RunWith(SpringRunner.class)
@@ -50,14 +42,14 @@ class AuctioneerControllerTest {
 	UserServiceClient userServiceClient;
 	@Autowired
 	ModelMapper modelMapper;
+	UserIdDto userIdDto;
+	Auction auction;
+	Auctioneer auctioneer;
 	@Autowired
 	private ObjectMapper objectMapper;
-	UserIdDto userIdDto;
 	@Autowired
 	private MockMvc mockMvc;
 
-	Auction auction;
-	Auctioneer auctioneer;
 	@BeforeEach
 	void setUp() {
 		userIdDto = UserIdDto.builder()
@@ -77,9 +69,9 @@ class AuctioneerControllerTest {
 			.deadline(new Date())
 			.build();
 
-		auction=auctionRepository.save(auction1);
+		auction = auctionRepository.save(auction1);
 
-		Auctioneer auctioneer1=Auctioneer.builder()
+		Auctioneer auctioneer1 = Auctioneer.builder()
 			.menu("menu")
 			.auction(auction)
 			.content("content")
@@ -87,7 +79,7 @@ class AuctioneerControllerTest {
 			.storeId(1L)
 			.build();
 
-		auctioneer=auctioneerRepository.save(auctioneer1);
+		auctioneer = auctioneerRepository.save(auctioneer1);
 	}
 
 	@Test
