@@ -1,34 +1,40 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "member",
-    "description": "Demo project for Spring Boot",
-    "version": "0.0.1-SNAPSHOT"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "member",
+    "description" : "Demo project for Spring Boot",
+    "version" : "0.0.1-SNAPSHOT"
   },
-  "servers": [
-    {
-      "url": "http://localhost"
-    }
-  ],
-  "tags": [],
-  "paths": {
-    "/member/customer": {
-      "get": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "getCustomer",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-customer-48225865"
+  "servers" : [ {
+    "url" : "http://localhost"
+  } ],
+  "tags" : [ ],
+  "paths" : {
+    "/member/customer" : {
+      "get" : {
+        "tags" : [ "member" ],
+        "operationId" : "getCustomer",
+        "parameters" : [ {
+          "name" : "X-AUTH-TOKEN",
+          "in" : "header",
+          "description" : "토큰값",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0NDI3Nzk1LCJleHAiOjE2MjQ1MTQxOTV9.KAYFpOEGHoQThJ_S2NojihUcY1On1JCo3SsQDiey0dc"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-customer-48225865"
                 },
-                "examples": {
-                  "getCustomer": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-21T05:42:18.690+00:00\",\"updatedDate\":\"2021-06-21T05:42:18.690+00:00\",\"id\":1,\"email\":\"jifrozen@naver.com\",\"name\":\"문지언\",\"joinDate\":\"2021-06-21T05:42:18.690+00:00\",\"provider\":null,\"roles\":[\"ROLE_USER\"],\"age\":0,\"gender\":null,\"authorities\":[{\"authority\":\"ROLE_USER\"}]}}"
+                "examples" : {
+                  "getCustomer" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-23T05:56:35.601+00:00\",\"updatedDate\":\"2021-06-23T05:56:35.601+00:00\",\"id\":1,\"email\":\"jifrozen@naver.com\",\"name\":\"문지언\",\"joinDate\":\"2021-06-23T05:56:35.601+00:00\",\"provider\":null,\"roles\":[\"ROLE_USER\"],\"age\":0,\"gender\":null,\"authorities\":[{\"authority\":\"ROLE_USER\"}]}}"
                   }
                 }
               }
@@ -36,36 +42,44 @@
           }
         }
       },
-      "put": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "modifyCustomer",
-        "requestBody": {
-          "content": {
-            "application/json;charset=UTF-8": {
-              "schema": {
-                "$ref": "#/components/schemas/member-customer-885429557"
+      "put" : {
+        "tags" : [ "member" ],
+        "operationId" : "modifyCustomer",
+        "parameters" : [ {
+          "name" : "X-AUTH-TOKEN",
+          "in" : "header",
+          "description" : "토큰값",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0NDI3Nzk3LCJleHAiOjE2MjQ1MTQxOTd9.ix2vrI7omdLe_NHcPGq0Td57DETFOjg7NgIIbUbYDM4"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/member-customer-885429557"
               },
-              "examples": {
-                "modifyCustomer": {
-                  "value": "{\"password\":\"test1111\",\"name\":\"test11\",\"age\":1,\"gender\":\"male\"}"
+              "examples" : {
+                "modifyCustomer" : {
+                  "value" : "{\"password\":\"test1111\",\"name\":\"test11\",\"age\":1,\"gender\":\"male\"}"
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-customer-1499051551"
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-customer-1499051551"
                 },
-                "examples": {
-                  "modifyCustomer": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"email\":\"jifrozen@naver.com\",\"password\":null,\"name\":\"test11\",\"age\":1,\"gender\":\"male\"}}"
+                "examples" : {
+                  "modifyCustomer" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"email\":\"jifrozen@naver.com\",\"password\":null,\"name\":\"test11\",\"age\":1,\"gender\":\"male\"}}"
                   }
                 }
               }
@@ -74,23 +88,31 @@
         }
       }
     },
-    "/member/store": {
-      "get": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "getStore",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-store-297999565"
+    "/member/store" : {
+      "get" : {
+        "tags" : [ "member" ],
+        "operationId" : "getStore",
+        "parameters" : [ {
+          "name" : "X-AUTH-TOKEN",
+          "in" : "header",
+          "description" : "토큰값",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbjFAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyNzc5OCwiZXhwIjoxNjI0NTE0MTk4fQ.mmfVnSv4WXZofXAvvoJ4EGibcJ9xED_LlrhmaRCGOps"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-store-297999565"
                 },
-                "examples": {
-                  "getStore": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-21T05:42:21.544+00:00\",\"updatedDate\":\"2021-06-21T05:42:21.546+00:00\",\"id\":12,\"email\":\"jifrozen1@naver.com\",\"name\":\"문지언\",\"joinDate\":\"2021-06-21T05:42:21.544+00:00\",\"provider\":null,\"roles\":[\"ROLE_USER\"],\"documentChecked\":null,\"menus\":null,\"authorities\":[{\"authority\":\"ROLE_USER\"}]}}"
+                "examples" : {
+                  "getStore" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-23T05:56:38.428+00:00\",\"updatedDate\":\"2021-06-23T05:56:38.431+00:00\",\"id\":12,\"email\":\"jifrozen1@naver.com\",\"name\":\"문지언\",\"joinDate\":\"2021-06-23T05:56:38.428+00:00\",\"provider\":null,\"roles\":[\"ROLE_USER\"],\"documentChecked\":null,\"menus\":null,\"authorities\":[{\"authority\":\"ROLE_USER\"}]}}"
                   }
                 }
               }
@@ -98,36 +120,44 @@
           }
         }
       },
-      "put": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "modifyStore",
-        "requestBody": {
-          "content": {
-            "application/json;charset=UTF-8": {
-              "schema": {
-                "$ref": "#/components/schemas/member-store-1038572502"
+      "put" : {
+        "tags" : [ "member" ],
+        "operationId" : "modifyStore",
+        "parameters" : [ {
+          "name" : "X-AUTH-TOKEN",
+          "in" : "header",
+          "description" : "토큰값",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0NDI3Nzk3LCJleHAiOjE2MjQ1MTQxOTd9.ix2vrI7omdLe_NHcPGq0Td57DETFOjg7NgIIbUbYDM4"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/member-store-1038572502"
               },
-              "examples": {
-                "modifyStore": {
-                  "value": "{\"password\":\"test1111\",\"name\":\"test11\"}"
+              "examples" : {
+                "modifyStore" : {
+                  "value" : "{\"password\":\"test1111\",\"name\":\"test11\"}"
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-store2134880610"
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-store2134880610"
                 },
-                "examples": {
-                  "modifyStore": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"email\":\"jifrozen@naver.com\",\"password\":null,\"name\":\"test11\"}}"
+                "examples" : {
+                  "modifyStore" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"email\":\"jifrozen@naver.com\",\"password\":null,\"name\":\"test11\"}}"
                   }
                 }
               }
@@ -136,23 +166,31 @@
         }
       }
     },
-    "/member/user": {
-      "delete": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "delete",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-auth-signup1010847454"
+    "/member/user" : {
+      "delete" : {
+        "tags" : [ "member" ],
+        "operationId" : "delete",
+        "parameters" : [ {
+          "name" : "X-AUTH-TOKEN",
+          "in" : "header",
+          "description" : "토큰값",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0NDI3Nzk2LCJleHAiOjE2MjQ1MTQxOTZ9.uuUEX7xVswuGJmqGKaTmWU-y58GrBbhLIGPTz60xYa0"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-auth-signup1010847454"
                 },
-                "examples": {
-                  "delete": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\"}"
+                "examples" : {
+                  "delete" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\"}"
                   }
                 }
               }
@@ -161,23 +199,21 @@
         }
       }
     },
-    "/member/userId": {
-      "get": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "getUserId",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-userId-1032691858"
+    "/member/userId" : {
+      "get" : {
+        "tags" : [ "member" ],
+        "operationId" : "getUserId",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-userId-1032691858"
                 },
-                "examples": {
-                  "getUserId": {
-                    "value": "{\"id\":8,\"name\":\"문지언\"}"
+                "examples" : {
+                  "getUserId" : {
+                    "value" : "{\"id\":8,\"name\":\"문지언\"}"
                   }
                 }
               }
@@ -186,37 +222,35 @@
         }
       }
     },
-    "/member/auth/signin": {
-      "post": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "login",
-        "requestBody": {
-          "content": {
-            "application/json;charset=UTF-8": {
-              "schema": {
-                "$ref": "#/components/schemas/member-auth-signin278934565"
+    "/member/auth/signin" : {
+      "post" : {
+        "tags" : [ "member" ],
+        "operationId" : "login",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/member-auth-signin278934565"
               },
-              "examples": {
-                "login": {
-                  "value": "{\"email\":\"jifrozen@naver.com\",\"password\":\"test1111\"}"
+              "examples" : {
+                "login" : {
+                  "value" : "{\"email\":\"jifrozen@naver.com\",\"password\":\"test1111\"}"
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-auth-signin-1190539043"
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-auth-signin-1190539043"
                 },
-                "examples": {
-                  "login": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":\"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0MjU0MTYyLCJleHAiOjE2MjQzNDA1NjJ9.2j2omlWe6F60BXATrmw2qOoTBH-Ffou0vzu_gaCzXC4\"}"
+                "examples" : {
+                  "login" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":\"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0MzU2MzkzLCJleHAiOjE2MjQ0NDI3OTN9.C6Lu9EykUGKJpTiJ9vndNyDYThvWOVJuoSf_S9JGgpw\"}"
                   }
                 }
               }
@@ -225,37 +259,35 @@
         }
       }
     },
-    "/member/auth/signup": {
-      "post": {
-        "tags": [
-          "member"
-        ],
-        "operationId": "signup",
-        "requestBody": {
-          "content": {
-            "application/json;charset=UTF-8": {
-              "schema": {
-                "$ref": "#/components/schemas/member-auth-signup1306409953"
+    "/member/auth/signup" : {
+      "post" : {
+        "tags" : [ "member" ],
+        "operationId" : "signup",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/member-auth-signup1306409953"
               },
-              "examples": {
-                "signup": {
-                  "value": "{\"email\":\"jifrozen1@naver.com\",\"name\":\"문지언1\",\"password\":\"test2222\",\"userType\":\"CUSTOMER\",\"age\":23,\"gender\":\"FEMALE\"}"
+              "examples" : {
+                "signup" : {
+                  "value" : "{\"email\":\"jifrozen1@naver.com\",\"name\":\"문지언1\",\"password\":\"test2222\",\"userType\":\"CUSTOMER\",\"age\":23,\"gender\":\"FEMALE\"}"
                 }
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/member-auth-signup1010847454"
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/member-auth-signup1010847454"
                 },
-                "examples": {
-                  "signup": {
-                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\"}"
+                "examples" : {
+                  "signup" : {
+                    "value" : "{\"success\":true,\"code\":0,\"msg\":\"성공\"}"
                   }
                 }
               }
@@ -265,360 +297,350 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "member-customer-885429557": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string",
-            "description": "유저 비밀번호"
+  "components" : {
+    "schemas" : {
+      "member-store-1038572502" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "유저 비밀번호"
           },
-          "gender": {
-            "type": "string",
-            "description": "사용자 성별"
-          },
-          "name": {
-            "type": "string",
-            "description": "사용자 이름"
-          },
-          "age": {
-            "type": "number",
-            "description": "사용자 나이"
+          "name" : {
+            "type" : "string",
+            "description" : "사용자 이름"
           }
         }
       },
-      "member-store-1038572502": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string",
-            "description": "유저 비밀번호"
+      "member-customer-885429557" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "유저 비밀번호"
           },
-          "name": {
-            "type": "string",
-            "description": "사용자 이름"
+          "gender" : {
+            "type" : "string",
+            "description" : "사용자 성별"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "사용자 이름"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "사용자 나이"
           }
         }
       },
-      "member-auth-signin-1190539043": {
-        "type": "object",
-        "properties": {
-          "msg": {
-            "type": "string",
-            "description": "메시지"
+      "member-auth-signin-1190539043" : {
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "description" : "메시지"
           },
-          "code": {
-            "type": "number",
-            "description": "코드번호"
+          "code" : {
+            "type" : "number",
+            "description" : "코드번호"
           },
-          "data": {
-            "type": "string",
-            "description": "토큰값"
+          "data" : {
+            "type" : "string",
+            "description" : "토큰값"
           },
-          "success": {
-            "type": "boolean",
-            "description": "성공여부"
+          "success" : {
+            "type" : "boolean",
+            "description" : "성공여부"
           }
         }
       },
-      "member-auth-signin278934565": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string",
-            "description": "유저 비밀번호"
+      "member-auth-signin278934565" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "유저 비밀번호"
           },
-          "email": {
-            "type": "string",
-            "description": "유저 아이디(이메일)"
+          "email" : {
+            "type" : "string",
+            "description" : "유저 아이디(이메일)"
           }
         }
       },
-      "member-customer-1499051551": {
-        "type": "object",
-        "properties": {
-          "msg": {
-            "type": "string",
-            "description": "메시지"
+      "member-customer-48225865" : {
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "description" : "메시지"
           },
-          "code": {
-            "type": "number",
-            "description": "코드번호"
+          "code" : {
+            "type" : "number",
+            "description" : "코드번호"
           },
-          "data": {
-            "type": "object",
-            "properties": {
-              "gender": {
-                "type": "string",
-                "description": "사용자 성별"
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "joinDate" : {
+                "type" : "string",
+                "description" : "사용자 가입일자"
               },
-              "name": {
-                "type": "string",
-                "description": "사용자 이름"
+              "createdDate" : {
+                "type" : "string",
+                "description" : "생성일자"
               },
-              "age": {
-                "type": "number",
-                "description": "사용자 나이"
-              },
-              "email": {
-                "type": "string",
-                "description": "사용자 이메일(아이디)"
-              }
-            }
-          },
-          "success": {
-            "type": "boolean",
-            "description": "성공여부"
-          }
-        }
-      },
-      "member-customer-48225865": {
-        "type": "object",
-        "properties": {
-          "msg": {
-            "type": "string",
-            "description": "메시지"
-          },
-          "code": {
-            "type": "number",
-            "description": "코드번호"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "joinDate": {
-                "type": "string",
-                "description": "사용자 가입일자"
-              },
-              "createdDate": {
-                "type": "string",
-                "description": "생성일자"
-              },
-              "roles": {
-                "type": "array",
-                "description": "사용자 타입",
-                "items": {
-                  "oneOf": [
-                    {
-                      "type": "object"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    }
-                  ]
+              "roles" : {
+                "type" : "array",
+                "description" : "사용자 타입",
+                "items" : {
+                  "oneOf" : [ {
+                    "type" : "object"
+                  }, {
+                    "type" : "boolean"
+                  }, {
+                    "type" : "string"
+                  }, {
+                    "type" : "number"
+                  } ]
                 }
               },
-              "name": {
-                "type": "string",
-                "description": "사용자 이름"
+              "name" : {
+                "type" : "string",
+                "description" : "사용자 이름"
               },
-              "id": {
-                "type": "number",
-                "description": "사용자 id"
+              "id" : {
+                "type" : "number",
+                "description" : "사용자 id"
               },
-              "updatedDate": {
-                "type": "string",
-                "description": "수정일자"
+              "updatedDate" : {
+                "type" : "string",
+                "description" : "수정일자"
               },
-              "authorities": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "authority": {
-                      "type": "string",
-                      "description": "사용자 권한"
+              "authorities" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "authority" : {
+                      "type" : "string",
+                      "description" : "사용자 권한"
                     }
                   }
                 }
               },
-              "age": {
-                "type": "number",
-                "description": "사용자 나이"
+              "age" : {
+                "type" : "number",
+                "description" : "사용자 나이"
               },
-              "email": {
-                "type": "string",
-                "description": "사용자 이메일(아이디)"
+              "email" : {
+                "type" : "string",
+                "description" : "사용자 이메일(아이디)"
               }
             }
           },
-          "success": {
-            "type": "boolean",
-            "description": "성공여부"
+          "success" : {
+            "type" : "boolean",
+            "description" : "성공여부"
           }
         }
       },
-      "member-userId-1032691858": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "사용자 이름"
+      "member-customer-1499051551" : {
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "description" : "메시지"
           },
-          "id": {
-            "type": "number",
-            "description": "사용자 id"
-          }
-        }
-      },
-      "member-store2134880610": {
-        "type": "object",
-        "properties": {
-          "msg": {
-            "type": "string",
-            "description": "메시지"
+          "code" : {
+            "type" : "number",
+            "description" : "코드번호"
           },
-          "code": {
-            "type": "number",
-            "description": "코드번호"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "사용자 이름"
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "gender" : {
+                "type" : "string",
+                "description" : "사용자 성별"
               },
-              "email": {
-                "type": "string",
-                "description": "사용자 이메일(아이디)"
+              "name" : {
+                "type" : "string",
+                "description" : "사용자 이름"
+              },
+              "age" : {
+                "type" : "number",
+                "description" : "사용자 나이"
+              },
+              "email" : {
+                "type" : "string",
+                "description" : "사용자 이메일(아이디)"
               }
             }
           },
-          "success": {
-            "type": "boolean",
-            "description": "성공여부"
+          "success" : {
+            "type" : "boolean",
+            "description" : "성공여부"
           }
         }
       },
-      "member-auth-signup1010847454": {
-        "type": "object",
-        "properties": {
-          "msg": {
-            "type": "string",
-            "description": "메시지"
+      "member-userId-1032691858" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "description" : "사용자 이름"
           },
-          "code": {
-            "type": "number",
-            "description": "코드번호"
-          },
-          "success": {
-            "type": "boolean",
-            "description": "성공여부"
+          "id" : {
+            "type" : "number",
+            "description" : "사용자 id"
           }
         }
       },
-      "member-auth-signup1306409953": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string",
-            "description": "유저 비밀번호"
+      "member-store2134880610" : {
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "description" : "메시지"
           },
-          "gender": {
-            "type": "string",
-            "description": "성별"
+          "code" : {
+            "type" : "number",
+            "description" : "코드번호"
           },
-          "name": {
-            "type": "string",
-            "description": "유저 이름"
-          },
-          "userType": {
-            "type": "string",
-            "description": "유저 타입"
-          },
-          "age": {
-            "type": "number",
-            "description": "나이"
-          },
-          "email": {
-            "type": "string",
-            "description": "유저 아이디(이메일)"
-          }
-        }
-      },
-      "member-store-297999565": {
-        "type": "object",
-        "properties": {
-          "msg": {
-            "type": "string",
-            "description": "메시지"
-          },
-          "code": {
-            "type": "number",
-            "description": "코드번호"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "joinDate": {
-                "type": "string",
-                "description": "사용자 가입일자"
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "name" : {
+                "type" : "string",
+                "description" : "사용자 이름"
               },
-              "createdDate": {
-                "type": "string",
-                "description": "생성일자"
+              "email" : {
+                "type" : "string",
+                "description" : "사용자 이메일(아이디)"
+              }
+            }
+          },
+          "success" : {
+            "type" : "boolean",
+            "description" : "성공여부"
+          }
+        }
+      },
+      "member-auth-signup1010847454" : {
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "description" : "메시지"
+          },
+          "code" : {
+            "type" : "number",
+            "description" : "코드번호"
+          },
+          "success" : {
+            "type" : "boolean",
+            "description" : "성공여부"
+          }
+        }
+      },
+      "member-auth-signup1306409953" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "유저 비밀번호"
+          },
+          "gender" : {
+            "type" : "string",
+            "description" : "성별"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "유저 이름"
+          },
+          "userType" : {
+            "type" : "string",
+            "description" : "유저 타입"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "나이"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "유저 아이디(이메일)"
+          }
+        }
+      },
+      "member-store-297999565" : {
+        "type" : "object",
+        "properties" : {
+          "msg" : {
+            "type" : "string",
+            "description" : "메시지"
+          },
+          "code" : {
+            "type" : "number",
+            "description" : "코드번호"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "joinDate" : {
+                "type" : "string",
+                "description" : "사용자 가입일자"
               },
-              "roles": {
-                "type": "array",
-                "description": "사용자 타입",
-                "items": {
-                  "oneOf": [
-                    {
-                      "type": "object"
-                    },
-                    {
-                      "type": "boolean"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "number"
-                    }
-                  ]
+              "createdDate" : {
+                "type" : "string",
+                "description" : "생성일자"
+              },
+              "roles" : {
+                "type" : "array",
+                "description" : "사용자 타입",
+                "items" : {
+                  "oneOf" : [ {
+                    "type" : "object"
+                  }, {
+                    "type" : "boolean"
+                  }, {
+                    "type" : "string"
+                  }, {
+                    "type" : "number"
+                  } ]
                 }
               },
-              "name": {
-                "type": "string",
-                "description": "사용자 이름"
+              "name" : {
+                "type" : "string",
+                "description" : "사용자 이름"
               },
-              "id": {
-                "type": "number",
-                "description": "사용자 id"
+              "id" : {
+                "type" : "number",
+                "description" : "사용자 id"
               },
-              "updatedDate": {
-                "type": "string",
-                "description": "수정일자"
+              "updatedDate" : {
+                "type" : "string",
+                "description" : "수정일자"
               },
-              "authorities": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "authority": {
-                      "type": "string",
-                      "description": "사용자 권한"
+              "authorities" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "authority" : {
+                      "type" : "string",
+                      "description" : "사용자 권한"
                     }
                   }
                 }
               },
-              "email": {
-                "type": "string",
-                "description": "사용자 이메일(아이디)"
+              "email" : {
+                "type" : "string",
+                "description" : "사용자 이메일(아이디)"
               }
             }
           },
-          "success": {
-            "type": "boolean",
-            "description": "성공여부"
+          "success" : {
+            "type" : "boolean",
+            "description" : "성공여부"
           }
         }
       }

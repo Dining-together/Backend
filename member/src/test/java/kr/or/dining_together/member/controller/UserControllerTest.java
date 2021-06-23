@@ -2,6 +2,7 @@ package kr.or.dining_together.member.controller;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -137,6 +138,9 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 
 			.andDo(document("getCustomer",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
@@ -166,6 +170,9 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 
 			.andDo(document("getStore",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
@@ -218,6 +225,9 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 
 			.andDo(document("modifyCustomer",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				requestFields(
 					fieldWithPath("password").description("유저 비밀번호"),
 					fieldWithPath("name").description("사용자 이름"),
@@ -254,6 +264,9 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 
 			.andDo(document("modifyStore",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				requestFields(
 					fieldWithPath("password").description("유저 비밀번호"),
 					fieldWithPath("name").description("사용자 이름")
@@ -311,6 +324,9 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 
 			.andDo(document("delete",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),

@@ -36,7 +36,8 @@ public class AuctioneerService {
 
 	public List<Auctioneer> getAuctioneers(long auctionId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
-		return auction.getAuctioneers();
+		List<Auctioneer> auctioneers = auctioneerRepository.findAuctioneersByAuction(auction);
+		return auctioneers;
 	}
 
 	public AuctioneerDto registerAuctioneer(AuctioneerRequest auctioneerRequest, UserIdDto userIdDto, long auctionId) {

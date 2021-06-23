@@ -73,7 +73,7 @@ public class AuctioneerController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public SingleResult<AuctioneerDto> modifyAuction(
+	public SingleResult<AuctioneerDto> modifyAuctioneer(
 		@ApiParam(value = "업체id", required = true) @PathVariable long auctioneerId,
 		@RequestBody @ApiParam(value = "경매 참여 등록 정보", required = true) AuctioneerRequest auctioneerRequest) {
 		return responseService.getSingleResult(auctioneerService.modifyAuctioneer(auctioneerRequest, auctioneerId));
@@ -84,7 +84,7 @@ public class AuctioneerController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public CommonResult deleteAuction(
+	public CommonResult deleteAuctioneer(
 		@ApiParam(value = "공고 참여 업체 id", required = true) @PathVariable long auctioneerId) {
 		return responseService.getSingleResult(auctioneerService.deleteAuctioneer(auctioneerId));
 	}

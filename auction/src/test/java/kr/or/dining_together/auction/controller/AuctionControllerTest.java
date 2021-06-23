@@ -1,6 +1,7 @@
 package kr.or.dining_together.auction.controller;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -19,7 +20,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,8 +51,8 @@ class AuctionControllerTest {
 	ModelMapper modelMapper;
 	UserIdDto userIdDto;
 	Auction auction;
-	ResponseEntity<String> token;
 	long auctionId;
+	String token;
 	@Autowired
 	private ObjectMapper objectMapper;
 	@Autowired
@@ -60,7 +60,8 @@ class AuctionControllerTest {
 
 	@BeforeEach
 	void setUp() {
-
+		token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60";
+		userIdDto = userServiceClient.getUserId(token);
 		// SignUpRequest sign=SignUpRequest.builder()
 		// 	.email("test@test.com")
 		// 	.name("test1")
@@ -76,11 +77,6 @@ class AuctionControllerTest {
 		//
 		// token=userServiceClient.login(loginRequest);
 
-		userIdDto = UserIdDto.builder()
-			.id(1L)
-			.name("moon")
-			.build();
-
 		System.out.println(userIdDto.getId());
 		Auction auction1 = Auction.builder()
 			.title("제목")
@@ -88,7 +84,7 @@ class AuctionControllerTest {
 			.maxPrice(1000)
 			.minPrice(10)
 			.userType("Family")
-			.userId(1L)
+			.userId(userIdDto.getId())
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
@@ -136,11 +132,16 @@ class AuctionControllerTest {
 	void deleteAuction() throws Exception {
 		System.out.println(auction.getAuctionId());
 		mockMvc.perform(RestDocumentationRequestBuilders.
-			delete("/auction/{auctionId}", auction.getAuctionId()))
+			delete("/auction/{auctionId}", auction.getAuctionId())
+			.header("X-AUTH-TOKEN",
+				token))
 			.andDo(print())
 			.andExpect(status().isOk())
 
 			.andDo(document("deleteAuction",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
@@ -202,11 +203,14 @@ class AuctionControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
 			.header("X-AUTH-TOKEN",
-				"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDM2ODQ1MSwiZXhwIjoxNjI0NDU0ODUxfQ.SbpFIaWYFyji-izTgGqrzP--bCr-fSw4LhDu0JOoPA8"))
+				token))
 			.andDo(print())
 			.andExpect(status().isOk())
 
 			.andDo(document("registerAuction",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
@@ -272,11 +276,16 @@ class AuctionControllerTest {
 			put("/auction/{auctionId}", auction.getAuctionId())
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
+			.accept(MediaType.APPLICATION_JSON)
+			.header("X-AUTH-TOKEN",
+				token))
 			.andDo(print())
 			.andExpect(status().isOk())
 
 			.andDo(document("modifyAuction",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
 				responseFields(
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
