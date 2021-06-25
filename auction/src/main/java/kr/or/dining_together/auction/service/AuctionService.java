@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
-import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
@@ -37,7 +36,7 @@ public class AuctionService {
 		return auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 	}
 
-	public List<Auction> getAuctionsByUserId(String userId) {
+	public List<Auction> getAuctionsByUserId(long userId) {
 		return auctionRepository.findAllByUserId(userId);
 	}
 
@@ -56,10 +55,11 @@ public class AuctionService {
 		return auctionRepository.save(auction);
 	}
 
-	public Auction updateAuction(long auctionId, AuctionDto auctionDto) {
+	public Auction updateAuction(long auctionId, RequestAuction requestAuction) {
 		Auction auction = getAuction(auctionId);
-		auction.setUpdate(auctionDto.getTitle(), auctionDto.getContent(), auctionDto.getMinPrice(),
-			auctionDto.getUserType(), auction.getMaxPrice(), auctionDto.getReservation(), auctionDto.getDeadline());
+		auction.setUpdate(requestAuction.getTitle(), requestAuction.getContent(), requestAuction.getMinPrice(),
+			requestAuction.getUserType(), requestAuction.getMaxPrice(), requestAuction.getReservation(),
+			requestAuction.getDeadline());
 		return auction;
 	}
 

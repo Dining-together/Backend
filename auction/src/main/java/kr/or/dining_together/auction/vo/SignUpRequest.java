@@ -1,7 +1,6 @@
 package kr.or.dining_together.auction.vo;
 
-import java.util.Date;
-
+import kr.or.dining_together.auction.dto.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RequestAuction {
-	private String title;
-	private String content;
-	private int maxPrice;
-	private int minPrice;
-	private String userType;
-	private Date reservation;
-	private Date deadline;
+public class SignUpRequest {
+	private String email;
+	private String name;
+	private String password;
+	private UserType userType;
+	private int age;
+	private String gender;
+
 }

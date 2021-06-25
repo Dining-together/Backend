@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.dto.UserIdDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Store;
@@ -71,14 +70,11 @@ public class UserServiceTest {
 
 	@Test
 	public void signUpTest() {
-		SignUserDto signUserDto = SignUserDto.builder()
+
+		SignUpRequest signUpRequest = SignUpRequest.builder()
 			.email("qja9605@naver.com")
 			.name("신태범")
 			.password("1234")
-			.build();
-
-		SignUpRequest signUpRequest = SignUpRequest.builder()
-			.signUserDto(signUserDto)
 			.userType(UserType.CUSTOMER)
 			.age(24)
 			.gender("MALE")

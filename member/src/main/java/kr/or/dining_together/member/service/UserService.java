@@ -11,7 +11,6 @@ import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
-import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.dto.UserIdDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
@@ -62,26 +61,25 @@ public class UserService {
 	@Transactional
 	public void save(SignUpRequest signUpRequest) {
 		UserType userType = signUpRequest.getUserType();
-		SignUserDto userDto = signUpRequest.getSignUserDto();
 
 		if (userType == UserType.CUSTOMER) {
 			userRepository.save(Customer.builder()
-				.email(userDto.getEmail())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.name(userDto.getName())
+				.email(signUpRequest.getEmail())
+				.password(passwordEncoder.encode(signUpRequest.getPassword()))
+				.name(signUpRequest.getName())
 				.gender(signUpRequest.getGender())
 				.age(signUpRequest.getAge())
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
-				.email(userDto.getEmail())
-				.password(passwordEncoder.encode(userDto.getPassword()))
-				.name(userDto.getName())
+				.email(signUpRequest.getEmail())
+				.password(passwordEncoder.encode(signUpRequest.getPassword()))
+				.name(signUpRequest.getName())
 				.documentChecked(false)
 				.build());
 		}
 
-		if (userRepository.findByEmail(signUpRequest.getSignUserDto().getEmail()).isEmpty()) {
+		if (userRepository.findByEmail(signUpRequest.getEmail()).isEmpty()) {
 			throw new DataSaveFailedException();
 		}
 	}

@@ -30,10 +30,10 @@ public class AuctionDto {
 	private String content;
 
 	@ApiModelProperty(notes = "공고 최대 가격")
-	private String maxPrice;
+	private int maxPrice;
 
 	@ApiModelProperty(notes = "공고 최소 가격")
-	private String minPrice;
+	private int minPrice;
 
 	@ApiModelProperty(notes = "단체유형")
 	private String userType;

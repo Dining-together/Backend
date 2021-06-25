@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.client.UserServiceClient;
-import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.model.CommonResult;
@@ -73,7 +72,7 @@ public class AuctionController {
 	@ApiOperation(value = "사용자별 공고 조회", notes = "사용자별 공고를 불러온다.")
 	@GetMapping(value = "/{userId}/auctions")
 	public ListResult<Auction> getAuction(
-		@PathVariable("userId") String userId) {
+		@PathVariable("userId") long userId) {
 		return responseService.getListResult(auctionService.getAuctionsByUserId(userId));
 	}
 
@@ -82,9 +81,10 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public SingleResult<Auction> modifyAuction(@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
-		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionDto auctionDto) {
-		return responseService.getSingleResult(auctionService.updateAuction(auctionId, auctionDto));
+	public SingleResult<Auction> modifyAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
+		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
+		@RequestBody @ApiParam(value = "공고정보", required = true) RequestAuction requestAuction) {
+		return responseService.getSingleResult(auctionService.updateAuction(auctionId, requestAuction));
 	}
 
 	@ApiOperation(value = "공고 삭제", notes = "공고 삭제 한다.")
@@ -92,7 +92,8 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public CommonResult deleteAuction(@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
+	public CommonResult deleteAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
+		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
 		return responseService.getSingleResult(auctionService.deleteAuction(auctionId));
 	}
 

@@ -8,5 +8,6 @@ import kr.or.dining_together.auction.jpa.entity.Auction;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
 
-	List<Auction> findAllByUserId(String userId);
+	List<Auction> findAllByUserId(long userId);
+
 }
