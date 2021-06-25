@@ -65,6 +65,7 @@ public class EmailService {
 
 	public void checkEmailExistence(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
+
 		if (user.isPresent()) {
 			throw new UserDuplicationException();
 		}

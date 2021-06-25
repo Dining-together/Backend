@@ -45,19 +45,19 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(DataSaveFailedException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	protected CommonResult userSaveFailedException(HttpServletRequest request, LoginFailedException e) {
+	protected CommonResult userSaveFailedException(HttpServletRequest request, DataSaveFailedException e) {
 		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입 정보저장에 실패했습니다..");
 	}
 
 	@ExceptionHandler(UserDuplicationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected CommonResult userDuplicationException(HttpServletRequest request, LoginFailedException e) {
-		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "이미 등록된 회원 이메일입니다.");
+	protected CommonResult userDuplicationException(HttpServletRequest request, UserDuplicationException e) {
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "이미 등록된 회원 이메일입니다.");
 	}
 
 	@ExceptionHandler(VerificationFailedException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected CommonResult verificationFailedException(HttpServletRequest request, LoginFailedException e) {
+	protected CommonResult verificationFailedException(HttpServletRequest request, VerificationFailedException e) {
 		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "이메일 인증키가 일치하지 않습니다");
 	}
 
