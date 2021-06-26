@@ -42,14 +42,6 @@ public class UserService {
 	private final CustomerRepository customerRepository;
 	private final StoreRepository storeRepository;
 
-	public Long getUserId(String email) {
-		Optional<User> user = userRepository.findByEmail(email);
-		if (user.isEmpty()) {
-			throw new UserNotFoundException();
-		}
-		return user.get().getId();
-	}
-
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
 		User user = (User)userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
 		if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {

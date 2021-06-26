@@ -74,7 +74,6 @@ class UserControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		Customer user = Customer.builder()
-			.id(1L)
 			.email("jifrozen@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
@@ -99,7 +98,6 @@ class UserControllerTest {
 		token = jsonParser.parseMap(resultTostring).get("data").toString();
 
 		Store user1 = Store.builder()
-			.id(1L)
 			.email("jifrozen1@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
@@ -127,6 +125,8 @@ class UserControllerTest {
 
 	@AfterEach
 	public void tearDown() throws Exception {
+
+
 	}
 
 	@Test
@@ -258,7 +258,7 @@ class UserControllerTest {
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
-			.header("X-AUTH-TOKEN", token))
+			.header("X-AUTH-TOKEN", token1))
 
 			.andDo(print())
 			.andExpect(status().isOk())
