@@ -1,9 +1,5 @@
 package kr.or.dining_together.member.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,33 +77,6 @@ public class MenuController {
 		return responseService.getSingleResult(
 			menuService.registerMenu(menuRequest, email, file));
 
-	}
-
-	@ApiOperation(value = "피드 등록 ", notes = "성공시 200, 실패시 에러를 반환합니다. \n ")
-	@PostMapping("/create")
-	public CommonResult createFeed(@RequestParam("file") MultipartFile file) {
-		// 시간과 originalFilename으로 매핑 시켜서 src 주소를 만들어 낸다.
-		Date date = new Date();
-		StringBuilder sb = new StringBuilder();
-		// file image 가 없을 경우
-		if (file.isEmpty()) {
-			sb.append("none");
-		} else {
-			sb.append(date.getTime());
-		}
-		sb.append(file.getOriginalFilename());
-		if (!file.isEmpty()) {
-			File dest = new File("/Users/jifrozen/project/Dining-together/Backend/member/upload/" + sb.toString());
-			try {
-				file.transferTo(dest);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// db에 파일 위치랑 번호 등록
-		}
-		return responseService.getSuccessResult();
 	}
 
 	@ApiOperation(value = "업체 메뉴 수정", notes = "업체 메뉴를 수정한다.")
