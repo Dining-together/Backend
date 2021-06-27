@@ -12,7 +12,7 @@ spring:
       path: /member/h2-console
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -61,6 +61,10 @@ spring:
         login: https://nid.naver.com/oauth2.0/authorize
         token: https://nid.naver.com/oauth2.0/token
         profile: https://openapi.naver.com/v1/nid/me
+  web:
+    resources:
+      static-locations: classpath:/static/
+
 
 eureka:
   instance:

@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
  * @description : 마이페이지 내 정보
  * @modified :
  **/
-@Api(tags = {"2. User"})
+@Api(tags = {"3. User"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/member")

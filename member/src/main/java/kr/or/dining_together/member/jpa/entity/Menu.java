@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +32,9 @@ public class Menu {
 	@ApiModelProperty(notes = "메뉴 이름을 입력해 주세요")
 	private String name;
 
+	@ApiModelProperty(notes = "메뉴 사진 경로")
+	private String path;
+
 	@Column(length = 100)
 	private int price;
 
@@ -38,6 +43,13 @@ public class Menu {
 
 	@ManyToOne
 	@JoinColumn(name = "id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Store store;
 
+	public void update(String name, String path, int price, String description) {
+		this.name = name;
+		this.path = path;
+		this.price = price;
+		this.description = description;
+	}
 }

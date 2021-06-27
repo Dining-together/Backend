@@ -19,6 +19,9 @@ public class MenuDto {
 	@ApiModelProperty(value = "가격")
 	private int price;
 
+	@ApiModelProperty(notes = "메뉴 사진 경로")
+	private String path;
+
 	@ApiModelProperty(value = "설명")
 	private String description;
 

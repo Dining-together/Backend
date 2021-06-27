@@ -8,7 +8,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+//
+// import kr.or.dining_together.member.config.FileUploadProperties;
 
+// @EnableConfigurationProperties(
+// 	{FileUploadProperties.class}
+// )
 @SpringBootApplication
 @EnableDiscoveryClient
 public class MemberApplication {
@@ -26,6 +33,13 @@ public class MemberApplication {
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
 		return modelMapper;
+	}
+
+	@Bean
+	public MultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+		multipartResolver.setMaxUploadSize(2000000000);
+		return multipartResolver;
 	}
 
 	@Bean

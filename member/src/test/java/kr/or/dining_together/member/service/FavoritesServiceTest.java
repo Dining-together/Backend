@@ -57,7 +57,7 @@ public class FavoritesServiceTest {
 	}
 
 	@Test
-	public void save() {
+	public void save() throws Throwable {
 		//given
 		FavoritesRequest favoritesRequest = FavoritesRequest.builder()
 			.favoritesType("STORE")
@@ -74,7 +74,7 @@ public class FavoritesServiceTest {
 	}
 
 	@Test
-	public void get() {
+	public void get() throws Throwable {
 		//given
 		String email = "qja9605@naver.com";
 
@@ -86,7 +86,7 @@ public class FavoritesServiceTest {
 	}
 
 	@Test
-	public void delete() {
+	public void delete() throws Throwable {
 		//given
 		String email = "qja9605@naver.com";
 		FavoritesRequest favoritesRequest = FavoritesRequest.builder()

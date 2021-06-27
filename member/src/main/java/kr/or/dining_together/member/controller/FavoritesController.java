@@ -37,7 +37,7 @@ public class FavoritesController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")})
 	@ApiOperation(value = "일반회원의 즐겨찾기 목록 가져오기", notes = "이메일로 즐겨찾기 목록을 가져온다.")
 	@GetMapping(value = "/customer")
-	public ListResult<CustomerFavorites> getAllCustomerFavorites() {
+	public ListResult<CustomerFavorites> getAllCustomerFavorites() throws Throwable {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<CustomerFavorites> favorites = favoritesService.getCustomerFavoritesAll(email);
 		return responseService.getListResult(favorites);
@@ -47,7 +47,7 @@ public class FavoritesController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")})
 	@ApiOperation(value = "가게회원의 즐겨찾기 목록 가져오기", notes = "이메일로 즐겨찾기 목록을 가져온다.")
 	@GetMapping(value = "/store")
-	public ListResult<StoreFavorites> getAllStoreFavorites() {
+	public ListResult<StoreFavorites> getAllStoreFavorites() throws Throwable {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<StoreFavorites> favorites = favoritesService.getStoreFavoritesAll(email);
 		return responseService.getListResult(favorites);
@@ -58,7 +58,7 @@ public class FavoritesController {
 	@ApiOperation(value = "즐겨찾기 등록", notes = "이메일과 대상정보로 즐겨찾기 등록하기")
 	@PostMapping
 	public CommonResult postFavorites(
-		@RequestBody @ApiParam(value = "즐겨찾기 요청", required = true) FavoritesRequest favoritesRequest) {
+		@RequestBody @ApiParam(value = "즐겨찾기 요청", required = true) FavoritesRequest favoritesRequest) throws Throwable {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		favoritesService.saveFavorites(email, favoritesRequest);
 		return responseService.getSuccessResult();
@@ -69,7 +69,7 @@ public class FavoritesController {
 	@ApiOperation(value = "즐겨찾기 삭제", notes = "대상정보로 즐겨찾기 삭제하기")
 	@DeleteMapping
 	public CommonResult deleteFavorites(
-		@RequestBody @ApiParam(value = "즐겨찾기 요청", required = true) FavoritesRequest favoritesRequest) {
+		@RequestBody @ApiParam(value = "즐겨찾기 요청", required = true) FavoritesRequest favoritesRequest) throws Throwable {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
 		favoritesService.deleteFavorite(email, favoritesRequest);
 		return responseService.getSuccessResult();
