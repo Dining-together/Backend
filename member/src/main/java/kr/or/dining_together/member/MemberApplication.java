@@ -10,15 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-//
-// import kr.or.dining_together.member.config.FileUploadProperties;
 
-// @EnableConfigurationProperties(
-// 	{FileUploadProperties.class}
-// )
 @SpringBootApplication
 @EnableDiscoveryClient
 public class MemberApplication {
+
+	public static final int MAX_UPLOAD_SIZE = 2000000000;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MemberApplication.class, args);
@@ -38,7 +35,7 @@ public class MemberApplication {
 	@Bean
 	public MultipartResolver multipartResolver() {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		multipartResolver.setMaxUploadSize(2000000000);
+		multipartResolver.setMaxUploadSize(MAX_UPLOAD_SIZE);
 		return multipartResolver;
 	}
 

@@ -96,8 +96,8 @@ public class MenuService {
 	}
 
 	@Transactional
-	public Menu modifyMenu(MenuRequest menuRequest,MultipartFile file, long menuId) {
-		Menu menu=menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
+	public Menu modifyMenu(MenuRequest menuRequest, MultipartFile file, long menuId) {
+		Menu menu = menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
 		StringBuilder sb = new StringBuilder();
 		new File(menu.getPath()).delete();
 		File dest = null;
@@ -147,6 +147,5 @@ public class MenuService {
 		menuRepository.delete(menu);
 		return true;
 	}
-
 
 }

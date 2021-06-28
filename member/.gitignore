@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+upload
 
 ### STS ###
 .apt_generated
@@ -14,7 +15,6 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.upload
 .idea
 *.iws
 *.iml

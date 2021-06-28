@@ -2,10 +2,8 @@ package kr.or.dining_together.member.controller;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,11 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,7 +37,6 @@ import kr.or.dining_together.member.jpa.repo.MenuRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.MenuRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,6 +46,7 @@ class MenuControllerTest {
 
 	String token;
 	Store user1;
+	Menu menu;
 	@Autowired
 	private MockMvc mockMvc;
 	@Autowired
@@ -68,7 +61,7 @@ class MenuControllerTest {
 	private ObjectMapper objectMapper;
 	@Autowired
 	private ModelMapper modelMapper;
-	Menu menu;
+
 	@BeforeEach
 	void setUp() throws Exception {
 		Store store = Store.builder()
@@ -95,7 +88,7 @@ class MenuControllerTest {
 		JacksonJsonParser jsonParser1 = new JacksonJsonParser();
 		token = jsonParser1.parseMap(resultTostring1).get("data").toString();
 
-		 menu= Menu.builder()
+		menu = Menu.builder()
 			.store(user1)
 			.price(1)
 			.path("dd")
@@ -105,6 +98,7 @@ class MenuControllerTest {
 
 		menu = menuRepository.save(menu);
 	}
+
 	@AfterEach
 	public void tearDown() throws Exception {
 		menuRepository.deleteAll();
@@ -131,17 +125,17 @@ class MenuControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 
-		.andDo(document("menus",
-			responseFields(
-				fieldWithPath("success").description("성공여부"),
-				fieldWithPath("code").description("코드번호"),
-				fieldWithPath("msg").description("메시지"),
-				fieldWithPath("list.[].menuId").description("Menu ID"),
-				fieldWithPath("list.[].name").description("메뉴 이름"),
-				fieldWithPath("list.[].path").description("메뉴 사진 경로"),
-				fieldWithPath("list.[].description").description("메뉴 설명"),
-				fieldWithPath("list.[].price").description("메뉴 가격")
-			)));
+			.andDo(document("menus",
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("list.[].menuId").description("Menu ID"),
+					fieldWithPath("list.[].name").description("메뉴 이름"),
+					fieldWithPath("list.[].path").description("메뉴 사진 경로"),
+					fieldWithPath("list.[].description").description("메뉴 설명"),
+					fieldWithPath("list.[].price").description("메뉴 가격")
+				)));
 
 	}
 
@@ -163,29 +157,29 @@ class MenuControllerTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 
-		.andDo(document("registerMenu",
-			requestHeaders(
-				headerWithName("X-AUTH-TOKEN").description(
-					"토큰값")),
-			requestParts(
-				partWithName("file").description("The file to upload")
-			),
-			requestParameters(
-				parameterWithName("name").description("이름"),
-				parameterWithName("price").description("이름"),
-				parameterWithName("description").description("이름")
+			.andDo(document("registerMenu",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
+				requestParts(
+					partWithName("file").description("The file to upload")
+				),
+				requestParameters(
+					parameterWithName("name").description("이름"),
+					parameterWithName("price").description("이름"),
+					parameterWithName("description").description("이름")
 
-			),
-			responseFields(
-				fieldWithPath("success").description("성공여부"),
-				fieldWithPath("code").description("코드번호"),
-				fieldWithPath("msg").description("메시지"),
-				fieldWithPath("data.menuId").description("Menu ID"),
-				fieldWithPath("data.name").description("메뉴이름"),
-				fieldWithPath("data.path").description("매뉴 사진 경로"),
-				fieldWithPath("data.price").description("메뉴 가격"),
-				fieldWithPath("data.description").description("메뉴 설명")
-			)));
+				),
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("data.menuId").description("Menu ID"),
+					fieldWithPath("data.name").description("메뉴이름"),
+					fieldWithPath("data.path").description("매뉴 사진 경로"),
+					fieldWithPath("data.price").description("메뉴 가격"),
+					fieldWithPath("data.description").description("메뉴 설명")
+				)));
 	}
 
 	@Test
@@ -197,11 +191,12 @@ class MenuControllerTest {
 			MediaType.IMAGE_JPEG_VALUE,
 			"Hello, World!".getBytes()
 		);
-		mockMvc.perform(RestDocumentationRequestBuilders.fileUpload("/member/menus/{menuId}",menu.getMenuId()).file(file)
-			.param("name", "ddd")
-			.param("price", String.valueOf(1))
-			.param("description", "dddd1")
-			.header("X-AUTH-TOKEN", token))
+		mockMvc.perform(
+			RestDocumentationRequestBuilders.fileUpload("/member/menus/{menuId}", menu.getMenuId()).file(file)
+				.param("name", "ddd")
+				.param("price", String.valueOf(1))
+				.param("description", "dddd1")
+				.header("X-AUTH-TOKEN", token))
 			.andDo(print())
 			.andExpect(status().isOk())
 
