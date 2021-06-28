@@ -95,10 +95,47 @@ public class MenuService {
 
 	}
 
-	public Menu modifyMenu(MenuRequest menuRequest, long menuId) {
-		Menu menu = menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
-
-		menu.update(menuRequest.getName(), "dd", menuRequest.getPrice(), menuRequest.getDescription());
+	@Transactional
+	public Menu modifyMenu(MenuRequest menuRequest,MultipartFile file, long menuId) {
+		Menu menu=menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
+		StringBuilder sb = new StringBuilder();
+		new File(menu.getPath()).delete();
+		File dest = null;
+		// file image 가 없을 경우
+		if (file.isEmpty()) {
+			sb.append("none");
+		}
+		if (!file.isEmpty()) {
+			// jpeg, png, gif 파일들만 받아서 처리할 예정
+			String contentType = file.getContentType();
+			String originalFileExtension = null;
+			// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
+			if (ObjectUtils.isEmpty(contentType)) {
+				sb.append("none");
+			}
+			if (!ObjectUtils.isEmpty(contentType)) {
+				if (contentType.contains("image/jpeg")) {
+					originalFileExtension = ".jpg";
+				} else if (contentType.contains("image/png")) {
+					originalFileExtension = ".png";
+				} else if (contentType.contains("image/gif")) {
+					originalFileExtension = ".gif";
+				}
+				sb.append(menu.getStore().getName());
+				sb.append("-");
+				sb.append(menuRequest.getName() + originalFileExtension);
+			}
+			dest = new File("/Users/jifrozen/project/Dining-together/Backend/member/upload/" + sb.toString());
+			try {
+				file.transferTo(dest);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// db에 파일 위치랑 번호 등록
+		}
+		menu.update(menuRequest.getName(), dest.getPath(), menuRequest.getPrice(), menuRequest.getDescription());
 
 		return menu;
 
@@ -106,9 +143,10 @@ public class MenuService {
 
 	public boolean deleteMenu(long menuId) {
 		Menu menu = menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
-
+		new File(menu.getPath()).delete();
 		menuRepository.delete(menu);
 		return true;
 	}
+
 
 }

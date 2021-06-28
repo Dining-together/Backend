@@ -80,18 +80,24 @@ public class MenuController {
 	}
 
 	@ApiOperation(value = "업체 메뉴 수정", notes = "업체 메뉴를 수정한다.")
-	@PutMapping("/menus/{menuId}")
+	@PostMapping("/menus/{menuId}")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	public SingleResult<Menu> modifyMenu(
 		@PathVariable @ApiParam(value = "메뉴 id", required = true) long menuId,
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@RequestBody @ApiParam(value = "메뉴 정보", required = true) MenuRequest menuRequest) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		@RequestParam("name") String name,
+		@RequestParam("price") int price,
+		@RequestParam("description") String description,
+		@RequestParam("file") MultipartFile file) {
+		MenuRequest menuRequest = MenuRequest.builder()
+			.name(name)
+			.price(price)
+			.description(description).
+				build();
 		return responseService.getSingleResult(
-			menuService.modifyMenu(menuRequest, menuId));
+			menuService.modifyMenu(menuRequest,file, menuId));
 
 	}
 
@@ -100,7 +106,7 @@ public class MenuController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public CommonResult modifyMenu(
+	public CommonResult deleteMenu(
 		@PathVariable @ApiParam(value = "메뉴 id", required = true) long menuId,
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken) {
 		return responseService.getSingleResult(
