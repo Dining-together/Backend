@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 
+import io.swagger.annotations.Api;
 import kr.or.dining_together.member.service.KakaoService;
 import kr.or.dining_together.member.service.NaverService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
  * @description : 소셜 로그인을 위해 요청
  * @modified :
  **/
+@Api(tags = {"2. social login"})
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member/social/login")

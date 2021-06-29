@@ -12,6 +12,7 @@ import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
+import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
@@ -81,4 +82,10 @@ public class ExceptionAdvice {
 		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "패스워드가 맞지 않습니다.");
 	}
 
+	@ExceptionHandler(ResourceNotExistException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public CommonResult resourceNotExistException(HttpServletRequest request,
+		ResourceNotExistException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "요청한 자원이 존재하지 않습니다.");
+	}
 }

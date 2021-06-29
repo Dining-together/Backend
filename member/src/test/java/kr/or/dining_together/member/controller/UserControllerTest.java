@@ -125,7 +125,7 @@ class UserControllerTest {
 
 	@AfterEach
 	public void tearDown() throws Exception {
-
+		userRepository.deleteAll();
 
 	}
 
@@ -187,7 +187,10 @@ class UserControllerTest {
 					fieldWithPath("data.roles").description("사용자 타입"),
 					fieldWithPath("data.authorities.[].authority").description("사용자 권한"),
 					fieldWithPath("data.documentChecked").description("서류 인증 여부"),
-					fieldWithPath("data.menus").description("업체 메뉴")
+					fieldWithPath("data.menus").description("업체 메뉴"),
+					fieldWithPath("data.phoneNum").description("업체 메뉴"),
+					fieldWithPath("data.addr").description("업체 메뉴"),
+					fieldWithPath("data.storeName").description("업체 메뉴")
 
 				)
 			));
@@ -281,37 +284,6 @@ class UserControllerTest {
 				)
 			));
 	}
-
-	// @Test
-	// void verifyPassword() throws Exception{
-	// 	Optional<User> user = userRepository.findByEmail("jifrozen@naver.com");
-	// 	MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	// 	params.add("password", "test1111");
-	//
-	// 	mockMvc.perform(MockMvcRequestBuilders
-	// 		.put("/member/password/verification")
-	// 		.header("X-AUTH-TOKEN", token)
-	// 		.params(params))
-	// 		.andDo(print())
-	// 		.andExpect(status().isOk());
-	//
-	// }
-	//
-	// @Test
-	// void changePassword() throws Exception {
-	// 	Optional<User> user = userRepository.findByEmail("jifrozen@naver.com");
-	// 	MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	// 	params.add("newPassword", "test111");
-	//
-	// 	mockMvc.perform(MockMvcRequestBuilders
-	// 		.put("/member/password")
-	// 		.header("X-AUTH-TOKEN", token)
-	// 		.params(params))
-	// 		.andDo(print())
-	// 		.andExpect(status().isOk());
-	//
-	// 	assertTrue(passwordEncoder.matches("test111",user.get().getPassword()));
-	// }
 
 	@Test
 	void delete() throws Exception {
