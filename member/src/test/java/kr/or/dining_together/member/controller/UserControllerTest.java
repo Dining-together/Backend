@@ -126,6 +126,7 @@ class UserControllerTest {
 	@AfterEach
 	public void tearDown() throws Exception {
 		userRepository.deleteAll();
+
 	}
 
 	@Test
@@ -260,7 +261,7 @@ class UserControllerTest {
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON)
-			.header("X-AUTH-TOKEN", token))
+			.header("X-AUTH-TOKEN", token1))
 
 			.andDo(print())
 			.andExpect(status().isOk())

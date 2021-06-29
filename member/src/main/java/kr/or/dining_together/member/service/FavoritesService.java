@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
+import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.CustomerFavorites;
 import kr.or.dining_together.member.jpa.entity.StoreFavorites;
 import kr.or.dining_together.member.jpa.entity.User;
@@ -22,21 +23,22 @@ public class FavoritesService {
 	private final StoreFavoritesRepository storeFavoritesRepository;
 	private final CustomerFavoritesRepository customerFavoritesRepository;
 	private final UserRepository userRepository;
+	private final UserService userService;
 
 	public List<CustomerFavorites> getCustomerFavoritesAll(String email) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User user= (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		List<CustomerFavorites> customerFavorites = customerFavoritesRepository.findAllByUserId(user.getId());
 		return customerFavorites;
 	}
 
 	public List<StoreFavorites> getStoreFavoritesAll(String email) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User user= (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		List<StoreFavorites> storeFavorites = storeFavoritesRepository.findAllByUserId(user.getId());
 		return storeFavorites;
 	}
 
 	public void saveFavorites(String email, FavoritesRequest favoritesRequest) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User user= (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		String requestType = favoritesRequest.getFavoritesType();
 		Long objectId = favoritesRequest.getObjectId();
 
@@ -65,7 +67,7 @@ public class FavoritesService {
 	}
 
 	public void deleteFavorite(String email, FavoritesRequest favoritesRequest) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		User user= (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		String requestType = favoritesRequest.getFavoritesType();
 		Long objectId = favoritesRequest.getObjectId();
 
