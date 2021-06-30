@@ -72,6 +72,7 @@ public class User implements UserDetails {
 	@Size(min = 2, message = "Name은 2글자 이상 입력.")
 	@ApiModelProperty(notes = "사용자 이름을 입력해 주세요")
 	private String name;
+	private String path;
 	@Past
 	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
 	private Date joinDate;
@@ -142,6 +143,10 @@ public class User implements UserDetails {
 	public void update(String password, String name) {
 		this.password = password;
 		this.name = name;
+	}
+
+	public void imageUpdate(String path) {
+		this.path = path;
 	}
 
 }

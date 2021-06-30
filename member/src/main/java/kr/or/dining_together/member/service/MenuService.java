@@ -1,14 +1,11 @@
 package kr.or.dining_together.member.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
@@ -35,6 +32,7 @@ public class MenuService {
 
 	private final MenuRepository menuRepository;
 	private final StoreRepository storeRepository;
+	private final FileService fileService;
 
 	public List<Menu> getMenus(long storeId) {
 		Store store = storeRepository.findById(storeId).orElseThrow(UserNotFoundException::new);
@@ -42,49 +40,12 @@ public class MenuService {
 		return menus;
 	}
 
-	public Menu registerMenu(MenuRequest menuRequest, String email, MultipartFile file) {
-		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		StringBuilder sb = new StringBuilder();
-		File dest = null;
-		// file image 가 없을 경우
-		if (file.isEmpty()) {
-			sb.append("none");
-		}
-		if (!file.isEmpty()) {
-			// jpeg, png, gif 파일들만 받아서 처리할 예정
-			String contentType = file.getContentType();
-			String originalFileExtension = null;
-			// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
-			if (ObjectUtils.isEmpty(contentType)) {
-				sb.append("none");
-			}
-			if (!ObjectUtils.isEmpty(contentType)) {
-				if (contentType.contains("image/jpeg")) {
-					originalFileExtension = ".jpg";
-				} else if (contentType.contains("image/png")) {
-					originalFileExtension = ".png";
-				} else if (contentType.contains("image/gif")) {
-					originalFileExtension = ".gif";
-				}
-				sb.append(store.getName());
-				sb.append("-");
-				sb.append(menuRequest.getName() + originalFileExtension);
-			}
+	public Menu registerMenu(MenuRequest menuRequest, Store store) {
 
-			dest = new File("/Users/jifrozen/project/Dining-together/Backend/member/upload/" + sb.toString());
-			try {
-				file.transferTo(dest);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// db에 파일 위치랑 번호 등록
-		}
 		Menu menu = Menu.builder()
 			.description(menuRequest.getDescription())
 			.name(menuRequest.getName())
-			.path(dest.getPath())
+			.path(menuRequest.getPath())
 			.price(menuRequest.getPrice())
 			.store(store)
 			.build();
@@ -96,46 +57,9 @@ public class MenuService {
 	}
 
 	@Transactional
-	public Menu modifyMenu(MenuRequest menuRequest, MultipartFile file, long menuId) {
-		Menu menu = menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
-		StringBuilder sb = new StringBuilder();
-		new File(menu.getPath()).delete();
-		File dest = null;
-		// file image 가 없을 경우
-		if (file.isEmpty()) {
-			sb.append("none");
-		}
-		if (!file.isEmpty()) {
-			// jpeg, png, gif 파일들만 받아서 처리할 예정
-			String contentType = file.getContentType();
-			String originalFileExtension = null;
-			// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
-			if (ObjectUtils.isEmpty(contentType)) {
-				sb.append("none");
-			}
-			if (!ObjectUtils.isEmpty(contentType)) {
-				if (contentType.contains("image/jpeg")) {
-					originalFileExtension = ".jpg";
-				} else if (contentType.contains("image/png")) {
-					originalFileExtension = ".png";
-				} else if (contentType.contains("image/gif")) {
-					originalFileExtension = ".gif";
-				}
-				sb.append(menu.getStore().getName());
-				sb.append("-");
-				sb.append(menuRequest.getName() + originalFileExtension);
-			}
-			dest = new File("/Users/jifrozen/project/Dining-together/Backend/member/upload/" + sb.toString());
-			try {
-				file.transferTo(dest);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			// db에 파일 위치랑 번호 등록
-		}
-		menu.update(menuRequest.getName(), dest.getPath(), menuRequest.getPrice(), menuRequest.getDescription());
+	public Menu modifyMenu(MenuRequest menuRequest, Menu menu) {
+
+		menu.update(menuRequest.getName(), menuRequest.getPath(), menuRequest.getPrice(), menuRequest.getDescription());
 
 		return menu;
 
