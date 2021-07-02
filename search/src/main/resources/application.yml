@@ -1,3 +1,13 @@
+spring.elasticsearch.rest.uris: http://101.101.216.26:9300
+elasticsearch.cluster_name: docker-cluster
+spring.main.allow-bean-definition-overriding: true
+
+server:
+  port: 0
+spring:
+  application:
+    name: search
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
