@@ -123,7 +123,7 @@ public class UserController {
 		return responseService.getSingleResult(userService.modify(customerProfileRequest, email));
 	}
 
-	@ApiOperation(value = "업체 정보 수정")
+	@ApiOperation(value = "업체 정보 수정(회원)")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 	})

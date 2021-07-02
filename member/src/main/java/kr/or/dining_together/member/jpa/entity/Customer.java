@@ -1,8 +1,12 @@
 package kr.or.dining_together.member.jpa.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import lombok.Getter;
@@ -21,6 +25,9 @@ public class Customer extends User {
 	private int age;
 	@Column(length = 100)
 	private String gender;
+
+	@OneToMany(mappedBy = "customer")
+	private List<CustomerFavorites> customerFavorites = new ArrayList<>();
 
 	public void update(int age, String gender) {
 		this.age = age;

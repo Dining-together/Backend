@@ -6,7 +6,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -32,7 +35,30 @@ public class Store extends User {
 	@Column(columnDefinition = "boolean default false")
 	private Boolean documentChecked;
 
+	@OneToOne
+	@JoinColumn(name = "facility_id")
+	private Facility facility;
+
+	@ManyToOne
+	@JoinColumn(name = "storeType_id")
+	private StoreType storeType;
+
 	@OneToMany(mappedBy = "store")
 	private List<Menu> menus = new ArrayList<>();
 
+	@OneToMany(mappedBy = "store")
+	private List<StoreFavorites> storeFavorites = new ArrayList<>();
+
+	@OneToMany(mappedBy = "store")
+	private List<StoreImages> storeImages = new ArrayList<>();
+
+	public void update(String phoneNum, String addr, String storeName) {
+		this.phoneNum = phoneNum;
+		this.addr = addr;
+		this.storeName = storeName;
+	}
+
+	public void setFacility(Facility facility) {
+		this.facility = facility;
+	}
 }

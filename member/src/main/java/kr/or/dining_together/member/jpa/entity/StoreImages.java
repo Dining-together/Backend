@@ -25,20 +25,24 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "customerFavorites")
-@ApiModel(description = "사용자 즐겨찾기 객체")
-public class CustomerFavorites {
+@Table(name = "stroeImages")
+@ApiModel(description = "업체 가게 사진")
+public class StoreImages {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "storeId")
-	@ApiModelProperty(notes = "가게 Id")
-	private Long storeId;
+	@Column(name = "userId")
+	@ApiModelProperty(notes = "경로")
+	private String path;
+
+	@Column(name = "file_name")
+	@ApiModelProperty(notes = "파일명")
+	private String file_name;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "store_id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private Customer customer;
+	private Store store;
 
 }
