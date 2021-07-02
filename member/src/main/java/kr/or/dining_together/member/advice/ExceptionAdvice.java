@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
 import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
+import kr.or.dining_together.member.advice.exception.FileNotFoundException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
@@ -87,5 +88,12 @@ public class ExceptionAdvice {
 	public CommonResult resourceNotExistException(HttpServletRequest request,
 		ResourceNotExistException e) {
 		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "요청한 자원이 존재하지 않습니다.");
+	}
+
+	@ExceptionHandler(FileNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public CommonResult fileNotFoundException(HttpServletRequest request,
+		FileNotFoundException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "파일이 존재하지 않습니다.");
 	}
 }

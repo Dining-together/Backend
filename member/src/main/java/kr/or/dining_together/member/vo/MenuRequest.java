@@ -20,4 +20,6 @@ public class MenuRequest {
 	private int price;
 
 	private String description;
+
+	private String path;
 }

@@ -4,6 +4,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,6 +25,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -155,6 +157,7 @@ class UserControllerTest {
 					fieldWithPath("data.age").description("사용자 나이"),
 					fieldWithPath("data.gender").description("사용자 성별"),
 					fieldWithPath("data.roles").description("사용자 타입"),
+					fieldWithPath("data.path").description("사용자 사진"),
 					fieldWithPath("data.authorities.[].authority").description("사용자 권한")
 
 				)
@@ -187,6 +190,7 @@ class UserControllerTest {
 					fieldWithPath("data.roles").description("사용자 타입"),
 					fieldWithPath("data.authorities.[].authority").description("사용자 권한"),
 					fieldWithPath("data.documentChecked").description("서류 인증 여부"),
+					fieldWithPath("data.path").description("사용자 사진"),
 					fieldWithPath("data.menus").description("업체 메뉴"),
 					fieldWithPath("data.phoneNum").description("업체 메뉴"),
 					fieldWithPath("data.addr").description("업체 메뉴"),
@@ -283,6 +287,35 @@ class UserControllerTest {
 					fieldWithPath("data.name").description("사용자 이름")
 				)
 			));
+	}
+
+	@Test
+	void saveFile() throws Exception {
+		MockMultipartFile file
+			= new MockMultipartFile(
+			"file",
+			"hello.jpg",
+			MediaType.IMAGE_JPEG_VALUE,
+			"Hello, World!".getBytes()
+		);
+		mockMvc.perform(
+			RestDocumentationRequestBuilders.fileUpload("/member/image").file(file)
+				.header("X-AUTH-TOKEN", token))
+			.andDo(print())
+			.andExpect(status().isOk())
+
+			.andDo(document("saveFile",
+				requestHeaders(
+					headerWithName("X-AUTH-TOKEN").description(
+						"토큰값")),
+				requestParts(
+					partWithName("file").description("The file to upload")
+				),
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지")
+				)));
 	}
 
 	@Test

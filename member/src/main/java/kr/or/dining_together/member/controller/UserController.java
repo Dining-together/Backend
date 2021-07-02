@@ -1,5 +1,9 @@
 package kr.or.dining_together.member.controller;
 
+import java.io.File;
+
+import javax.transaction.Transactional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,18 +14,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.member.advice.exception.FileNotFoundException;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
+import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.dto.UserIdDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Store;
+import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
+import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.CustomerProfileRequest;
@@ -47,6 +57,8 @@ public class UserController {
 
 	private final UserService userService;
 	private final ResponseService responseService;
+	private final UserRepository userRepository;
+	private final FileService fileService;
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -72,6 +84,31 @@ public class UserController {
 		return responseService.getSingleResult(userService.getStore(email));
 	}
 
+	@ApiOperation(value = "회원 이미지 등록")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+	})
+	@PostMapping(value = "/image")
+	@Transactional
+	public CommonResult saveFile(
+		@RequestBody @ApiParam(value = "회원사진", required = true) MultipartFile file) throws
+		Throwable {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		if (user.getPath() != null) {
+			new File(user.getPath()).delete();
+		}
+		String fileName = user.getId() + "_photo";
+		String filePath = fileService.save(file, fileName, "user");
+		if (filePath == "none") {
+			throw new FileNotFoundException();
+		} else {
+			user.imageUpdate(filePath);
+		}
+		return responseService.getSuccessResult();
+	}
+
 	@ApiOperation(value = "회원 정보 수정")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -82,6 +119,7 @@ public class UserController {
 		Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
+
 		return responseService.getSingleResult(userService.modify(customerProfileRequest, email));
 	}
 
