@@ -1,14 +1,17 @@
 package kr.or.dining_together.member.service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
+import kr.or.dining_together.member.dto.MenuDto;
 import kr.or.dining_together.member.jpa.entity.Menu;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.repo.MenuRepository;
@@ -33,11 +36,16 @@ public class MenuService {
 	private final MenuRepository menuRepository;
 	private final StoreRepository storeRepository;
 	private final FileService fileService;
+	private final ModelMapper modelMapper;
 
-	public List<Menu> getMenus(long storeId) {
+	public List<MenuDto> getMenus(long storeId) {
 		Store store = storeRepository.findById(storeId).orElseThrow(UserNotFoundException::new);
 		List<Menu> menus = menuRepository.findMenusByStore(store);
-		return menus;
+		List<MenuDto> menuDtos = new ArrayList<>();
+		for (Menu menu : menus) {
+			menuDtos.add(modelMapper.map(menu, MenuDto.class));
+		}
+		return menuDtos;
 	}
 
 	public Menu registerMenu(MenuRequest menuRequest, Store store) {

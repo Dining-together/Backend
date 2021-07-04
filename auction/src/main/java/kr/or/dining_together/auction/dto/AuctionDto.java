@@ -20,9 +20,6 @@ import lombok.Setter;
 @Builder
 public class AuctionDto {
 
-	@ApiModelProperty(value = "공고 pk")
-	private String auctionId;
-
 	@ApiModelProperty(notes = "공고 제목")
 	private String title;
 
@@ -46,5 +43,8 @@ public class AuctionDto {
 
 	@ApiModelProperty(notes = "사용자 id")
 	private String userId;
+
+	@ApiModelProperty(notes = "사용자 Name")
+	private String userName;
 
 }

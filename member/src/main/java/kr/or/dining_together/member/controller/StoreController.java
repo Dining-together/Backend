@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +27,7 @@ import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
+import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.ResponseService;
@@ -43,7 +45,7 @@ import lombok.RequiredArgsConstructor;
  * @description :
  * @modified :
  **/
-@Api(tags = {"5. Store"})
+@Api(tags = {"4. Store"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/member")
@@ -53,6 +55,18 @@ public class StoreController {
 	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreService storeService;
+
+	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
+	@GetMapping(value = "/stores")
+	public ListResult<Store> getStores() throws Throwable {
+		return responseService.getListResult(storeService.getStores());
+	}
+
+	@ApiOperation(value = "업체 정보 조회", notes = "업체 단건 조회")
+	@GetMapping(value = "/store/{storeId}")
+	public SingleResult<Store> getStore(@PathVariable long storeId) throws Throwable {
+		return responseService.getSingleResult(storeService.getStore(storeId));
+	}
 
 	@ApiOperation(value = "가게 사진 등록")
 	@PostMapping(value = "/store/images")

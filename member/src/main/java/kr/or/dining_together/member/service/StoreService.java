@@ -27,14 +27,19 @@ public class StoreService {
 	private final FacilityFacilityEtcRepository facilityFacilityEtcRepository;
 	private final FacilityEtcRepository facilityEtcRepository;
 
-	public Store getStore(String email) {
-		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+	public Store getStore(long storeId) {
+		Store store = storeRepository.findById(storeId).orElseThrow(UserNotFoundException::new);
 		return store;
+	}
+
+	public List<Store> getStores() {
+		return storeRepository.findAll();
 	}
 
 	public Store registerStore(StoreRequest storeRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		store.update(storeRequest.getPhoneNum(), store.getAddr(), storeRequest.getStoreName());
+		storeRepository.save(store);
 		return store;
 	}
 

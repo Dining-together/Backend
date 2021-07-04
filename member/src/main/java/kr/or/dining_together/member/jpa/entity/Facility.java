@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,7 +43,7 @@ public class Facility {
 
 	private Date closedTime;
 
-	@OneToMany(mappedBy = "facility")
+	@OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
 	private List<FacilityFacilityEtc> facilityFacilityEtcs = new ArrayList<>();
 
 	public void update(int capacity, int parkingCount, boolean parking, Date openTime, Date closedTime) {

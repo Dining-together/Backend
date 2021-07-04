@@ -29,7 +29,8 @@ public class AuctionService {
 	private final AuctionRepository auctionRepository;
 
 	public List<Auction> getAuctions() {
-		return auctionRepository.findAll();
+		List<Auction> auctions = auctionRepository.findAll();
+		return auctions;
 	}
 
 	public Auction getAuction(long auctionId) {
@@ -48,6 +49,7 @@ public class AuctionService {
 			.maxPrice(requestAuction.getMaxPrice())
 			.minPrice(requestAuction.getMinPrice())
 			.userId(user.getId())
+			.userName(user.getName())
 			.userType(requestAuction.getUserType())
 			.reservation(requestAuction.getReservation())
 			.build();

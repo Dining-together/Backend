@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -58,13 +61,15 @@ public class Auction {
 	@ApiModelProperty(notes = "공고 종료 시간")
 	private Date deadline;
 	@ApiModelProperty(notes = "사용자 id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private long userId;
-
+	@ApiModelProperty(notes = "사용자 Name")
+	private String userName;
 	@OneToMany(mappedBy = "auction")
 	private List<Auctioneer> auctioneers = new ArrayList<>();
 
 	@ApiModelProperty(notes = "선호 메뉴")
-	@OneToMany(mappedBy = "auction")
+	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
 	private List<AuctionStoreType> auctionStoreTypes = new ArrayList<>();
 
 	@PrePersist

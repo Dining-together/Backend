@@ -49,6 +49,7 @@ public class AuctioneerService {
 			.price(auctioneerRequest.getPrice())
 			.menu(auctioneerRequest.getMenu())
 			.storeId(userIdDto.getId())
+			.storeName(userIdDto.getName())
 			.build();
 
 		auctioneerRepository.save(auctioneer);

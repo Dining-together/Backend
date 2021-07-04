@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +25,7 @@ public class StoreType {
 	private String name;
 
 	@OneToMany(mappedBy = "storeType")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<AuctionStoreType> auctions = new ArrayList<>();
 
 }

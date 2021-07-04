@@ -39,6 +39,9 @@ public class Auctioneer {
 	@ApiModelProperty(notes = "업체 id")
 	private long storeId;
 
+	@ApiModelProperty(notes = "업체 Name")
+	private String storeName;
+
 	@ApiModelProperty(notes = "업체 메뉴")
 	private String menu;
 
