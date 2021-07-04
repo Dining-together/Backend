@@ -23,7 +23,7 @@ import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
 import kr.or.dining_together.auction.service.AuctionService;
 import kr.or.dining_together.auction.service.ResponseService;
-import kr.or.dining_together.auction.vo.RequestAuction;
+import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -64,9 +64,9 @@ public class AuctionController {
 	})
 	public SingleResult<Auction> registerAuction(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@RequestBody @ApiParam(value = "공고정보", required = true) RequestAuction requestAuction) {
+		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionRequest auctionRequest) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
-		return responseService.getSingleResult(auctionService.writeAuction(user, requestAuction));
+		return responseService.getSingleResult(auctionService.writeAuction(user, auctionRequest));
 	}
 
 	@ApiOperation(value = "사용자별 공고 조회", notes = "사용자별 공고를 불러온다.")
@@ -83,8 +83,8 @@ public class AuctionController {
 	})
 	public SingleResult<Auction> modifyAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
-		@RequestBody @ApiParam(value = "공고정보", required = true) RequestAuction requestAuction) {
-		return responseService.getSingleResult(auctionService.updateAuction(auctionId, requestAuction));
+		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionRequest auctionRequest) {
+		return responseService.getSingleResult(auctionService.updateAuction(auctionId, auctionRequest));
 	}
 
 	@ApiOperation(value = "공고 삭제", notes = "공고 삭제 한다.")

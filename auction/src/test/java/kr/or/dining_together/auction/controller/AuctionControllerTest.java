@@ -32,7 +32,7 @@ import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.service.AuctionService;
-import kr.or.dining_together.auction.vo.RequestAuction;
+import kr.or.dining_together.auction.vo.AuctionRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -185,7 +185,7 @@ class AuctionControllerTest {
 	@Test
 	void registerAuction() throws Exception {
 
-		RequestAuction auction1 = RequestAuction.builder()
+		AuctionRequest auction1 = AuctionRequest.builder()
 			.title("제목1")
 			.content("내용1")
 			.maxPrice(1000)

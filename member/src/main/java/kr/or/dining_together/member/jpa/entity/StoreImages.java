@@ -32,7 +32,7 @@ public class StoreImages {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "userId")
+	@Column(name = "path")
 	@ApiModelProperty(notes = "경로")
 	private String path;
 

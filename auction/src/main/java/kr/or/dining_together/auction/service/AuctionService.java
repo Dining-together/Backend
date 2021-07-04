@@ -10,7 +10,7 @@ import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
-import kr.or.dining_together.auction.vo.RequestAuction;
+import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -41,27 +41,29 @@ public class AuctionService {
 		return auctionRepository.findAllByUserId(userId);
 	}
 
-	public Auction writeAuction(UserIdDto user, RequestAuction requestAuction) {
+	public Auction writeAuction(UserIdDto user, AuctionRequest auctionRequest) {
 		Auction auction = Auction.builder()
-			.content(requestAuction.getContent())
-			.title(requestAuction.getTitle())
-			.deadline(requestAuction.getDeadline())
-			.maxPrice(requestAuction.getMaxPrice())
-			.minPrice(requestAuction.getMinPrice())
+			.content(auctionRequest.getContent())
+			.title(auctionRequest.getTitle())
+			.storeType(auctionRequest.getStoreType())
+			.deadline(auctionRequest.getDeadline())
+			.maxPrice(auctionRequest.getMaxPrice())
+			.minPrice(auctionRequest.getMinPrice())
 			.userId(user.getId())
 			.userName(user.getName())
-			.userType(requestAuction.getUserType())
-			.reservation(requestAuction.getReservation())
+			.userType(auctionRequest.getUserType())
+			.reservation(auctionRequest.getReservation())
 			.build();
 
 		return auctionRepository.save(auction);
 	}
 
-	public Auction updateAuction(long auctionId, RequestAuction requestAuction) {
+	public Auction updateAuction(long auctionId, AuctionRequest auctionRequest) {
 		Auction auction = getAuction(auctionId);
-		auction.setUpdate(requestAuction.getTitle(), requestAuction.getContent(), requestAuction.getMinPrice(),
-			requestAuction.getUserType(), requestAuction.getMaxPrice(), requestAuction.getReservation(),
-			requestAuction.getDeadline());
+		auction.setUpdate(auctionRequest.getTitle(), auctionRequest.getContent(), auctionRequest.getStoreType(),
+			auctionRequest.getMinPrice(),
+			auctionRequest.getUserType(), auctionRequest.getMaxPrice(), auctionRequest.getReservation(),
+			auctionRequest.getDeadline());
 		return auction;
 	}
 

@@ -15,9 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RequestAuction {
+public class AuctionRequest {
 	private String title;
 	private String content;
+	private String storeType;
 	private int maxPrice;
 	private int minPrice;
 	private String userType;

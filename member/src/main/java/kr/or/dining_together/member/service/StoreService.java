@@ -2,6 +2,8 @@ package kr.or.dining_together.member.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
@@ -43,6 +45,7 @@ public class StoreService {
 		return store;
 	}
 
+	@Transactional
 	public Facility registerFacility(FacilityRequest facilityRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
@@ -70,7 +73,8 @@ public class StoreService {
 		storeRepository.save(store);
 		return facility;
 	}
-
+	
+	@Transactional
 	public Facility modifyFacility(FacilityRequest facilityRequest, long facilityId, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		Facility facility = facilityRepository.findById(facilityId).orElseThrow(ResourceNotExistException::new);
