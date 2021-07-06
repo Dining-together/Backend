@@ -24,7 +24,7 @@ import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.vo.FavoritesRequest;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = {"4. 즐겨찾기"})
+@Api(tags = {"6. 즐겨찾기"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/member/favorites")

@@ -17,7 +17,7 @@ import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
-import kr.or.dining_together.auction.vo.RequestAuction;
+import kr.or.dining_together.auction.vo.AuctionRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -89,7 +89,7 @@ class AuctionServiceTest {
 
 	@Test
 	void writeAuction() {
-		RequestAuction auction1 = RequestAuction.builder()
+		AuctionRequest auction1 = AuctionRequest.builder()
 			.title("제목2")
 			.content("내용2")
 			.maxPrice(2000)
@@ -118,9 +118,9 @@ class AuctionServiceTest {
 			.deadline(new Date())
 			.build();
 
-		RequestAuction requestAuction = modelMapper.map(modifyAuction, RequestAuction.class);
+		AuctionRequest auctionRequest = modelMapper.map(modifyAuction, AuctionRequest.class);
 
-		Auction auction1 = auctionService.updateAuction(auction.getAuctionId(), requestAuction);
+		Auction auction1 = auctionService.updateAuction(auction.getAuctionId(), auctionRequest);
 
 		assertEquals(auction1.getTitle(), "제목1");
 

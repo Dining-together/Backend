@@ -82,9 +82,11 @@ public class User implements UserDetails {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<String> roles = new ArrayList<>();
 
 	@Override
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}

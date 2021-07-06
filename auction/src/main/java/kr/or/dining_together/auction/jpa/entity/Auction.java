@@ -14,6 +14,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -58,14 +60,14 @@ public class Auction {
 	@ApiModelProperty(notes = "공고 종료 시간")
 	private Date deadline;
 	@ApiModelProperty(notes = "사용자 id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private long userId;
-
+	@ApiModelProperty(notes = "사용자 Name")
+	private String userName;
+	@ApiModelProperty(notes = "선호 업체")
+	private String storeType;
 	@OneToMany(mappedBy = "auction")
 	private List<Auctioneer> auctioneers = new ArrayList<>();
-
-	@ApiModelProperty(notes = "선호 메뉴")
-	@OneToMany(mappedBy = "auction")
-	private List<AuctionStoreType> auctionStoreTypes = new ArrayList<>();
 
 	@PrePersist
 	void prePersist() {
@@ -78,10 +80,11 @@ public class Auction {
 		this.updatedDate = new Date();
 	}
 
-	public void setUpdate(String title, String content, int minPrice, String userType, int maxPrice,
+	public void setUpdate(String title, String content, String storeType, int minPrice, String userType, int maxPrice,
 		Date reservation, Date deadline) {
 		this.title = title;
 		this.content = content;
+		this.storeType = storeType;
 		this.minPrice = minPrice;
 		this.userType = userType;
 		this.maxPrice = maxPrice;

@@ -11,7 +11,7 @@ import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointExc
 import kr.or.dining_together.member.model.CommonResult;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = {"2. Exception"})
+@Api(tags = {"Exception"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/member/exception")

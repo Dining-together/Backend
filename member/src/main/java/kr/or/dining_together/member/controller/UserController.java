@@ -63,7 +63,7 @@ public class UserController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 	})
-	@ApiOperation(value = "회원 정보 조회", notes = "회원 단건 조회")
+	@ApiOperation(value = "회원 정보 조회", notes = "회원 마이페이지 조회")
 	@GetMapping(value = "/customer")
 	public SingleResult<Customer> getCustomer() throws Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -72,10 +72,11 @@ public class UserController {
 		return responseService.getSingleResult(userService.getCustomer(email));
 	}
 
+	//반환값 마이페이지 값으로 보내기
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 	})
-	@ApiOperation(value = "업체 정보 조회", notes = "업체 단건 조회")
+	@ApiOperation(value = "업체 정보 조회", notes = "업체 마이페이지 조회")
 	@GetMapping(value = "/store")
 	public SingleResult<Store> getStore() throws Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -123,7 +124,7 @@ public class UserController {
 		return responseService.getSingleResult(userService.modify(customerProfileRequest, email));
 	}
 
-	@ApiOperation(value = "업체 정보 수정")
+	@ApiOperation(value = "업체 정보 수정(회원)")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 	})

@@ -1,4 +1,4 @@
-package kr.or.dining_together.member.dto;
+package kr.or.dining_together.auction.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
