@@ -1,25 +1,6 @@
 /* Declarative pipeline must be enclosed within a pipeline block */
 pipeline {
-    // agent section specifies where the entire Pipeline will execute in the Jenkins environment
-    agent { label 'Java_jobs' }
-    /**
-     * tools to auto-install and put on the PATH
-     * some of the supported tools - maven, jdk, gradle
-     */
-tools {
- /** maven 'M3'
-  jdk 'JAVA' */
-}
-
- /**
-     * environment provides variables set in env variables or local variables
-     */
-environment {
-  /** JAVA_HOME = "JAVA"
-  MAVEN_HOME = "M3"
-  SONAR_URL = "http://localhost:9000"
-  BUILD_LOCATION = "BuildLocation"; */
-}
+    agent any
 
  /**
      * stages contain one or more stage directives
