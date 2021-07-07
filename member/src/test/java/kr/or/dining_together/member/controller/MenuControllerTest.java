@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.Date;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +45,7 @@ import kr.or.dining_together.member.vo.LoginRequest;
 @SpringBootTest
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
-@WebAppConfiguration
+@Transactional
 class MenuControllerTest {
 
 	String token;
@@ -132,7 +134,6 @@ class MenuControllerTest {
 					fieldWithPath("success").description("성공여부"),
 					fieldWithPath("code").description("코드번호"),
 					fieldWithPath("msg").description("메시지"),
-					fieldWithPath("list.[].menuId").description("Menu ID"),
 					fieldWithPath("list.[].name").description("메뉴 이름"),
 					fieldWithPath("list.[].path").description("메뉴 사진 경로"),
 					fieldWithPath("list.[].description").description("메뉴 설명"),
