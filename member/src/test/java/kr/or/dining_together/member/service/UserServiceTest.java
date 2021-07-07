@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,8 +39,8 @@ public class UserServiceTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		Customer user = Customer.builder()
 			.email("jifrozen@naver.com")
 			.name("문지언")

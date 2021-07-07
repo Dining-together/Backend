@@ -25,6 +25,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -42,6 +43,7 @@ import kr.or.dining_together.member.vo.LoginRequest;
 @SpringBootTest
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
+@WebAppConfiguration
 class MenuControllerTest {
 
 	String token;

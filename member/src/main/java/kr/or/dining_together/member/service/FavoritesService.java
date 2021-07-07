@@ -32,13 +32,13 @@ public class FavoritesService {
 
 	public List<CustomerFavorites> getCustomerFavoritesAll(String email) throws Throwable {
 		Customer user = customerRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		List<CustomerFavorites> customerFavorites = customerFavoritesRepository.findAllByCustomer(user.getId());
+		List<CustomerFavorites> customerFavorites = customerFavoritesRepository.findAllByCustomerId(user.getId());
 		return customerFavorites;
 	}
 
 	public List<StoreFavorites> getStoreFavoritesAll(String email) throws Throwable {
 		Store user = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		List<StoreFavorites> storeFavorites = storeFavoritesRepository.findAllByStore(user.getId());
+		List<StoreFavorites> storeFavorites = storeFavoritesRepository.findAllByStoreId(user.getId());
 		return storeFavorites;
 	}
 
@@ -80,9 +80,9 @@ public class FavoritesService {
 
 		Long deleteResult = null;
 		if (requestType.equals("STORE")) {
-			deleteResult = customerFavoritesRepository.deleteByCustomerAndStoreId(user.getId(), objectId);
+			deleteResult = customerFavoritesRepository.deleteByCustomerIdAndStoreId(user.getId(), objectId);
 		} else if (requestType.equals("AUCTION")) {
-			deleteResult = storeFavoritesRepository.deleteByStoreAndAuctionId(user.getId(), objectId);
+			deleteResult = storeFavoritesRepository.deleteByStoreIdAndAuctionId(user.getId(), objectId);
 		}
 
 		if (deleteResult == null) {

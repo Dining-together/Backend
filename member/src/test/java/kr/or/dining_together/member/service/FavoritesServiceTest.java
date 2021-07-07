@@ -10,12 +10,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.CustomerFavorites;
+import kr.or.dining_together.member.jpa.entity.Store;
+import kr.or.dining_together.member.jpa.entity.StoreFavorites;
 import kr.or.dining_together.member.jpa.repo.CustomerFavoritesRepository;
 import kr.or.dining_together.member.jpa.repo.StoreFavoritesRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
@@ -37,23 +40,55 @@ public class FavoritesServiceTest {
 	CustomerFavoritesRepository customerFavoritesRepository;
 
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
 	UserRepository userRepository;
+	CustomerFavorites customerFavorites;
+	StoreFavorites storeFavorites;
+	Customer user;
+	Store user1;
 
 	String email = "qja9605@naver.com";
 
 	@Before
 	public void setUp() {
-		Customer customer = Customer.builder()
+		//given
+		String email = "jifrozen@naver.com";
+		String name = "문지언";
+		Store store = Store.builder()
 			.email(email)
-			.name("신태범")
-			.password("test1111")
-			.age(25)
-			.gender("MALE")
-			.provider("application")
+			.name(name)
+			.password(passwordEncoder.encode("test1111"))
 			.roles(Collections.singletonList("ROLE_USER"))
+			.documentChecked(true)
 			.build();
 
-		userRepository.save(customer);
+		String email2 = "qja9605@naver.com";
+		String name2 = "신태범";
+		Customer customer = Customer.builder()
+			.email(email2)
+			.name(name2)
+			.password(passwordEncoder.encode("test1111"))
+			.roles(Collections.singletonList("ROLE_USER"))
+			.age(23)
+			.gender("MALE")
+			.build();
+		//when
+		user1 = (Store)userRepository.save(store);
+		user = (Customer)userRepository.save(customer);
+
+		customerFavorites = CustomerFavorites.builder()
+			.customer(user)
+			.storeId(1L)
+			.build();
+		customerFavoritesRepository.save(customerFavorites);
+		storeFavorites = StoreFavorites.builder()
+			.store(user1)
+			.auctionId(1L)
+			.build();
+
+		storeFavoritesRepository.save(storeFavorites);
 	}
 
 	@Test
@@ -69,7 +104,6 @@ public class FavoritesServiceTest {
 		CustomerFavorites favorites = customerFavoritesRepository.findByStoreId(1L);
 
 		//then
-		System.out.println(favorites);
 		assertNotNull(favorites);
 	}
 

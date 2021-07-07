@@ -13,12 +13,12 @@ public interface CustomerFavoritesRepository extends JpaRepository<CustomerFavor
 	@Override
 	Optional<CustomerFavorites> findById(Long id);
 
-	List<CustomerFavorites> findAllByCustomer(long userId);
+	List<CustomerFavorites> findAllByCustomerId(long userId);
 
 	CustomerFavorites findByStoreId(Long storeId);
 
 	@Transactional
 	@Modifying
-	Long deleteByCustomerAndStoreId(Long customerId, Long storeId);
+	Long deleteByCustomerIdAndStoreId(Long customerId, Long storeId);
 
 }

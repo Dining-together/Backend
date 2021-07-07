@@ -107,8 +107,8 @@ public class FavoritesRepositoryTest {
 		Optional<Store> store = storeRepository.findById(user1.getId());
 		Optional<Customer> customer = customerRepository.findById(user.getId());
 		//when
-		customerFavoritesRepository.deleteByCustomerAndStoreId(customer.get().getId(), 1L);
-		storeFavoritesRepository.deleteByStoreAndAuctionId(store.get().getId(), 1L);
+		customerFavoritesRepository.deleteByCustomerIdAndStoreId(customer.get().getId(), 1L);
+		storeFavoritesRepository.deleteByStoreIdAndAuctionId(store.get().getId(), 1L);
 
 		//then
 		CustomerFavorites customerFavorites2 = customerFavoritesRepository.findByStoreId(1L);
