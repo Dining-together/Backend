@@ -7,6 +7,9 @@ server:
 spring:
   application:
     name: search
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
 
 eureka:
   instance:

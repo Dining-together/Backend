@@ -3,8 +3,6 @@ package kr.or.dining_together.search.service;
 import java.io.IOException;
 import java.util.List;
 
-import org.elasticsearch.action.delete.DeleteRequest;
-import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +28,7 @@ public class StoreService {
 	}
 
 	public void deleteStoreDocument(String id) throws IOException {
-		DeleteRequest request = new DeleteRequest(STORE_INDEX, id);
-		elasticsearchClient.delete(request, RequestOptions.DEFAULT);
+		storeRepository.deleteById(id);
 	}
 
 	public List<Store> findByTitle(final String title) {

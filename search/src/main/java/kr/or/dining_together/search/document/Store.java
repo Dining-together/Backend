@@ -17,14 +17,26 @@ import lombok.NoArgsConstructor;
 @Document(indexName = "stores")
 public class Store {
 	@Id
-	String id;
+	private String id;
 
 	@Field(type = FieldType.Text)
-	String title;
+	private String title;
+
+	@Field(type = FieldType.Text, name = "description")
+	private String description;
 
 	@Field(type = FieldType.Text)
-	String storeType;
+	private String storeType;
 
 	@Field(type = FieldType.Text)
-	String location;
+	private String Latitude;
+
+	@Field(type = FieldType.Text)
+	private String Longitude;
+
+	@Field(type = FieldType.Boolean)
+	private Boolean bookmark;
+
+	@Field(type = FieldType.Text)
+	private String reviewScore;
 }

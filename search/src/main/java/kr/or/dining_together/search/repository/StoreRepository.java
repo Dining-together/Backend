@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.or.dining_together.search.document.Store;
 
-@Repository
+@Repository("storeRepository")
 public interface StoreRepository extends ElasticsearchRepository<Store, String> {
 	List<Store> findAllByTitle(String title);
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -38,15 +39,15 @@ public class AuctionSearchController {
 
 	@ApiOperation(value = "단일 삭제", notes = "단일 경매 공고를 삭제한다")
 	@DeleteMapping(value = "/auction")
-	public CommonResult deletingAuction(@ApiParam(value = "경매공고 id", required = true) String id) throws IOException {
+	public CommonResult deletingAuction(@RequestParam @ApiParam(value = "경매공고 id", required = true) String id) throws IOException {
 		auctionService.deleteAuctionDocument(id);
 		return responseService.getSuccessResult();
 	}
 
 	@ApiOperation(value = "제목 검색", notes = "경매 공고를 키워드로 검색한다.")
 	@GetMapping(value = "/auction")
-	public ListResult<Auction> gettingSearchResults(@ApiParam(value = "검색 키워드", required = true) String keyword) {
-		List<Auction> auctions = auctionService.findByTitle(keyword);
+	public ListResult<Auction> gettingSearchResults(@RequestParam @ApiParam(value = "검색 키워드", required = true) String keyword) {
+		List<Auction> auctions = auctionService.findByTitleMatchingNames(keyword);
 		return responseService.getListResult(auctions);
 	}
 }
