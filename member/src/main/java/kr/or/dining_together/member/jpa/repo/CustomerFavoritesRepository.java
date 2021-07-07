@@ -20,4 +20,5 @@ public interface CustomerFavoritesRepository extends JpaRepository<CustomerFavor
 	@Transactional
 	@Modifying
 	Long deleteByCustomerAndStoreId(Long customerId, Long storeId);
+
 }

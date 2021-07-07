@@ -22,3 +22,7 @@ spring:
           uri: lb://AUCTION
           predicates:
             - Path=/auction/**
+        - id: search
+          uri: lb://SEARCH
+          predicates:
+            - Path=/search/**

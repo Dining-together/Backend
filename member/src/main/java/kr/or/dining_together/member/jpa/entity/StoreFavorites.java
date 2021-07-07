@@ -40,5 +40,4 @@ public class StoreFavorites {
 	@JoinColumn(name = "store_id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Store store;
-
 }

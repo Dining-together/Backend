@@ -21,16 +21,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
+
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -317,11 +320,11 @@ class UserControllerTest {
 					fieldWithPath("msg").description("메시지")
 				)));
 	}
-
 	@Test
 	void delete() throws Exception {
 		Optional<User> user = userRepository.findByEmail("jifrozen@naver.com");
 		assertTrue(user.isPresent());
+    
 		mockMvc.perform(RestDocumentationRequestBuilders
 			.delete("/member/user")
 			.header("X-AUTH-TOKEN", token))

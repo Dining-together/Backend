@@ -22,5 +22,4 @@ public interface UserServiceClient {
 	//
 	// @PostMapping(path = "/member/auth/signup")
 	// public void userSignUp(@RequestBody SignUpRequest sign);
-
 }
