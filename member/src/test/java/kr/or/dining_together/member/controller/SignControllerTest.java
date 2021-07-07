@@ -1,7 +1,8 @@
 package kr.or.dining_together.member.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
@@ -10,9 +11,11 @@ import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -23,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
-import kr.or.dining_together.member.dto.SignUserDto;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
@@ -32,6 +34,7 @@ import kr.or.dining_together.member.vo.SignUpRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @Transactional
 public class SignControllerTest {
@@ -64,32 +67,47 @@ public class SignControllerTest {
 	}
 
 	@Test
+	@DisplayName("로그인 테스트")
 	public void signIn() throws Exception {
 		//given
 		String content = objectMapper.writeValueAsString(new LoginRequest("jifrozen@naver.com", "test1111"));
+
 		System.out.println(content);
 		//when
+
+		//when//then
+
 		mockMvc.perform(post("/member/auth/signin")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
 			//then
 			.andExpect(status().isOk())
-			.andDo(print())
-			.andExpect(status().isOk());
+
+			.andDo(document("login",
+				requestFields(
+					fieldWithPath("email").description("유저 아이디(이메일)"),
+					fieldWithPath("password").description("유저 비밀번호")
+				),
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지"),
+					fieldWithPath("data").description("토큰값")
+				)
+			));
+
 	}
 
 	@Test
+	@DisplayName("회원가입 테스트")
 	public void signup() throws Exception {
 		//given
-		SignUserDto signUserDto = SignUserDto.builder()
+
+		SignUpRequest signUpRequest = SignUpRequest.builder()
 			.email("jifrozen1@naver.com")
 			.name("문지언1")
 			.password("test2222")
-			.build();
-
-		SignUpRequest signUpRequest = SignUpRequest.builder()
-			.signUserDto(signUserDto)
 			.userType(UserType.CUSTOMER)
 			.age(23)
 			.gender("FEMALE")
@@ -105,7 +123,22 @@ public class SignControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
-			.andDo(print());
+
+			.andDo(document("signup",
+				requestFields(
+					fieldWithPath("email").description("유저 아이디(이메일)"),
+					fieldWithPath("name").description("유저 이름"),
+					fieldWithPath("password").description("유저 비밀번호"),
+					fieldWithPath("userType").description("유저 타입"),
+					fieldWithPath("age").description("나이"),
+					fieldWithPath("gender").description("성별")
+				),
+				responseFields(
+					fieldWithPath("success").description("성공여부"),
+					fieldWithPath("code").description("코드번호"),
+					fieldWithPath("msg").description("메시지")
+				)
+			));
 	}
 
 }

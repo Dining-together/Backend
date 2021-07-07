@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.config.security.JwtTokenProvider;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
+import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
@@ -24,15 +25,22 @@ import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * @package : kr.or.dining_together.member.controller
+ * @name: SignController.java
+ * @date : 2021/05/30 12:43 오전
+ * @author : jifrozen
+ * @version : 1.0.0
+ * @description : 로그인 회원가입
+ * @modified :
+ **/
 @Api(tags = {"1. Sign"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/member/auth")
 public class SignController {
-	/*
-	로그인 회원가입 로직
-	 */
 
+	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final ResponseService responseService;
 	private final PasswordEncoder passwordEncoder;

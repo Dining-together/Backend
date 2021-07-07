@@ -17,7 +17,6 @@ public class CustomerProfileRequest {
 
 	private String password;
 	private String name;
-	private String phoneNum;
 	private int age;
 	private String gender;
 

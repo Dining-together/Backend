@@ -1,0 +1,807 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "auction",
+    "description": "Demo project for Spring Boot",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost"
+    }
+  ],
+  "tags": [],
+  "paths": {
+    "/auction": {
+      "post": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "registerAuction",
+        "parameters": [
+          {
+            "name": "X-AUTH-TOKEN",
+            "in": "header",
+            "description": "토큰값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/auction-auctionId-auctioneer486549215"
+              },
+              "examples": {
+                "registerAuction": {
+                  "value": "{\"title\":\"제목1\",\"content\":\"내용1\",\"maxPrice\":1000,\"minPrice\":10,\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:34.159+00:00\",\"deadline\":\"2021-06-23T05:11:34.159+00:00\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-735543867"
+                },
+                "examples": {
+                  "registerAuction": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-23T05:11:34.181+00:00\",\"updatedDate\":\"2021-06-23T05:11:34.181+00:00\",\"auctionId\":4,\"title\":\"제목1\",\"content\":\"내용1\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:34.159+00:00\",\"deadline\":\"2021-06-23T05:11:34.159+00:00\",\"userId\":1,\"auctioneers\":null,\"auctionStoreTypes\":null}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auction/auctions": {
+      "get": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "auctionsgetAuctions",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctions-1927013758"
+                },
+                "examples": {
+                  "getAuctions": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"list\":[{\"createdDate\":\"2021-06-22T13:04:57.246+00:00\",\"updatedDate\":\"2021-06-22T13:04:57.246+00:00\",\"auctionId\":6,\"title\":\"제목\",\"content\":\"내용\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-22T13:04:57.245+00:00\",\"deadline\":\"2021-06-22T13:04:57.245+00:00\",\"userId\":\"1\",\"auctioneers\":null,\"auctionStoreTypes\":null}]}"
+                  },
+                  "auctions": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"list\":[{\"createdDate\":\"2021-06-23T05:11:34.544+00:00\",\"updatedDate\":\"2021-06-23T05:11:34.544+00:00\",\"auctionId\":7,\"title\":\"제목\",\"content\":\"내용\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:34.544+00:00\",\"deadline\":\"2021-06-23T05:11:34.544+00:00\",\"userId\":1,\"auctioneers\":null,\"auctionStoreTypes\":null}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auction/{auctionId}": {
+      "get": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "auction",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-735543867"
+                },
+                "examples": {
+                  "auction": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-23T05:11:34.290+00:00\",\"updatedDate\":\"2021-06-23T05:11:34.290+00:00\",\"auctionId\":5,\"title\":\"제목\",\"content\":\"내용\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:34.290+00:00\",\"deadline\":\"2021-06-23T05:11:34.290+00:00\",\"userId\":1,\"auctioneers\":null,\"auctionStoreTypes\":null}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "modifyAuction",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-AUTH-TOKEN",
+            "in": "header",
+            "description": "토큰값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/auction-auctionId-auctioneer486549215"
+              },
+              "examples": {
+                "modifyAuction": {
+                  "value": "{\"auctionId\":\"1\",\"title\":\"제목\",\"content\":\"수정\",\"maxPrice\":1000,\"minPrice\":10,\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:33.489+00:00\",\"deadline\":\"2021-06-23T05:11:33.489+00:00\",\"userId\":\"1\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-735543867"
+                },
+                "examples": {
+                  "modifyAuction": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"createdDate\":\"2021-06-23T05:11:33.498+00:00\",\"updatedDate\":\"2021-06-23T05:11:33.498+00:00\",\"auctionId\":1,\"title\":\"제목\",\"content\":\"수정\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:33.489+00:00\",\"deadline\":\"2021-06-23T05:11:33.489+00:00\",\"userId\":1,\"auctioneers\":null,\"auctionStoreTypes\":null}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "deleteAuction",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-AUTH-TOKEN",
+            "in": "header",
+            "description": "토큰값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctioneer-auctioneerId40658993"
+                },
+                "examples": {
+                  "deleteAuction": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auction/auctioneer/{auctioneerId}": {
+      "put": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "modifyAuctioneer",
+        "parameters": [
+          {
+            "name": "auctioneerId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-AUTH-TOKEN",
+            "in": "header",
+            "description": "토큰값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/auction-auctionId-auctioneer486549215"
+              },
+              "examples": {
+                "modifyAuctioneer": {
+                  "value": "{\"price\":10,\"menu\":\"수정\",\"content\":\"수정\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctionId-auctioneer512894856"
+                },
+                "examples": {
+                  "modifyAuctioneer": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"auctioneerId\":6,\"storeId\":1,\"menu\":\"menu\",\"price\":10,\"content\":\"수정\"}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "deleteAuctioneer",
+        "parameters": [
+          {
+            "name": "auctioneerId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-AUTH-TOKEN",
+            "in": "header",
+            "description": "토큰값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctioneer-auctioneerId40658993"
+                },
+                "examples": {
+                  "deleteAuctioneer": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auction/{auctionId}/auctioneer": {
+      "post": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "registerAuctioneer",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-AUTH-TOKEN",
+            "in": "header",
+            "description": "토큰값",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlhdCI6MTYyNDQyMDI1MSwiZXhwIjoxNjI0NTA2NjUxfQ.beMJYnqZAF1WoTvumtmZiePrU4XmaHsqjBWrWvO2B60"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/auction-auctionId-auctioneer486549215"
+              },
+              "examples": {
+                "registerAuctioneer": {
+                  "value": "{\"price\":10,\"menu\":\"menu\",\"content\":\"content\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctionId-auctioneer512894856"
+                },
+                "examples": {
+                  "registerAuctioneer": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":{\"auctioneerId\":2,\"storeId\":1,\"menu\":\"menu\",\"price\":10,\"content\":\"content\"}}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auction/{auctionId}/auctioneers": {
+      "get": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "auctioneers",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-auctionId-auctioneers-832203831"
+                },
+                "examples": {
+                  "auctioneers": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"list\":[{\"auctioneerId\":4,\"storeId\":1,\"menu\":\"menu\",\"price\":1,\"content\":\"content\"},{\"auctioneerId\":5,\"storeId\":1,\"menu\":\"menu1\",\"price\":1,\"content\":\"content1\"}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auction/{userId}/auctions": {
+      "get": {
+        "tags": [
+          "auction"
+        ],
+        "operationId": "getAuction",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auction-userId-auctions4381044"
+                },
+                "examples": {
+                  "getAuction": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"list\":[{\"createdDate\":\"2021-06-23T05:11:34.424+00:00\",\"updatedDate\":\"2021-06-23T05:11:34.424+00:00\",\"auctionId\":6,\"title\":\"제목\",\"content\":\"내용\",\"maxPrice\":1000,\"minPrice\":10,\"status\":\"PROCEEDING\",\"userType\":\"Family\",\"reservation\":\"2021-06-23T05:11:34.423+00:00\",\"deadline\":\"2021-06-23T05:11:34.423+00:00\",\"userId\":1,\"auctioneers\":null,\"auctionStoreTypes\":null}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "auction-auctions-1927013758": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "updatedDate": {
+                  "type": "string",
+                  "description": "공고 수정 일자"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "공고 제목"
+                },
+                "userId": {
+                  "description": "공고 작성자",
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                },
+                "content": {
+                  "type": "string",
+                  "description": "공고 내용"
+                },
+                "auctionId": {
+                  "type": "number",
+                  "description": "공고 ID"
+                },
+                "createdDate": {
+                  "type": "string",
+                  "description": "공고 생성 일자"
+                },
+                "minPrice": {
+                  "type": "number",
+                  "description": "공고 최소가"
+                },
+                "reservation": {
+                  "type": "string",
+                  "description": "공고 예약 시간"
+                },
+                "userType": {
+                  "type": "string",
+                  "description": "공고 사용자 유형(회식, 가족, 친구)"
+                },
+                "maxPrice": {
+                  "type": "number",
+                  "description": "공고 최대가"
+                },
+                "deadline": {
+                  "type": "string",
+                  "description": "공고 마감시간"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "공고 상태(진행중, 마감, 실패)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "auction-userId-auctions4381044": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "updatedDate": {
+                  "type": "string",
+                  "description": "공고 수정 일자"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "공고 제목"
+                },
+                "userId": {
+                  "type": "number",
+                  "description": "공고 작성자"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "공고 내용"
+                },
+                "auctionId": {
+                  "type": "number",
+                  "description": "공고 ID"
+                },
+                "createdDate": {
+                  "type": "string",
+                  "description": "공고 생성 일자"
+                },
+                "minPrice": {
+                  "type": "number",
+                  "description": "공고 최소가"
+                },
+                "reservation": {
+                  "type": "string",
+                  "description": "공고 예약 시간"
+                },
+                "userType": {
+                  "type": "string",
+                  "description": "공고 사용자 유형(회식, 가족, 친구)"
+                },
+                "maxPrice": {
+                  "type": "number",
+                  "description": "공고 최대가"
+                },
+                "deadline": {
+                  "type": "string",
+                  "description": "공고 마감시간"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "공고 상태(진행중, 마감, 실패)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "auction-auctionId-auctioneer512894856": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": "number",
+                "description": "예상 가격"
+              },
+              "auctioneerId": {
+                "type": "number",
+                "description": "Auctioneer ID"
+              },
+              "menu": {
+                "type": "string",
+                "description": "추천 메뉴"
+              },
+              "storeId": {
+                "type": "number",
+                "description": "참여 업체 id"
+              },
+              "content": {
+                "type": "string",
+                "description": "내용"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          }
+        }
+      },
+      "auction-auctionId-auctioneers-832203831": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          },
+          "list": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "type": "number",
+                  "description": "예상 가격"
+                },
+                "auctioneerId": {
+                  "type": "number",
+                  "description": "Auctioneer ID"
+                },
+                "menu": {
+                  "type": "string",
+                  "description": "추천 메뉴"
+                },
+                "storeId": {
+                  "type": "number",
+                  "description": "참여 업체 id"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "내용"
+                }
+              }
+            }
+          }
+        }
+      },
+      "auction-auctioneer-auctioneerId40658993": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "data": {
+            "type": "boolean",
+            "description": "성공/실패"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          }
+        }
+      },
+      "auction-735543867": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "updatedDate": {
+                "type": "string",
+                "description": "공고 수정 일자"
+              },
+              "title": {
+                "type": "string",
+                "description": "공고 제목"
+              },
+              "userId": {
+                "type": "number",
+                "description": "공고 작성자"
+              },
+              "content": {
+                "type": "string",
+                "description": "공고 내용"
+              },
+              "auctionId": {
+                "type": "number",
+                "description": "공고 ID"
+              },
+              "createdDate": {
+                "type": "string",
+                "description": "공고 생성 일자"
+              },
+              "minPrice": {
+                "type": "number",
+                "description": "공고 최소가"
+              },
+              "reservation": {
+                "type": "string",
+                "description": "공고 예약 시간"
+              },
+              "userType": {
+                "type": "string",
+                "description": "공고 사용자 유형(회식, 가족, 친구)"
+              },
+              "maxPrice": {
+                "type": "number",
+                "description": "공고 최대가"
+              },
+              "deadline": {
+                "type": "string",
+                "description": "공고 마감시간"
+              },
+              "status": {
+                "type": "string",
+                "description": "공고 상태(진행중, 마감, 실패)"
+              }
+            }
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          }
+        }
+      },
+      "auction-auctionId-auctioneer486549215": {
+        "type": "object"
+      }
+    }
+  }
+}

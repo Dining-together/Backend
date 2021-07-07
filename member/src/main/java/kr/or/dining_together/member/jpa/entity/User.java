@@ -64,8 +64,6 @@ public class User implements UserDetails {
 	@Column(nullable = false, unique = true, length = 100)
 	private String email;
 
-	// @Column(length = 100)
-	// private String phoneNo;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(length = 100)
 	@ApiModelProperty(notes = "패스워드을 입력해 주세요")
@@ -74,6 +72,7 @@ public class User implements UserDetails {
 	@Size(min = 2, message = "Name은 2글자 이상 입력.")
 	@ApiModelProperty(notes = "사용자 이름을 입력해 주세요")
 	private String name;
+	private String path;
 	@Past
 	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
 	private Date joinDate;
@@ -83,9 +82,11 @@ public class User implements UserDetails {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<String> roles = new ArrayList<>();
 
 	@Override
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
@@ -139,6 +140,15 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void update(String password, String name) {
+		this.password = password;
+		this.name = name;
+	}
+
+	public void imageUpdate(String path) {
+		this.path = path;
 	}
 
 }

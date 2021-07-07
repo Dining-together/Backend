@@ -7,9 +7,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
-import kr.or.dining_together.auction.dto.AuctionDto;
+import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
+import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -28,32 +29,41 @@ public class AuctionService {
 	private final AuctionRepository auctionRepository;
 
 	public List<Auction> getAuctions() {
-		return auctionRepository.findAll();
+		List<Auction> auctions = auctionRepository.findAll();
+		return auctions;
 	}
 
 	public Auction getAuction(long auctionId) {
 		return auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 	}
 
-	public Auction writeAuction(AuctionDto auctionDto) {
+	public List<Auction> getAuctionsByUserId(long userId) {
+		return auctionRepository.findAllByUserId(userId);
+	}
+
+	public Auction writeAuction(UserIdDto user, AuctionRequest auctionRequest) {
 		Auction auction = Auction.builder()
-			.auctionId(auctionDto.getAuctionId())
-			.title(auctionDto.getTitle())
-			.content(auctionDto.getContent())
-			.maxPrice(auctionDto.getMaxPrice())
-			.minPrice(auctionDto.getMinPrice())
-			.userType(auctionDto.getUserType())
-			.reservation(auctionDto.getReservation())
-			.deadline(auctionDto.getDeadline())
+			.content(auctionRequest.getContent())
+			.title(auctionRequest.getTitle())
+			.storeType(auctionRequest.getStoreType())
+			.deadline(auctionRequest.getDeadline())
+			.maxPrice(auctionRequest.getMaxPrice())
+			.minPrice(auctionRequest.getMinPrice())
+			.userId(user.getId())
+			.userName(user.getName())
+			.userType(auctionRequest.getUserType())
+			.reservation(auctionRequest.getReservation())
 			.build();
 
 		return auctionRepository.save(auction);
 	}
 
-	public Auction updateAuction(long auctionId, AuctionDto auctionDto) {
+	public Auction updateAuction(long auctionId, AuctionRequest auctionRequest) {
 		Auction auction = getAuction(auctionId);
-		auction.setUpdate(auctionDto.getTitle(), auctionDto.getContent(), auctionDto.getMinPrice(),
-			auctionDto.getUserType(), auction.getMaxPrice(), auctionDto.getReservation(), auctionDto.getDeadline());
+		auction.setUpdate(auctionRequest.getTitle(), auctionRequest.getContent(), auctionRequest.getStoreType(),
+			auctionRequest.getMinPrice(),
+			auctionRequest.getUserType(), auctionRequest.getMaxPrice(), auctionRequest.getReservation(),
+			auctionRequest.getDeadline());
 		return auction;
 	}
 

@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.or.dining_together.member.advice.exception.AuthenticationEntryPointException;
 import kr.or.dining_together.member.advice.exception.ComunicationException;
 import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
+import kr.or.dining_together.member.advice.exception.FileNotFoundException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
+import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
+import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
@@ -44,19 +47,19 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(DataSaveFailedException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	protected CommonResult userSaveFailedException(HttpServletRequest request, LoginFailedException e) {
+	protected CommonResult userSaveFailedException(HttpServletRequest request, DataSaveFailedException e) {
 		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입 정보저장에 실패했습니다..");
 	}
 
 	@ExceptionHandler(UserDuplicationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected CommonResult userDuplicationException(HttpServletRequest request, LoginFailedException e) {
-		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "이미 등록된 회원 이메일입니다.");
+	protected CommonResult userDuplicationException(HttpServletRequest request, UserDuplicationException e) {
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "이미 등록된 회원 이메일입니다.");
 	}
 
 	@ExceptionHandler(VerificationFailedException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected CommonResult verificationFailedException(HttpServletRequest request, LoginFailedException e) {
+	protected CommonResult verificationFailedException(HttpServletRequest request, VerificationFailedException e) {
 		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "이메일 인증키가 일치하지 않습니다");
 	}
 
@@ -70,7 +73,27 @@ public class ExceptionAdvice {
 	@ExceptionHandler(ComunicationException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	protected CommonResult comunicationException(HttpServletRequest request, ComunicationException e) {
-		return responseService.getFailResult(502, "통신 중 오류가 발생했습니다.");
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "통신 중 오류가 발생했습니다.");
 	}
 
+	@ExceptionHandler(PasswordNotMatchedException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public CommonResult passwordNotMatchedException(HttpServletRequest request,
+		PasswordNotMatchedException e) {
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "패스워드가 맞지 않습니다.");
+	}
+
+	@ExceptionHandler(ResourceNotExistException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public CommonResult resourceNotExistException(HttpServletRequest request,
+		ResourceNotExistException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "요청한 자원이 존재하지 않습니다.");
+	}
+
+	@ExceptionHandler(FileNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public CommonResult fileNotFoundException(HttpServletRequest request,
+		FileNotFoundException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "파일이 존재하지 않습니다.");
+	}
 }

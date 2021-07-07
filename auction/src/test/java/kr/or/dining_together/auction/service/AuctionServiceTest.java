@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import kr.or.dining_together.auction.dto.AuctionDto;
+import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
+import kr.or.dining_together.auction.vo.AuctionRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,19 +30,30 @@ class AuctionServiceTest {
 	AuctionService auctionService;
 
 	@Autowired
+	UserServiceClient userServiceClient;
+
+	@Autowired
 	ModelMapper modelMapper;
 
 	Auction auction;
 
+	UserIdDto userIdDto;
+
 	@BeforeEach
 	void setUp() {
+
+		userIdDto = UserIdDto.builder()
+			.id(1L)
+			.name("moon")
+			.build();
+
 		auction = Auction.builder()
-			.auctionId(1L)
 			.title("제목")
 			.content("내용")
-			.maxPrice("1000")
-			.minPrice("10")
+			.maxPrice(1000)
+			.minPrice(10)
 			.userType("Family")
+			.userId(1L)
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
@@ -59,74 +72,62 @@ class AuctionServiceTest {
 
 	@Test
 	void getAuction() {
-		long auctionId = 1L;
+		long auctionId = auction.getAuctionId();
 		Auction auction2 = auctionService.getAuction(auctionId);
 
 		assertEquals(auction.getAuctionId(), auction2.getAuctionId());
 	}
 
 	@Test
-	void writeAuction() {
+	void getAuctionsByUserId() {
+		long userId = 1L;
+		List<Auction> auctions = auctionService.getAuctionsByUserId(userId);
 
-		long auctionId = 2L;
-		Auction auction = Auction.builder()
-			.auctionId(2L)
+		assertEquals(auctions.get(0).getUserId(), userId);
+
+	}
+
+	@Test
+	void writeAuction() {
+		AuctionRequest auction1 = AuctionRequest.builder()
 			.title("제목2")
 			.content("내용2")
-			.maxPrice("2000")
-			.minPrice("20")
+			.maxPrice(2000)
+			.minPrice(20)
 			.userType("Friend")
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
 
-		AuctionDto auctionDto = modelMapper.map(auction, AuctionDto.class);
+		Auction auction = auctionService.writeAuction(userIdDto, auction1);
 
-		auctionService.writeAuction(auctionDto);
-
-		assertEquals(auctionRepository.findById(auctionId).get().getAuctionId(), auction.getAuctionId());
+		assertEquals(auction.getTitle(), "제목2");
 
 	}
 
 	@Test
 	void updateAuction() {
-		long auctionId = 1L;
 
-		Auction auction = Auction.builder()
-			.auctionId(1L)
+		Auction modifyAuction = Auction.builder()
 			.title("제목1")
 			.content("내용2")
-			.maxPrice("2000")
-			.minPrice("20")
+			.maxPrice(2000)
+			.minPrice(20)
 			.userType("Friend")
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
 
-		AuctionDto auctionDto = modelMapper.map(auction, AuctionDto.class);
+		AuctionRequest auctionRequest = modelMapper.map(modifyAuction, AuctionRequest.class);
 
-		auctionService.updateAuction(auction.getAuctionId(), auctionDto);
+		Auction auction1 = auctionService.updateAuction(auction.getAuctionId(), auctionRequest);
 
-		assertEquals(auctionRepository.findById(auctionId).get().getTitle(), "제목1");
+		assertEquals(auction1.getTitle(), "제목1");
 
 	}
 
 	@Test
 	void deleteAuction() {
-		long auctionId = 3L;
-		Auction auction = Auction.builder()
-			.auctionId(3L)
-			.title("제목2")
-			.content("내용2")
-			.maxPrice("2000")
-			.minPrice("20")
-			.userType("Friend")
-			.reservation(new Date())
-			.deadline(new Date())
-			.build();
-
-		auctionRepository.save(auction);
-
 		auctionService.deleteAuction(auction.getAuctionId());
 
 		assertTrue(auctionRepository.findById(auction.getAuctionId()).isEmpty());
