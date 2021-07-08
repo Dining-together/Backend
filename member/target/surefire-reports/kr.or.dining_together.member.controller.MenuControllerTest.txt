@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.controller.MenuControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.755 s - in kr.or.dining_together.member.controller.MenuControllerTest
