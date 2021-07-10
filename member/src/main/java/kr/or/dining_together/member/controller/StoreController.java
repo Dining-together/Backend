@@ -31,6 +31,7 @@ import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.ResponseService;
+import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.StoreService;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreRequest;
@@ -51,10 +52,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/member")
 public class StoreController {
 
+	private final static String STORE_DOCUMENT_FOLDER_DIRECTORY = "/store/document";
+	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/photo";
+
 	private final StoreRepository storeRepository;
 	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreService storeService;
+	private final StorageService storageService;
 
 	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
 	@GetMapping(value = "/stores")
@@ -79,7 +84,7 @@ public class StoreController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_storeImages";
-		fileService.savefiles(files, fileName, "store/images", user);
+		storageService.savefiles(files, fileName, STORE_IMAGE_FOLDER_DIRECTORY, user);
 		return responseService.getSuccessResult();
 	}
 
@@ -90,7 +95,7 @@ public class StoreController {
 	@PostMapping(value = "/store/document")
 	public CommonResult saveDocument(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@RequestBody @ApiParam(value = "서류 사진", required = true) MultipartFile file) {
+		@RequestBody @ApiParam(value = "서류 사진", required = true) MultipartFile file) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		Store user = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
@@ -98,7 +103,7 @@ public class StoreController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_document";
-		fileService.save(file, fileName, "store/document");
+		storageService.save(file, fileName, STORE_DOCUMENT_FOLDER_DIRECTORY);
 		return responseService.getSuccessResult();
 	}
 

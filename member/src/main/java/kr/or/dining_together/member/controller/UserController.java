@@ -33,6 +33,7 @@ import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.ResponseService;
+import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.CustomerProfileRequest;
 import kr.or.dining_together.member.vo.CustomerProfileResponse;
@@ -55,9 +56,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/member")
 public class UserController {
 
+	private final static String USER_IMAGE_FOLDER_DIRECTORY = "/user/photo";
+
 	private final UserService userService;
 	private final ResponseService responseService;
 	private final UserRepository userRepository;
+	private final StorageService storageService;
 	private final FileService fileService;
 
 	@ApiImplicitParams({
@@ -101,7 +105,7 @@ public class UserController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_photo";
-		String filePath = fileService.save(file, fileName, "user");
+		String filePath = storageService.save(file, fileName, USER_IMAGE_FOLDER_DIRECTORY);
 		if (filePath == "none") {
 			throw new FileNotFoundException();
 		} else {

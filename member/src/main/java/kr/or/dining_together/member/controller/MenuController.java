@@ -1,6 +1,7 @@
 package kr.or.dining_together.member.controller;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +33,7 @@ import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.MenuService;
 import kr.or.dining_together.member.service.ResponseService;
+import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.vo.MenuRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,11 +54,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/member")
 public class MenuController {
 
+	private final static String MENU_FOLDER_DIRECTORY = "/menu/photo";
 	private final MenuService menuService;
 	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreRepository storeRepository;
 	private final MenuRepository menuRepository;
+	private final StorageService storageService;
 
 	@ApiOperation(value = "업체 메뉴 조회", notes = "업체 메뉴를 조회한다.")
 	@GetMapping(value = "/{storeId}/menus")
@@ -76,12 +80,13 @@ public class MenuController {
 		@RequestParam("name") String name,
 		@RequestParam("price") int price,
 		@RequestParam("description") String description,
-		@RequestParam("file") MultipartFile file) {
+		@RequestParam("file") MultipartFile file) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		String fileName = store.getName() + "-" + name;
-		String path = fileService.save(file, fileName, "menu");
+		String path = storageService.save(file, fileName, MENU_FOLDER_DIRECTORY);
+
 		MenuRequest menuRequest = MenuRequest.builder()
 			.name(name)
 			.price(price)
@@ -104,11 +109,11 @@ public class MenuController {
 		@RequestParam("name") String name,
 		@RequestParam("price") int price,
 		@RequestParam("description") String description,
-		@RequestParam("file") MultipartFile file) {
+		@RequestParam("file") MultipartFile file) throws IOException {
 		Menu menu = menuRepository.findById(menuId).orElseThrow(ResourceNotExistException::new);
 		new File(menu.getPath()).delete();
 		String fileName = menu.getStore().getName() + "-" + name;
-		String path = fileService.save(file, fileName, "menu");
+		String path = storageService.save(file, fileName, MENU_FOLDER_DIRECTORY);
 		MenuRequest menuRequest = MenuRequest.builder()
 			.name(name)
 			.price(price)
