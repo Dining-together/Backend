@@ -103,6 +103,8 @@ public class StoreController {
 		}
 		String fileName = user.getId() + "_document";
 		fileService.save(file, fileName, "store/document");
+		user.setDocumentChecked(true);
+		storeRepository.save(user);
 		return responseService.getSuccessResult();
 	}
 
@@ -149,6 +151,15 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		return responseService.getSingleResult(storeService.modifyFacility(facilityRequest, facilityId, email));
+	}
+
+	@ApiOperation(value = "서류 확인 (다른 서비스 호출)", notes = "업체 서류 인증 확인")
+	@GetMapping(value = "/store/document")
+	public boolean isDocumentChecked() throws Throwable {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return store.getDocumentChecked();
 	}
 
 }

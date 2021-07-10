@@ -63,6 +63,11 @@ public class Store extends User {
 		this.storeName = storeName;
 	}
 
+	public void setDocumentChecked(boolean documentChecked) {
+		this.documentChecked = documentChecked;
+
+	}
+
 	public void setFacility(Facility facility) {
 		this.facility = facility;
 	}

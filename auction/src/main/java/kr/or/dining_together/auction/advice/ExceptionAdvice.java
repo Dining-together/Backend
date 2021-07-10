@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.or.dining_together.auction.advice.exception.BadRequestException;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.advice.exception.UnAuthorizedException;
+import kr.or.dining_together.auction.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.auction.advice.exception.UserNotFoundException;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.service.ResponseService;
@@ -58,5 +59,12 @@ public class ExceptionAdvice {
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	protected CommonResult badRequestException(HttpServletRequest request, UnAuthorizedException e) {
 		return responseService.getFailResult(HttpStatus.UNAUTHORIZED.value(), "권한을 가지고 있지 않습니다.");
+	}
+
+	@ExceptionHandler(UnprovenStoreException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public CommonResult unprovenStoreException(HttpServletRequest request,
+		UnprovenStoreException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "업체 인증을 진행해주세요");
 	}
 }

@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.auction.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.commons.annotation.Permission;
 import kr.or.dining_together.auction.dto.AuctioneerDto;
@@ -65,6 +66,9 @@ public class AuctioneerController {
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "경매 참여 등록 정보", required = true) AuctioneerRequest auctioneerRequest) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		if (userServiceClient.isDocumentChecked(xAuthToken) == false) {
+			throw new UnprovenStoreException();
+		}
 		return responseService.getSingleResult(
 			auctioneerService.registerAuctioneer(auctioneerRequest, user, auctionId));
 
