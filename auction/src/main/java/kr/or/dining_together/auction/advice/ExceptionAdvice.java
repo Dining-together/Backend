@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import kr.or.dining_together.auction.advice.exception.BadRequestException;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.auction.advice.exception.UnAuthorizedException;
 import kr.or.dining_together.auction.advice.exception.UserNotFoundException;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.service.ResponseService;
@@ -49,7 +50,13 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(BadRequestException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	protected CommonResult badRequestException(HttpServletRequest request, UserNotFoundException e) {
+	protected CommonResult badRequestException(HttpServletRequest request, BadRequestException e) {
 		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "요청 자원이 알맞지 않습니다..");
+	}
+
+	@ExceptionHandler(UnAuthorizedException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	protected CommonResult badRequestException(HttpServletRequest request, UnAuthorizedException e) {
+		return responseService.getFailResult(HttpStatus.UNAUTHORIZED.value(), "권한을 가지고 있지 않습니다.");
 	}
 }

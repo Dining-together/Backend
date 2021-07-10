@@ -69,8 +69,12 @@ public class StoreController {
 	}
 
 	@ApiOperation(value = "가게 사진 등록")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+	})
 	@PostMapping(value = "/store/images")
 	public CommonResult saveFiles(
+		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam("files") List<MultipartFile> files) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();

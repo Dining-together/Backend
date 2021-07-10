@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.commons.annotation.Permission;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.model.CommonResult;
@@ -62,6 +63,7 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
+	@Permission(target = "CUSTOMER")
 	public SingleResult<Auction> registerAuction(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionRequest auctionRequest) {

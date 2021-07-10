@@ -73,7 +73,7 @@ public class StoreService {
 		storeRepository.save(store);
 		return facility;
 	}
-	
+
 	@Transactional
 	public Facility modifyFacility(FacilityRequest facilityRequest, long facilityId, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);

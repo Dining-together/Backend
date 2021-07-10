@@ -15,4 +15,7 @@ public class UserIdDto {
 
 	@ApiModelProperty(value = "이름")
 	private String name;
+
+	@ApiModelProperty(value = "사용자 유형")
+	private String type;
 }

@@ -38,18 +38,15 @@ public class FavoritesServiceTest {
 
 	@Autowired
 	CustomerFavoritesRepository customerFavoritesRepository;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
 	@Autowired
 	UserRepository userRepository;
 	CustomerFavorites customerFavorites;
 	StoreFavorites storeFavorites;
 	Customer user;
 	Store user1;
-
 	String email = "qja9605@naver.com";
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Before
 	public void setUp() {

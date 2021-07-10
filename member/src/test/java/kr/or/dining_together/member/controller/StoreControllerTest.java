@@ -7,10 +7,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -39,9 +37,7 @@ import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
-import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.StoreRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
