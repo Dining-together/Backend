@@ -2,8 +2,12 @@ package kr.or.dining_together.member.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +29,7 @@ import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
+import kr.or.dining_together.member.jpa.entity.StoreImages;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
@@ -53,7 +58,7 @@ import lombok.RequiredArgsConstructor;
 public class StoreController {
 
 	private final static String STORE_DOCUMENT_FOLDER_DIRECTORY = "/store/document";
-	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/photo";
+	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
 
 	private final StoreRepository storeRepository;
 	private final FileService fileService;
@@ -74,8 +79,12 @@ public class StoreController {
 	}
 
 	@ApiOperation(value = "가게 사진 등록")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+	})
 	@PostMapping(value = "/store/images")
 	public CommonResult saveFiles(
+		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam("files") List<MultipartFile> files) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
@@ -84,7 +93,45 @@ public class StoreController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_storeImages";
+		System.out.println(fileName);
 		storageService.savefiles(files, fileName, STORE_IMAGE_FOLDER_DIRECTORY, user);
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "가게 사진 등록222")
+	@PostMapping(value = "/store/imagesss")
+	public CommonResult saveFilessss(
+		@RequestParam("files") MultipartFile[] files) throws IOException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		Store user = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		if (user.getPath() != null) {
+			new File(user.getPath()).delete();
+		}
+		String fileName = user.getId() + "_storeImages";
+
+		AtomicInteger fileCount = new AtomicInteger(1);
+		List<StoreImages> fileList = new ArrayList<>();
+		Arrays.asList(files).stream().forEach(file -> {
+			String fileDirectoryName = null;
+			try {
+				fileDirectoryName = storageService.save(file, fileName, STORE_IMAGE_FOLDER_DIRECTORY);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			fileCount.getAndIncrement();
+			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
+			StoreImages boardPicture = StoreImages.builder()
+				.fileName(newFileName)
+				.path(fileDirectoryName)
+				.store(user)
+				.build();
+			fileList.add(boardPicture);
+		});
+
+		System.out.println(fileList);
+		
 		return responseService.getSuccessResult();
 	}
 

@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -32,6 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @NoArgsConstructor
 public class StorageService {
+
+	Logger logger = LoggerFactory.getLogger(StorageService.class);
 	private AmazonS3 s3Client;
 
 	@Value("${storage.s3.endpoint}")
@@ -95,7 +99,7 @@ public class StorageService {
 
 	public List<StoreImages> savefiles(List<MultipartFile> files, String name, String folderName, Store store) throws
 		IOException {
-
+		System.out.println("savefiles method called");
 		// 반환을 할 파일 리스트
 		List<StoreImages> fileList = new ArrayList<>();
 
@@ -105,53 +109,55 @@ public class StorageService {
 		}
 
 		int count = 1;
+		System.out.println(count);
 		for (MultipartFile multipartFile : files) {
-			if (!multipartFile.isEmpty()) {
-				// jpeg, png, gif 파일들만 받아서 처리할 예정
-				String contentType = multipartFile.getContentType();
-				String originalFileExtension;
-				// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
-				if (ObjectUtils.isEmpty(contentType)) {
-					break;
-				} else {
-					if (contentType.contains("image/jpeg")) {
-						originalFileExtension = ".jpg";
-					} else if (contentType.contains("image/png")) {
-						originalFileExtension = ".png";
-					} else if (contentType.contains("image/gif")) {
-						originalFileExtension = ".gif";
-					}
-					// 다른 파일 명이면 아무 일 하지 않는다
-					else {
-						break;
-					}
-				}
-
-				count += 1;
-
-				String fullBucketName = bucket + folderName;
-				String newFileName = name + count + originalFileExtension;
-
-				fileUpload(multipartFile, fullBucketName, newFileName);
-
-				// 생성 후 리스트에 추가
-				StoreImages boardPicture = StoreImages.builder()
-					.file_name(newFileName)
-					.path(fullBucketName)
-					.store(store)
-					.build();
-
-				fileList.add(boardPicture);
+			System.out.println(multipartFile.getOriginalFilename());
+			if (multipartFile.isEmpty()) {
+				continue;
 			}
+			// jpeg, png, gif 파일들만 받아서 처리할 예정
+			String contentType = multipartFile.getContentType();
+			String originalFileExtension;
+			// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
+			if (ObjectUtils.isEmpty(contentType)) {
+				continue;
+			}
+
+			if (contentType.contains("image/jpeg")) {
+				originalFileExtension = ".jpg";
+			} else if (contentType.contains("image/png")) {
+				originalFileExtension = ".png";
+			} else if (contentType.contains("image/gif")) {
+				originalFileExtension = ".gif";
+			}
+			// 다른 파일 명이면 아무 일 하지 않는다
+			else {
+				continue;
+			}
+
+			count += 1;
+
+			String fullBucketName = bucket + folderName;
+			String newFileName = name + count + originalFileExtension;
+
+			System.out.println(newFileName);
+			fileUpload(multipartFile, fullBucketName, newFileName);
+
+			// 생성 후 리스트에 추가
+			StoreImages boardPicture = StoreImages.builder()
+				.fileName(newFileName)
+				.path(fullBucketName)
+				.store(store)
+				.build();
+
+			fileList.add(boardPicture);
 		}
 
 		return fileList;
-
 	}
 
 	private void fileUpload(MultipartFile multipartFile, String fullBucketName, String newFileName) throws IOException {
-		InputStream input;
-		input = multipartFile.getInputStream();
+		InputStream input = multipartFile.getInputStream();
 		ObjectMetadata metadata = new ObjectMetadata();
 
 		try {

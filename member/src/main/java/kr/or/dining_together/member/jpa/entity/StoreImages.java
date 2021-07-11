@@ -38,7 +38,7 @@ public class StoreImages {
 
 	@Column(name = "file_name")
 	@ApiModelProperty(notes = "파일명")
-	private String file_name;
+	private String fileName;
 
 	@ManyToOne
 	@JoinColumn(name = "store_id")
