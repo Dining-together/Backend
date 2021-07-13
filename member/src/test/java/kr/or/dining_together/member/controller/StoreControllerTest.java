@@ -138,31 +138,31 @@ class StoreControllerTest {
 
 	@Test
 	void saveDocument() throws Exception {
-		MockMultipartFile file
-			= new MockMultipartFile(
-			"file",
-			"hello.jpg",
-			MediaType.IMAGE_JPEG_VALUE,
-			"Hello, World!".getBytes()
-		);
-		mockMvc.perform(
-			RestDocumentationRequestBuilders.fileUpload("/member/store/document").file(file)
-				.header("X-AUTH-TOKEN", token))
-			.andDo(print())
-			.andExpect(status().isOk())
-
-			.andDo(document("saveDocument",
-				requestHeaders(
-					headerWithName("X-AUTH-TOKEN").description(
-						"토큰값")),
-				requestParts(
-					partWithName("file").description("The file to upload")
-				),
-				responseFields(
-					fieldWithPath("success").description("성공여부"),
-					fieldWithPath("code").description("코드번호"),
-					fieldWithPath("msg").description("메시지")
-				)));
+		// MockMultipartFile file
+		// 	= new MockMultipartFile(
+		// 	"file",
+		// 	"hello.jpg",
+		// 	MediaType.IMAGE_JPEG_VALUE,
+		// 	"Hello, World!".getBytes()
+		// );
+		// mockMvc.perform(
+		// 	RestDocumentationRequestBuilders.fileUpload("/member/store/document").file(file)
+		// 		.header("X-AUTH-TOKEN", token))
+		// 	.andDo(print())
+		// 	.andExpect(status().isOk())
+		//
+		// 	.andDo(document("saveDocument",
+		// 		requestHeaders(
+		// 			headerWithName("X-AUTH-TOKEN").description(
+		// 				"토큰값")),
+		// 		requestParts(
+		// 			partWithName("file").description("The file to upload")
+		// 		),
+		// 		responseFields(
+		// 			fieldWithPath("success").description("성공여부"),
+		// 			fieldWithPath("code").description("코드번호"),
+		// 			fieldWithPath("msg").description("메시지")
+		// 		)));
 	}
 
 	@Test

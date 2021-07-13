@@ -207,6 +207,7 @@ class UserControllerTest {
 			.andDo(document("getUserId",
 				responseFields(
 					fieldWithPath("id").description("사용자 id"),
+					fieldWithPath("type").description("사용자 타입"),
 					fieldWithPath("name").description("사용자 이름")
 				)
 			));
