@@ -14,6 +14,7 @@ import kr.or.dining_together.member.advice.exception.FileNotFoundException;
 import kr.or.dining_together.member.advice.exception.LoginFailedException;
 import kr.or.dining_together.member.advice.exception.PasswordNotMatchedException;
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.member.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
@@ -96,4 +97,12 @@ public class ExceptionAdvice {
 		FileNotFoundException e) {
 		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "파일이 존재하지 않습니다.");
 	}
+
+	@ExceptionHandler(UnprovenStoreException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public CommonResult unprovenStoreException(HttpServletRequest request,
+		UnprovenStoreException e) {
+		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "업체 인증을 진행해주세요");
+	}
+
 }

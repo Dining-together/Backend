@@ -69,8 +69,12 @@ public class StoreController {
 	}
 
 	@ApiOperation(value = "가게 사진 등록")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+	})
 	@PostMapping(value = "/store/images")
 	public CommonResult saveFiles(
+		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam("files") List<MultipartFile> files) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
@@ -99,6 +103,8 @@ public class StoreController {
 		}
 		String fileName = user.getId() + "_document";
 		fileService.save(file, fileName, "store/document");
+		user.setDocumentChecked(true);
+		storeRepository.save(user);
 		return responseService.getSuccessResult();
 	}
 
@@ -145,6 +151,15 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		return responseService.getSingleResult(storeService.modifyFacility(facilityRequest, facilityId, email));
+	}
+
+	@ApiOperation(value = "서류 확인 (다른 서비스 호출)", notes = "업체 서류 인증 확인")
+	@GetMapping(value = "/store/document")
+	public boolean isDocumentChecked() throws Throwable {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return store.getDocumentChecked();
 	}
 
 }

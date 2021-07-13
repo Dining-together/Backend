@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.member.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.FacilityEtc;
@@ -40,6 +41,9 @@ public class StoreService {
 
 	public Store registerStore(StoreRequest storeRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		if (store.getDocumentChecked() == false) {
+			throw new UnprovenStoreException();
+		}
 		store.update(storeRequest.getPhoneNum(), store.getAddr(), storeRequest.getStoreName());
 		storeRepository.save(store);
 		return store;
@@ -48,7 +52,9 @@ public class StoreService {
 	@Transactional
 	public Facility registerFacility(FacilityRequest facilityRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-
+		if (store.getDocumentChecked() == false) {
+			throw new UnprovenStoreException();
+		}
 		Facility facility = Facility.builder()
 			.capacity(facilityRequest.getCapacity())
 			.parkingCount(facilityRequest.getParkingCount())
@@ -73,7 +79,7 @@ public class StoreService {
 		storeRepository.save(store);
 		return facility;
 	}
-	
+
 	@Transactional
 	public Facility modifyFacility(FacilityRequest facilityRequest, long facilityId, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);

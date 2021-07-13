@@ -15,7 +15,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.auction.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.commons.annotation.Permission;
 import kr.or.dining_together.auction.dto.AuctioneerDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auctioneer;
@@ -58,11 +60,15 @@ public class AuctioneerController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
+	@Permission(target = "STORE")
 	public SingleResult<AuctioneerDto> registerAuctioneer(
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "경매 참여 등록 정보", required = true) AuctioneerRequest auctioneerRequest) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		if (userServiceClient.isDocumentChecked(xAuthToken) == false) {
+			throw new UnprovenStoreException();
+		}
 		return responseService.getSingleResult(
 			auctioneerService.registerAuctioneer(auctioneerRequest, user, auctionId));
 

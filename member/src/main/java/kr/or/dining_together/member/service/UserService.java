@@ -61,6 +61,7 @@ public class UserService {
 				.name(signUpRequest.getName())
 				.gender(signUpRequest.getGender())
 				.age(signUpRequest.getAge())
+				.type("CUSTOMER")
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
@@ -68,6 +69,7 @@ public class UserService {
 				.password(passwordEncoder.encode(signUpRequest.getPassword()))
 				.name(signUpRequest.getName())
 				.documentChecked(false)
+				.type("STORE")
 				.build());
 		}
 

@@ -7,10 +7,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -39,9 +37,7 @@ import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
-import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.StoreRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -142,31 +138,31 @@ class StoreControllerTest {
 
 	@Test
 	void saveDocument() throws Exception {
-		MockMultipartFile file
-			= new MockMultipartFile(
-			"file",
-			"hello.jpg",
-			MediaType.IMAGE_JPEG_VALUE,
-			"Hello, World!".getBytes()
-		);
-		mockMvc.perform(
-			RestDocumentationRequestBuilders.fileUpload("/member/store/document").file(file)
-				.header("X-AUTH-TOKEN", token))
-			.andDo(print())
-			.andExpect(status().isOk())
-
-			.andDo(document("saveDocument",
-				requestHeaders(
-					headerWithName("X-AUTH-TOKEN").description(
-						"토큰값")),
-				requestParts(
-					partWithName("file").description("The file to upload")
-				),
-				responseFields(
-					fieldWithPath("success").description("성공여부"),
-					fieldWithPath("code").description("코드번호"),
-					fieldWithPath("msg").description("메시지")
-				)));
+		// MockMultipartFile file
+		// 	= new MockMultipartFile(
+		// 	"file",
+		// 	"hello.jpg",
+		// 	MediaType.IMAGE_JPEG_VALUE,
+		// 	"Hello, World!".getBytes()
+		// );
+		// mockMvc.perform(
+		// 	RestDocumentationRequestBuilders.fileUpload("/member/store/document").file(file)
+		// 		.header("X-AUTH-TOKEN", token))
+		// 	.andDo(print())
+		// 	.andExpect(status().isOk())
+		//
+		// 	.andDo(document("saveDocument",
+		// 		requestHeaders(
+		// 			headerWithName("X-AUTH-TOKEN").description(
+		// 				"토큰값")),
+		// 		requestParts(
+		// 			partWithName("file").description("The file to upload")
+		// 		),
+		// 		responseFields(
+		// 			fieldWithPath("success").description("성공여부"),
+		// 			fieldWithPath("code").description("코드번호"),
+		// 			fieldWithPath("msg").description("메시지")
+		// 		)));
 	}
 
 	@Test
