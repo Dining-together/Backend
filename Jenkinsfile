@@ -2,42 +2,54 @@
 /*
      * stages contain one or more stage directives
      */
+def notifySlack(STATUS, COLOR) {
+    slackSend channel: '#jenkins',
+	message: STATUS+" : " + "${env.JOB_NAME}[${env.BUILD_NUMBER}] (${env.BUILD_URL})",
+	color: COLOR, tokenCredentialId: 'slack-jenkins',
+	teamDomain: '회식모아'
+}
 node {
         withCredentials([[$class: 'UsernamePasswordMultiBinding',
         credentialsId: 'docker-hub',
         usernameVariable: 'DOCKER_USER_ID',
         passwordVariable: 'DOCKER_USER_PASSWORD']])
         {
-        // Checkout Git reporitory
-        stage('Checkout Git') {
-                checkout scm
-                echo 'Git Checkout Success!'
-        }
-        // Build reporitory using Maven tool
-        stage('Build eureka') {
-                def mvnHome = tool 'Maven'
-                sh "cd eureka && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
-        }
-        stage('Build gateway') {
-                def mvnHome = tool 'Maven'
-                sh "cd gateway && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
-        }
-        stage('Build member') {
-                def mvnHome = tool 'Maven'
-                sh "cd member && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
-        }
-        stage('Build auction') {
-                def mvnHome = tool 'Maven'
-                sh "cd auction && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
-        }
-        stage('Build search') {
-                def mvnHome = tool 'Maven'
-                sh "cd search && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
-        }
+        try{
 
-        // Unit Test using Junit and archive results for analysis
-        stage('Unit Test'){
-                junit '**/target/surefire-reports/TEST-*.xml'
+            // Checkout Git reporitory
+            stage('Checkout Git') {
+                    checkout scm
+                    echo 'Git Checkout Success!'
+            }
+            // Build reporitory using Maven tool
+            stage('Build eureka') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd eureka && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
+            stage('Build gateway') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd gateway && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
+            stage('Build member') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd member && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
+            stage('Build auction') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd auction && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
+            stage('Build search') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd search && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
+
+            // Unit Test using Junit and archive results for analysis
+            stage('Unit Test'){
+                    junit '**/target/surefire-reports/TEST-*.xml'
+            }
+        notifySlack("SUCCESS", "#00FF00")
+        }catch(e){
+            notifySlack("FAILED", "#FF0000")
         }
         // stage('Build image') {
         //     //     when {
