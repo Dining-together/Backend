@@ -23,13 +23,13 @@ public class StoreService {
 		storeRepository.save(store);
 	}
 
-	public void createStoreIndexBulk(List<Store> stores) {
-		storeRepository.saveAll(stores);
-	}
+	// public void createStoreIndexBulk(List<Store> stores) {
+	// 	storeRepository.saveAll(stores);
+	// }
 
-	public void deleteStoreDocument(String id) throws IOException {
-		storeRepository.deleteById(id);
-	}
+	// public void deleteStoreDocument(String id) throws IOException {
+	// 	storeRepository.deleteById(id);
+	// }
 
 	public List<Store> findByTitle(final String title) {
 		return storeRepository.findAllByTitle(title);

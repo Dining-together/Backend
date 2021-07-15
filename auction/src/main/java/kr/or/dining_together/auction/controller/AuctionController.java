@@ -16,12 +16,14 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
 import kr.or.dining_together.auction.service.AuctionService;
+import kr.or.dining_together.auction.service.KafkaProducer;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class AuctionController {
 	private final AuctionService auctionService;
 	private final ResponseService responseService;
 	private final UserServiceClient userServiceClient;
+	private final KafkaProducer kafkaProducer;
 
 	@ApiOperation(value = "공고 리스트 조회", notes = "공고 리스트 조회한다.")
 	@GetMapping(value = "/auctions")
@@ -66,7 +69,18 @@ public class AuctionController {
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionRequest auctionRequest) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
-		return responseService.getSingleResult(auctionService.writeAuction(user, auctionRequest));
+
+		Auction auction = auctionService.writeAuction(user, auctionRequest);
+
+		AuctionDto auctionDto = AuctionDto.builder()
+			.auctionId(auction.getAuctionId().toString())
+			.title(auctionRequest.getTitle())
+			.userType(auctionRequest.getUserType())
+			.reservation(auctionRequest.getReservation())
+			.build();
+
+		kafkaProducer.send("auction-auction-topic",auctionDto);
+		return responseService.getSingleResult(auction);
 	}
 
 	@ApiOperation(value = "사용자별 공고 조회", notes = "사용자별 공고를 불러온다.")

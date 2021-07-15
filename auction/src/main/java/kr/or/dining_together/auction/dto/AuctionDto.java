@@ -1,5 +1,6 @@
 package kr.or.dining_together.auction.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
@@ -18,7 +19,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @ApiModel(value = "AuctionDto", description = "공고")
 @Builder
-public class AuctionDto {
+public class AuctionDto implements Serializable {
+	private String auctionId;
 
 	@ApiModelProperty(notes = "공고 제목")
 	private String title;

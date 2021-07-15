@@ -56,13 +56,9 @@ public class AuctionSearchControllerTest {
 			.build();
 
 		Auction auction = new Auction().builder()
-			.id("2")
 			.title("경매2")
-			.groupType("회식")
-			.preferredLocation("서울대입구")
-			.registerDate(LocalDateTime.now())
-			.preferredMenu("치킨")
-			.preferredPrice(10000)
+			.userType("회식")
+			.reservation(LocalDateTime.now())
 			.build();
 
 		auctionRepository.save(auction);
@@ -70,14 +66,20 @@ public class AuctionSearchControllerTest {
 
 	@Test
 	public void postIndex() throws Exception {
+		// Auction auction = new Auction().builder()
+		// 	.id("11")
+		// 	.title("배고파")
+		// 	.groupType("회식")
+		// 	.registerDate(LocalDateTime.now())
+		// 	.preferredLocation("서울대입구")
+		// 	.preferredMenu("치킨")
+		// 	.preferredPrice(10000)
+		// 	.build();
+
 		Auction auction = new Auction().builder()
-			.id("11")
-			.title("배고파")
-			.groupType("회식")
-			.registerDate(LocalDateTime.now())
-			.preferredLocation("서울대입구")
-			.preferredMenu("치킨")
-			.preferredPrice(10000)
+			.title("경매1")
+			.userType("회식")
+			.reservation(LocalDateTime.now())
 			.build();
 
 		GsonBuilder gsonBuilder = new GsonBuilder();

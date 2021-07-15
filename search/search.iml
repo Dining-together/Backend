@@ -214,7 +214,7 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.11.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.11.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.kafka:spring-kafka:2.6.9" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.kafka:spring-kafka:2.6.7" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:5.3.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.3.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.8" level="project" />
