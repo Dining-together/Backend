@@ -23,12 +23,7 @@ spring:
         - id: member
           uri: lb://MEMBER
           predicates:
-            - Path=/member/auth/**
-        - id: member
-          uri: lb://MEMBER
-          predicates:
             - Path=/member/**
-          filters:
         - id: auction
           uri: lb://AUCTION
           predicates:
@@ -37,7 +32,6 @@ spring:
           uri: lb://SEARCH
           predicates:
             - Path=/search/**
-
 
 token:
   secret: secret_token
