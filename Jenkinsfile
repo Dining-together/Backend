@@ -40,29 +40,29 @@ node {
                 junit '**/target/surefire-reports/TEST-*.xml'
         }
         stage('Build image') {
-                when {
-                branch 'main'
-            }steps{
+            //     when {
+            //     branch 'main'
+            // }steps{
 
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER} eureka')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER} gateway')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/member:${BUILD_NUMBER} member')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/auction:${BUILD_NUMBER} auction')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/search:${BUILD_NUMBER} search')
-            }
+            // }
         }
 
         stage('Push') {
-                when {
-                branch 'main'
-            }steps{
+            //     when {
+            //     branch 'main'
+            // }steps{
                 sh(script: 'docker login -u ${DOCKER_USER_ID} -p ${DOCKER_USER_PASSWORD}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/member:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/search:${BUILD_NUMBER}')
-            }
+            // }
              }
 
         stage('Deploy') {
