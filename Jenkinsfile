@@ -1,13 +1,3 @@
-/* Declarative pipeline must be enclosed within a pipeline block */
-/*
-     * stages contain one or more stage directives
-     */
-def notifySlack(STATUS, COLOR) {
-    slackSend channel: '#jenkins',
-	message: STATUS+" : " + "${env.JOB_NAME}[${env.BUILD_NUMBER}] (${env.BUILD_URL})",
-	color: COLOR, tokenCredentialId: 'slack-jenkins',
-	teamDomain: '회식모아'
-}
 node {
         withCredentials([[$class: 'UsernamePasswordMultiBinding',
         credentialsId: 'docker-hub',
@@ -15,7 +5,6 @@ node {
         passwordVariable: 'DOCKER_USER_PASSWORD']])
         {
         try{
-
             // Checkout Git reporitory
             stage('Checkout Git') {
                     checkout scm
@@ -47,9 +36,9 @@ node {
             stage('Unit Test'){
                     junit '**/target/surefire-reports/TEST-*.xml'
             }
-        notifySlack("SUCCESS", "#00FF00")
+         slackSend (channel: '#jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }catch(e){
-            notifySlack("FAILED", "#FF0000")
+            slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
         // stage('Build image') {
         //     //     when {
