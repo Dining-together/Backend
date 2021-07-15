@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  eureka:
+    image: ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}
+    ports:
+      - '8761:8761'
+  gateway:
+    image: ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}
+    ports:
+      - '8000:8000'
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+  member:
+    image: ${DOCKER_USER_ID}/member:${BUILD_NUMBER}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+  auction:
+    image: ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+  search:
+    image: ${DOCKER_USER_ID}/search:${BUILD_NUMBER}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
