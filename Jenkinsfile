@@ -40,51 +40,51 @@ node {
         }catch(e){
             slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
-        stage('Build image') {
-            //     when {
-            //     branch 'main'
-            // }steps{
+        // stage('Build image') {
+        //     //     when {
+        //     //     branch 'main'
+        //     // }steps{
 
-                sh(script: 'docker build -t ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER} eureka')
-                sh(script: 'docker build -t ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER} gateway')
-                sh(script: 'docker build -t ${DOCKER_USER_ID}/member:${BUILD_NUMBER} member')
-                sh(script: 'docker build -t ${DOCKER_USER_ID}/auction:${BUILD_NUMBER} auction')
-                sh(script: 'docker build -t ${DOCKER_USER_ID}/search:${BUILD_NUMBER} search')
-            // }
-        }
+        //         sh(script: 'docker build -t ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER} eureka')
+        //         sh(script: 'docker build -t ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER} gateway')
+        //         sh(script: 'docker build -t ${DOCKER_USER_ID}/member:${BUILD_NUMBER} member')
+        //         sh(script: 'docker build -t ${DOCKER_USER_ID}/auction:${BUILD_NUMBER} auction')
+        //         sh(script: 'docker build -t ${DOCKER_USER_ID}/search:${BUILD_NUMBER} search')
+        //     // }
+        // }
 
-        stage('Push') {
-            //     when {
-            //     branch 'main'
-            // }steps{
-                sh(script: 'docker login -u ${DOCKER_USER_ID} -p ${DOCKER_USER_PASSWORD}')
-                sh(script: 'docker push ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}')
-                sh(script: 'docker push ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}')
-                sh(script: 'docker push ${DOCKER_USER_ID}/member:${BUILD_NUMBER}')
-                sh(script: 'docker push ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}')
-                sh(script: 'docker push ${DOCKER_USER_ID}/search:${BUILD_NUMBER}')
-            // }
-             }
+        // stage('Push') {
+        //     //     when {
+        //     //     branch 'main'
+        //     // }steps{
+        //         sh(script: 'docker login -u ${DOCKER_USER_ID} -p ${DOCKER_USER_PASSWORD}')
+        //         sh(script: 'docker push ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}')
+        //         sh(script: 'docker push ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}')
+        //         sh(script: 'docker push ${DOCKER_USER_ID}/member:${BUILD_NUMBER}')
+        //         sh(script: 'docker push ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}')
+        //         sh(script: 'docker push ${DOCKER_USER_ID}/search:${BUILD_NUMBER}')
+        //     // }
+        //      }
 
-        stage('Deploy') {
+        // stage('Deploy') {
 
-                sh "docker run -d -p 8761:8761 --network Dining-together\
-                        --name eureka ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}"
-                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
-                sh "docker run -d --network Dining-together \
-                  --name member \
-                -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
-                ${DOCKER_USER_ID}/member:${BUILD_NUMBER}"
-                sh "docker run -d --network Dining-together \
-                  --name auction \
-                -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
-                ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}"
-                sh "docker run -d --network Dining-together \
-                  --name search \
-                -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
-                ${DOCKER_USER_ID}/search:${BUILD_NUMBER}"
+        //         sh "docker run -d -p 8761:8761 --network Dining-together\
+        //                 --name eureka ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}"
+        //         sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
+        //         sh "docker run -d --network Dining-together \
+        //           --name member \
+        //         -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
+        //         ${DOCKER_USER_ID}/member:${BUILD_NUMBER}"
+        //         sh "docker run -d --network Dining-together \
+        //           --name auction \
+        //         -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
+        //         ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}"
+        //         sh "docker run -d --network Dining-together \
+        //           --name search \
+        //         -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
+        //         ${DOCKER_USER_ID}/search:${BUILD_NUMBER}"
 
-             }
+        //      }
 
     }
 }
