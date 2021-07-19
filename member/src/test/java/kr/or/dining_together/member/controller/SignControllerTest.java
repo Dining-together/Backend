@@ -35,6 +35,7 @@ import com.google.gson.Gson;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.service.EmailService;
 import kr.or.dining_together.member.service.RedisUtil;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.SignUpRequest;
@@ -54,6 +55,9 @@ public class SignControllerTest {
 
 	@Autowired
 	private RedisUtil redisUtil;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -182,6 +186,7 @@ public class SignControllerTest {
 		// 	)
 		// ));
 
+		emailService.sendVerificationMail(email);
 		String verifyKey = redisUtil.getData(email);
 
 		MultiValueMap<String, String> verifyInfo = new LinkedMultiValueMap<>();
