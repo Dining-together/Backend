@@ -175,7 +175,13 @@ Temporary Items
 .apdisk
 
 ### Maven ###
-target/
+**/classes/**
+**/generated-sources/**
+**/generated-snippets/**
+**/maven-archiver/**
+**/maven-status/**
+**/generated-test-sources/**
+**/test-classes/**
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

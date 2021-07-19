@@ -20,9 +20,6 @@ import lombok.Setter;
 @Builder
 public class AuctionDto {
 
-	@ApiModelProperty(value = "공고 pk")
-	private long auctionId;
-
 	@ApiModelProperty(notes = "공고 제목")
 	private String title;
 
@@ -30,10 +27,10 @@ public class AuctionDto {
 	private String content;
 
 	@ApiModelProperty(notes = "공고 최대 가격")
-	private String maxPrice;
+	private int maxPrice;
 
 	@ApiModelProperty(notes = "공고 최소 가격")
-	private String minPrice;
+	private int minPrice;
 
 	@ApiModelProperty(notes = "단체유형")
 	private String userType;
@@ -43,5 +40,11 @@ public class AuctionDto {
 
 	@ApiModelProperty(notes = "공고 종료 시간")
 	private Date deadline;
+
+	@ApiModelProperty(notes = "사용자 id")
+	private String userId;
+
+	@ApiModelProperty(notes = "사용자 Name")
+	private String userName;
 
 }

@@ -70,6 +70,11 @@ public class EmailService {
 		message.setText("귀하의 비밀번호는 " + newPassword + " 입니다");
 
 		emailSender.send(message);
+
+		if (user.isPresent()) {
+			throw new UserDuplicationException();
+		}
+		return;
 	}
 
 	private String makeRandomKey() {

@@ -1,0 +1,178 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "member",
+    "description": "Demo project for Spring Boot",
+    "version": "0.0.1-SNAPSHOT"
+  },
+  "servers": [
+    {
+      "url": "http://localhost"
+    }
+  ],
+  "tags": [],
+  "paths": {
+    "/member/auth/signin": {
+      "post": {
+        "tags": [
+          "member"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/member-auth-signin278934565"
+              },
+              "examples": {
+                "login": {
+                  "value": "{\"email\":\"jifrozen@naver.com\",\"password\":\"test1111\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/member-auth-signin-1190539043"
+                },
+                "examples": {
+                  "login": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\",\"data\":\"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWZyb3plbkBuYXZlci5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjI0MDM1ODM1LCJleHAiOjE2MjQxMjIyMzV9.79vEblqe5HZeY76TNcPofIo-znKxeCazO7NmozLiTAo\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/member/auth/signup": {
+      "post": {
+        "tags": [
+          "member"
+        ],
+        "operationId": "signup",
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/member-auth-signup1306409953"
+              },
+              "examples": {
+                "signup": {
+                  "value": "{\"email\":\"jifrozen1@naver.com\",\"name\":\"문지언1\",\"password\":\"test2222\",\"userType\":\"CUSTOMER\",\"age\":23,\"gender\":\"FEMALE\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/member-auth-signup1010847454"
+                },
+                "examples": {
+                  "signup": {
+                    "value": "{\"success\":true,\"code\":0,\"msg\":\"성공\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "member-auth-signin-1190539043": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "data": {
+            "type": "string",
+            "description": "토큰값"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          }
+        }
+      },
+      "member-auth-signin278934565": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "유저 비밀번호"
+          },
+          "email": {
+            "type": "string",
+            "description": "유저 아이디(이메일)"
+          }
+        }
+      },
+      "member-auth-signup1010847454": {
+        "type": "object",
+        "properties": {
+          "msg": {
+            "type": "string",
+            "description": "메시지"
+          },
+          "code": {
+            "type": "number",
+            "description": "코드번호"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "성공여부"
+          }
+        }
+      },
+      "member-auth-signup1306409953": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "description": "유저 비밀번호"
+          },
+          "gender": {
+            "type": "string",
+            "description": "성별"
+          },
+          "name": {
+            "type": "string",
+            "description": "유저 이름"
+          },
+          "userType": {
+            "type": "string",
+            "description": "유저 타입"
+          },
+          "age": {
+            "type": "number",
+            "description": "나이"
+          },
+          "email": {
+            "type": "string",
+            "description": "유저 아이디(이메일)"
+          }
+        }
+      }
+    }
+  }
+}

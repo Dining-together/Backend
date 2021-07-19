@@ -31,6 +31,23 @@ spring:
         min-idle: 2
     host: 118.67.133.150
     port: 6379
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /member/h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining
+    username: sa
+
   jwt:
     secret: secret_token
     expiration_time: 100000
@@ -72,6 +89,10 @@ spring:
         login: https://nid.naver.com/oauth2.0/authorize
         token: https://nid.naver.com/oauth2.0/token
         profile: https://openapi.naver.com/v1/nid/me
+  web:
+    resources:
+      static-locations: classpath:/static/
+
 
 ---
 spring:

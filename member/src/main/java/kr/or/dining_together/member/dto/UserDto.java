@@ -25,6 +25,9 @@ public class UserDto {
 	@ApiModelProperty(value = "비밀번호")
 	private String password;
 
+	@ApiModelProperty(value = "사용자 타입", required = false)
+	private String type;
+
 	@ApiModelProperty(value = "사용자 권한", required = false)
 	private List<String> roles = new ArrayList<>();
 }

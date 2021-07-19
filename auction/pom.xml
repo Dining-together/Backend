@@ -10,12 +10,15 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>auction</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>auction</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
+        <restdocs-api-spec.version>0.10.0</restdocs-api-spec.version>
+        <restdocs-spec.version>0.19</restdocs-spec.version>
+        <asciidoctor.version>2.1.0</asciidoctor.version>
     </properties>
     <dependencies>
         <dependency>
@@ -54,6 +57,18 @@
             <version>2.9.2</version>
         </dependency>
         <dependency>
+            <groupId>com.epages</groupId>
+            <artifactId>restdocs-api-spec-mockmvc</artifactId>
+            <version>${restdocs-api-spec.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.epages</groupId>
+            <artifactId>restdocs-api-spec</artifactId>
+            <version>${restdocs-api-spec.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -72,10 +87,25 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
         </dependency>
+        <!-- Feign Client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- resilience4j -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -98,6 +128,14 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -109,7 +147,39 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin><!--Compile the life cycle of skipping test file inspection-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.github.berkleytechnologyservices.restdocs-spec</groupId>-->
+            <!--                <artifactId>restdocs-spec-maven-plugin</artifactId>-->
+            <!--                <version>${restdocs-spec.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>generate</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <specification>OPENAPI_V3</specification>-->
+            <!--                            <format>JSON</format>-->
+            <!--                            <outputDirectory>${project.build.directory}/classes/static/docs</outputDirectory>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
-
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
