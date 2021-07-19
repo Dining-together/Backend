@@ -3,6 +3,7 @@ package kr.or.dining_together.member.controller;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
@@ -22,6 +23,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -29,6 +35,8 @@ import com.google.gson.Gson;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
+import kr.or.dining_together.member.service.EmailService;
+import kr.or.dining_together.member.service.RedisUtil;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.SignUpRequest;
 
@@ -46,6 +54,12 @@ public class SignControllerTest {
 	private UserRepository userRepository;
 
 	@Autowired
+	private RedisUtil redisUtil;
+
+	@Autowired
+	private EmailService emailService;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -54,8 +68,16 @@ public class SignControllerTest {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private WebApplicationContext ctx;
+
 	@Before
 	public void setUp() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+			.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+			.alwaysDo(print())
+			.build();
+
 		userRepository.save(Customer.builder()
 			.email("jifrozen@naver.com")
 			.name("문지언")
@@ -141,4 +163,51 @@ public class SignControllerTest {
 			));
 	}
 
+	@Test
+	@DisplayName("이메일 인증 테스트")
+	public void emailVerify() throws Exception {
+		String email = "qja9605@naver.com";
+		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
+		info.add("email", email);
+
+		mockMvc.perform(post("/member/auth/verify")
+			.params(info)
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk());
+		// .andDo(document("verifyKeyRequest",
+		// 	requestFields(
+		// 		fieldWithPath("email").description("유저 아이디(이메일)")
+		// 	),
+		// 	responseFields(
+		// 		fieldWithPath("success").description("성공여부"),
+		// 		fieldWithPath("code").description("코드번호"),
+		// 		fieldWithPath("msg").description("메시지")
+		// 	)
+		// ));
+
+		emailService.sendVerificationMail(email);
+		String verifyKey = redisUtil.getData(email);
+
+		MultiValueMap<String, String> verifyInfo = new LinkedMultiValueMap<>();
+		verifyInfo.add("email", email);
+		verifyInfo.add("key", verifyKey);
+
+		mockMvc.perform(get("/member/auth/verify")
+			.params(verifyInfo)
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk());
+		// .andDo(document("verify",
+		// 	requestFields(
+		// 		fieldWithPath("email").description("유저 아이디(이메일)"),
+		// 		fieldWithPath("key").description("이메일 키")
+		// 	),
+		// 	responseFields(
+		// 		fieldWithPath("success").description("성공여부"),
+		// 		fieldWithPath("code").description("코드번호"),
+		// 		fieldWithPath("msg").description("메시지")
+		// 	)
+		// ));
+	}
 }
