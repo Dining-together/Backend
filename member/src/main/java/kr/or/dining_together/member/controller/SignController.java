@@ -3,7 +3,6 @@ package kr.or.dining_together.member.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
-import kr.or.dining_together.member.service.RedisUtil;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.LoginRequest;
@@ -51,12 +49,6 @@ public class SignController {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
-	private final RedisUtil redisUtil;
-	private final Environment env;
-
-	private final Long EXPIRATION_TIME = Long.parseLong(env.getProperty("spring.jwt.expiration_time"));
-	private final Long REFRESH_TOKEN_VALIDATION_SECOND_TIME = Long.parseLong(
-		env.getProperty("refresh_token_validation_second_time"));
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
@@ -83,23 +75,6 @@ public class SignController {
 		emailService.checkEmailExistence(email);
 		return responseService.getSuccessResult();
 	}
-
-	// @ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
-	// @PostMapping(value = "/signup/verification")
-	// public CommonResult userSignUpSendCodeToEmail(
-	// 	@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) {
-	// 	emailService.sendAuthMail(email);
-	// 	return responseService.getSuccessResult();
-	// }
-	//
-	// @ApiOperation(value = "이메일 키값 인증", notes = "이메일과 키값을 받아 맞는지 확인한다.")
-	// @GetMapping(value = "/signup/verification")
-	// public CommonResult userSignUpVerification(
-	// 	@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
-	// 	@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
-	// 	emailService.checkEmailVerificationKey(email, key);
-	// 	return responseService.getSuccessResult();
-	// }
 
 	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
 	@PostMapping(value = "/verify")

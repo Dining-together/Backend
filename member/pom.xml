@@ -125,6 +125,13 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>1.6.3</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- send email -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -150,6 +157,7 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.9.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -180,7 +188,7 @@
 
     <build>
         <plugins>
-        <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>

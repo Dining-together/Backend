@@ -1,9 +1,5 @@
 package kr.or.dining_together.member.controller;
 
-import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,12 +18,14 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,9 +60,16 @@ class StoreControllerTest {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private ObjectMapper objectMapper;
-
+	@Autowired
+	private WebApplicationContext ctx;
+	
 	@BeforeEach
 	void setUp() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+			.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+			.alwaysDo(print())
+			.build();
+
 		Store store = Store.builder()
 			.email("jifrozen1@naver.com")
 			.name("문지언")

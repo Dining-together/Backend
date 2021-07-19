@@ -1,9 +1,27 @@
 server:
   port: 0
 
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
 spring:
   application:
     name: member
+  profiles:
+    group:
+      production: base,h2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: base
   redis:
     lettuce:
       pool:
@@ -28,10 +46,10 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:dining
     username: sa
-
   jwt:
     secret: secret_token
-    expiration_time: 86400000
+    expiration_time: 100000
+    refresh_token_validation_second_time: 28800000
   #mail 인증을 위한 정보.
   mail:
     host: smtp.gmail.com
@@ -74,11 +92,47 @@ spring:
       static-locations: classpath:/static/
 
 
-eureka:
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /member/h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: mariadb
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /member/h2-console
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://118.67.133.150:3306/member?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
