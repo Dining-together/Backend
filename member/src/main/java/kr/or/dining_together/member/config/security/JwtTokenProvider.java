@@ -23,29 +23,41 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-
 	private final Environment env;
 	private final UserDetailsService userDetailsService;
 	private String SECRET_KEY;
 
-	private long EXPIRATION_TIME;
+	private final long EXPIRATION_TIME = Long.parseLong(env.getProperty("spring.jwt.expiration_time"));
+	private final long REFRESH_TOKEN_VALID_TIME = Long.parseLong(
+		env.getProperty("refresh_token_validation_second_time"));
 
 	@PostConstruct
 	protected void init() {
 		SECRET_KEY = Base64.getEncoder().encodeToString(env.getProperty("spring.jwt.secret").getBytes());
-		EXPIRATION_TIME = Long.parseLong(env.getProperty("spring.jwt.expiration_time"));
-
 	}
 
 	// Jwt 토큰 생성
-	public String createToken(String userPk, List<String> roles) {
-		Claims claims = Jwts.claims().setSubject(userPk);
+	public String createToken(String userEmail, List<String> roles) {
+		Claims claims = Jwts.claims().setSubject(userEmail);
 		claims.put("roles", roles);
 		Date now = new Date();
 		return Jwts.builder()
 			.setClaims(claims) // 데이터
 			.setIssuedAt(now) // 토큰 발행일자
 			.setExpiration(new Date(now.getTime() + EXPIRATION_TIME)) // set Expire Time
+			.signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 암호화 알고리즘, secret값 세팅
+			.compact();
+	}
+
+	// refresh 토큰 생성
+	public String createJwtRefreshToken(String userEmail, List<String> roles) {
+		Claims claims = Jwts.claims().setSubject(userEmail);
+		claims.put("roles", roles);
+		Date now = new Date();
+		return Jwts.builder()
+			.setClaims(claims) // 데이터
+			.setIssuedAt(now) // 토큰 발행일자
+			.setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME)) // set Expire Time
 			.signWith(SignatureAlgorithm.HS256, SECRET_KEY) // 암호화 알고리즘, secret값 세팅
 			.compact();
 	}
@@ -75,5 +87,4 @@ public class JwtTokenProvider {
 			return false;
 		}
 	}
-
 }

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "diningtogether-edbd0",
+  "private_key_id": "fac4ebb1652df57e2dc431309d0c65872473846e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCPggwC0Y14sJl8\n0ExP7AAg2UQYZ625KflcQkFjJqCqVywCaxvAC2kLnM3hvUyComsUuxT5Yizf6gmo\nyV6iC8mPcpZMuvgUCB3eX0eD7f8wg4F8yZJDAizcCJGIqqFMj1fVhaJyQgib9qOn\nmJBwaCLVHEBiOAqC8QHSJ7fjqxB0/QuC0SZgpq3VhmlMN2FpYPESGnsHMsKmVHQN\nAUYQZr5JEJxEmj4T0AeCk2ejRVgxZ612zg9OWCYuszHsWHHprz8MxhcMTz/lhH+J\nVxymaAKTdx4chYQidjxrRztXpNojltFektjzYBTB4c5D5T8cYCgbKo8xT/ZNCLig\nScC0QbyxAgMBAAECggEAAhN9cT5/G5WBePPqALd/NnpyMOCyG5VK/13RhJnS1fgK\nIdRTG9OGbuWzOE506IhpQGzm9Ccqk0g3YM7d/L3rKfU8TaqgS2jlJroN5q+XIyhp\n44hmgmvqAnpowZeHWxxRRtxmsdy482mtay+qukeVZmwg1dLt+wA52KSctVFcnPal\nK2wSqrUiISDWG7akizZmHLyjUb8VjGmtFcNMN5YjC7TFYtQ6ApBQbO4Du+IwmeBL\nEWx8izqqhCvLPdh45L1CvYoBWShzI7YeFarSp66c/Ce+O7Da6VTBpJTXyVPsjyqM\nFo6RaGEl/TH+XPQ30cucN9C1yw37shv1urSky8zuCQKBgQDEeHrnQG6HPOSOI5Jf\nyhh0awH9KpZYDzvCFubeupnDoP0hvq/IUcT044DGd2OQotD8pR9GX5xu+/SsCDOM\nPl2gBPmv8O+5YoccNTbUPREvGIiyPttSFbVLi4xPHp8bc3N6W4XjKxI4xlFGFpIX\n7uRoHSc6aI38izA2TN07NvZZmQKBgQC6/XIztbjRtbNxo+b8u9FtdkIXW6QzX+u0\nti1PPA3ykKKOpTTJ/TjgIb0G7IS7jsCOiYI+F0dgtH/4+kK8XlvrsuqSmfWi4uhh\n73jtP8l3XoTg/8NYk6TmqFCtVSXFafD7hOGzeeto70AN4NLTeNWOqyyUQ/mQKOD0\n5iOnJ3Ba2QKBgGcrFO7GKMQfN61kBIMEbp8DagH1EQmgxjJ/MDCZMBFIQmQr68Z3\nGcO2i3KsUr4qoS9pzeh4YH7vE2Ya0Ga+gQ98TVkUXe2tTWGEmAwPHSzr5ywiUazi\n9VZ8KuuJGuehUmxYDxBhF6p0iU0SoRisO4hodqb3LEgHFwQMjMeBbw9RAoGADCv3\nRRptH2l+dsU+gfEP3to1zyNt+tIhm6/IH0I/fiygCD0ExKkxDJXlog+/TB4stpqI\n2dXWFZtqQSC5O13BCgSpdEWFUccHbWiTLI5cZOLIL4U2iAuETmdiaQYD4WfWAelS\nb8Zd5oS8XKrnzlAtRo4p5rTOB+5BRm+8nmLY03ECgYAmq2+qiEBPJPLOuKotZzof\nRS3bqtAWcPlJOJuO9/SZ+2PvZRx9gmHAF7SbP8e+1u8mtS+2jd8h+p9guUS4Uxay\npEpQIYCmvz9t3DoBPNul1jM9tjFwZ654uBj61uA0suOVsGorYmYrjxal1V1vTU+m\n2Ym28PGglKFfknnL9Pw5uQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-4jvxy@diningtogether-edbd0.iam.gserviceaccount.com",
+  "client_id": "100901547258158419073",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-4jvxy%40diningtogether-edbd0.iam.gserviceaccount.com"
+}

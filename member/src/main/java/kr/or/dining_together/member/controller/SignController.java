@@ -1,5 +1,9 @@
 package kr.or.dining_together.member.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +22,7 @@ import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
+import kr.or.dining_together.member.service.RedisUtil;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.LoginRequest;
@@ -38,11 +43,18 @@ public class SignController {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
+	private final RedisUtil redisUtil;
+	private final Environment env;
+
+	private final Long EXPIRATION_TIME = Long.parseLong(env.getProperty("spring.jwt.expiration_time"));
+	private final Long REFRESH_TOKEN_VALIDATION_SECOND_TIME = Long.parseLong(
+		env.getProperty("refresh_token_validation_second_time"));
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
 	public SingleResult<String> userlogin(
-		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest) throws Throwable {
+		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest, HttpServletRequest req,
+		HttpServletResponse res) throws Throwable {
 		UserDto userDto = userService.login(loginRequest);
 		return responseService.getSingleResult(
 			jwtTokenProvider.createToken(String.valueOf(userDto.getEmail()), userDto.getRoles()));
