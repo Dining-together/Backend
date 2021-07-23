@@ -59,7 +59,7 @@ class AuctioneerServiceTest {
 			.maxPrice(10)
 			.minPrice(0)
 			.userId(1L)
-			.userType("회식")
+			.groupType("회식")
 			.reservation(new Date())
 			.build();
 

@@ -21,7 +21,8 @@ public class AuctionRequest {
 	private String storeType;
 	private int maxPrice;
 	private int minPrice;
-	private String userType;
+	private String groupType;
+	private int groupCnt;
 	private Date reservation;
 	private Date deadline;
 }

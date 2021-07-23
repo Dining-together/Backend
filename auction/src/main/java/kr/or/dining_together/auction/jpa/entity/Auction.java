@@ -51,10 +51,14 @@ public class Auction {
 	private int maxPrice;
 	@ApiModelProperty(notes = "공고 최소 가격")
 	private int minPrice;
-	@ApiModelProperty(notes = "공고 상태")
-	private String status;
+	@ApiModelProperty(notes = "인원수")
+	private int groupCnt;
+	@ApiModelProperty(notes = "위치")
+	private String addr;
+	@ApiModelProperty(notes = "마감여부")
+	private AuctionStatus status;
 	@ApiModelProperty(notes = "단체유형")
-	private String userType;
+	private String groupType;
 	@ApiModelProperty(notes = "예약 시간")
 	private Date reservation;
 	@ApiModelProperty(notes = "공고 종료 시간")
@@ -72,7 +76,7 @@ public class Auction {
 	@PrePersist
 	void prePersist() {
 		this.createdDate = this.updatedDate = new Date();
-		this.status = "PROCEEDING";
+		this.status = AuctionStatus.PROCEEDING;
 	}
 
 	@PreUpdate
@@ -80,13 +84,17 @@ public class Auction {
 		this.updatedDate = new Date();
 	}
 
-	public void setUpdate(String title, String content, String storeType, int minPrice, String userType, int maxPrice,
+	public void setStatus(AuctionStatus status){
+		this.status=status;
+	}
+	public void setUpdate(String title, String content, String storeType, int minPrice, String groupType,int groupCnt, int maxPrice,
 		Date reservation, Date deadline) {
 		this.title = title;
 		this.content = content;
 		this.storeType = storeType;
 		this.minPrice = minPrice;
-		this.userType = userType;
+		this.groupType = groupType;
+		this.groupCnt=groupCnt;
 		this.maxPrice = maxPrice;
 		this.reservation = reservation;
 		this.deadline = deadline;

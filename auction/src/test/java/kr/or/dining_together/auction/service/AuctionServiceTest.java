@@ -52,7 +52,7 @@ class AuctionServiceTest {
 			.content("내용")
 			.maxPrice(1000)
 			.minPrice(10)
-			.userType("Family")
+			.groupType("Family")
 			.userId(1L)
 			.reservation(new Date())
 			.deadline(new Date())
@@ -94,7 +94,7 @@ class AuctionServiceTest {
 			.content("내용2")
 			.maxPrice(2000)
 			.minPrice(20)
-			.userType("Friend")
+			.groupType("Friend")
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();
@@ -113,7 +113,7 @@ class AuctionServiceTest {
 			.content("내용2")
 			.maxPrice(2000)
 			.minPrice(20)
-			.userType("Friend")
+			.groupType("Friend")
 			.reservation(new Date())
 			.deadline(new Date())
 			.build();

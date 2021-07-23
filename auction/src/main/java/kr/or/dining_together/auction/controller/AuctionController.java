@@ -15,15 +15,21 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.commons.annotation.Permission;
+import kr.or.dining_together.auction.dto.SuccessBidDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
+import kr.or.dining_together.auction.jpa.entity.AuctionStatus;
+import kr.or.dining_together.auction.jpa.entity.SuccessBid;
+import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
 import kr.or.dining_together.auction.service.AuctionService;
 import kr.or.dining_together.auction.service.ResponseService;
+import kr.or.dining_together.auction.service.SuccessBidService;
 import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -43,13 +49,28 @@ import lombok.RequiredArgsConstructor;
 public class AuctionController {
 
 	private final AuctionService auctionService;
+	private final SuccessBidService successBidService;
 	private final ResponseService responseService;
+	private final AuctionRepository auctionRepository;
 	private final UserServiceClient userServiceClient;
 
 	@ApiOperation(value = "공고 리스트 조회", notes = "공고 리스트 조회한다.")
 	@GetMapping(value = "/auctions")
 	public ListResult<Auction> auctions() {
 		return responseService.getListResult(auctionService.getAuctions());
+	}
+
+
+	@ApiOperation(value = "공고 진행중 조회", notes = "공고 리스트 조회한다.")
+	@GetMapping(value = "/auctions/proceeding")
+	public ListResult<Auction> auctionsProceeding() {
+		return responseService.getListResult(auctionService.getAuctionsByProceeding());
+	}
+
+	@ApiOperation(value = "공고 마감 조회", notes = "공고 리스트 조회한다.")
+	@GetMapping(value = "/auctions/end")
+	public ListResult<Auction> auctionsEnd() {
+		return responseService.getListResult(auctionService.getAuctionsByEnd());
 	}
 
 	@ApiOperation(value = "공고 단건 조회", notes = "공고 단건 조회한다.")
@@ -97,6 +118,18 @@ public class AuctionController {
 	public CommonResult deleteAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
 		return responseService.getSingleResult(auctionService.deleteAuction(auctionId));
+	}
+	@ApiOperation(value = "공고 낙찰", notes = "낙찰한다.")
+	@PostMapping(value = "/{auctionId}/success")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
+	})
+	public SingleResult successBidding(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
+		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
+		@ApiParam(value = "낙찰 업체 id", required = true) long auctionnerId) {
+		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
+		auction.setStatus(AuctionStatus.END);
+		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId,auctionnerId));
 	}
 
 }
