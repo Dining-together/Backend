@@ -74,7 +74,8 @@ public class AuctionService {
 		Auction auction = getAuction(auctionId);
 		auction.setUpdate(auctionRequest.getTitle(), auctionRequest.getContent(), auctionRequest.getStoreType(),
 			auctionRequest.getMinPrice(),
-			auctionRequest.getGroupType(),auctionRequest.getGroupCnt(), auctionRequest.getMaxPrice(), auctionRequest.getReservation(),
+			auctionRequest.getGroupType(), auctionRequest.getGroupCnt(), auctionRequest.getMaxPrice(),
+			auctionRequest.getReservation(),
 			auctionRequest.getDeadline());
 		return auction;
 	}

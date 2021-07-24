@@ -27,7 +27,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		HandlerMethod method = (HandlerMethod)handler;
 		Permission permission = method.getMethodAnnotation(Permission.class);
 
-		if ((!(handler instanceof HandlerMethod)) || (permission == null)) { // 호출되는 메소드가 헨들러가 아니라면 검증할 필요가 없겠죠?
+		if ((!(handler instanceof HandlerMethod)) || (permission == null)) { // 호출되는 메소드가 헨들러가 아니라면 검증할 필요 없음
 			return true;
 		}
 		String token = request.getHeader("X-AUTH-TOKEN");

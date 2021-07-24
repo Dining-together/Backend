@@ -12,6 +12,7 @@ import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.advice.exception.UnAuthorizedException;
 import kr.or.dining_together.auction.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.auction.advice.exception.UserNotFoundException;
+import kr.or.dining_together.auction.advice.exception.UserNotMatchedException;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.service.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,12 @@ public class ExceptionAdvice {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
 		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "사용자가 존재하지 않습니다.");
+	}
+
+	@ExceptionHandler(UserNotMatchedException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	protected CommonResult userNotFoundException(HttpServletRequest request, UserNotMatchedException e) {
+		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "작성자와 일치하지 않습니다.");
 	}
 
 	@ExceptionHandler(BadRequestException.class)

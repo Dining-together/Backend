@@ -32,8 +32,11 @@ public class SuccessBid {
 	private Long successBidId;
 	@ApiModelProperty(notes = "AuctionId")
 	private long auctionId;
-	@ApiModelProperty(notes = "AuctioneerId")
+	@ApiModelProperty(notes = "AuctioneerId (storeId)")
 	private long auctioneerId;
+	@ApiModelProperty(notes = "userId")
+	private long userId;
+
 	@ApiModelProperty(notes = "완료")
 	private boolean isComplete;
 	@ApiModelProperty(notes = "인원수")

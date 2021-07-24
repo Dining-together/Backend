@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -16,13 +17,12 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.auction.advice.exception.UserNotMatchedException;
 import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.commons.annotation.Permission;
-import kr.or.dining_together.auction.dto.SuccessBidDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.AuctionStatus;
-import kr.or.dining_together.auction.jpa.entity.SuccessBid;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
@@ -59,7 +59,6 @@ public class AuctionController {
 	public ListResult<Auction> auctions() {
 		return responseService.getListResult(auctionService.getAuctions());
 	}
-
 
 	@ApiOperation(value = "공고 진행중 조회", notes = "공고 리스트 조회한다.")
 	@GetMapping(value = "/auctions/proceeding")
@@ -119,6 +118,7 @@ public class AuctionController {
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
 		return responseService.getSingleResult(auctionService.deleteAuction(auctionId));
 	}
+
 	@ApiOperation(value = "공고 낙찰", notes = "낙찰한다.")
 	@PostMapping(value = "/{auctionId}/success")
 	@ApiImplicitParams({
@@ -126,10 +126,14 @@ public class AuctionController {
 	})
 	public SingleResult successBidding(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
-		@ApiParam(value = "낙찰 업체 id", required = true) long auctionnerId) {
+		@ApiParam(value = "낙찰 업체 id", required = true) @RequestParam long auctionnerId) {
+		UserIdDto user = userServiceClient.getUserId(xAuthToken);
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
+		if (user.getId() != auction.getUserId()) {
+			throw new UserNotMatchedException();
+		}
 		auction.setStatus(AuctionStatus.END);
-		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId,auctionnerId));
+		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId, auctionnerId));
 	}
 
 }

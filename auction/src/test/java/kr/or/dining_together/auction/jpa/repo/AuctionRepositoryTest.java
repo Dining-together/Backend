@@ -1,8 +1,5 @@
 package kr.or.dining_together.auction.jpa.repo;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
@@ -15,19 +12,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
-import kr.or.dining_together.auction.jpa.entity.AuctionStatus;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 class AuctionRepositoryTest {
+	Auction auction1;
 	@Autowired
 	private AuctionRepository auctionRepository;
-	Auction auction1;
 
 	@BeforeEach
 	void setUp() {
 
-		UserIdDto userIdDto= UserIdDto.builder()
+		UserIdDto userIdDto = UserIdDto.builder()
 			.name("dd")
 			.id(4)
 			.type("CUSTOMER")
@@ -55,10 +51,10 @@ class AuctionRepositoryTest {
 	void findAllByUserId() {
 	}
 
-	@Test
-	void updateAuctionDeadlineEnd() {
-		auctionRepository.updateAuctionDeadlineEnd(new Date());
-		assertEquals(false,auction1.isDeadline());
-
-	}
+	// @Test
+	// void updateAuctionDeadlineEnd() {
+	// 	auctionRepository.updateAuctionDeadlineEnd(new Date());
+	// 	assertEquals(false, auction1.isDeadline());
+	//
+	// }
 }

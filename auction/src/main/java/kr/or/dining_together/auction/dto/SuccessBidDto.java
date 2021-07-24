@@ -24,6 +24,8 @@ public class SuccessBidDto {
 	private long auctionId;
 	@ApiModelProperty(notes = "AuctioneerId")
 	private long auctioneerId;
+	@ApiModelProperty(notes = "userId")
+	private long userId;
 	@ApiModelProperty(notes = "인원수")
 	private int groupCnt;
 	@ApiModelProperty(notes = "단체유형")
@@ -32,6 +34,5 @@ public class SuccessBidDto {
 	private Date reservation;
 	@ApiModelProperty(notes = "업체 Name")
 	private String storeName;
-
 
 }

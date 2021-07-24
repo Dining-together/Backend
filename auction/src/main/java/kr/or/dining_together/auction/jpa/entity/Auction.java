@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -70,7 +71,7 @@ public class Auction {
 	private String userName;
 	@ApiModelProperty(notes = "선호 업체")
 	private String storeType;
-	@OneToMany(mappedBy = "auction")
+	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
 	private List<Auctioneer> auctioneers = new ArrayList<>();
 
 	@PrePersist
@@ -84,17 +85,19 @@ public class Auction {
 		this.updatedDate = new Date();
 	}
 
-	public void setStatus(AuctionStatus status){
-		this.status=status;
+	public void setStatus(AuctionStatus status) {
+		this.status = status;
 	}
-	public void setUpdate(String title, String content, String storeType, int minPrice, String groupType,int groupCnt, int maxPrice,
+
+	public void setUpdate(String title, String content, String storeType, int minPrice, String groupType, int groupCnt,
+		int maxPrice,
 		Date reservation, Date deadline) {
 		this.title = title;
 		this.content = content;
 		this.storeType = storeType;
 		this.minPrice = minPrice;
 		this.groupType = groupType;
-		this.groupCnt=groupCnt;
+		this.groupCnt = groupCnt;
 		this.maxPrice = maxPrice;
 		this.reservation = reservation;
 		this.deadline = deadline;
