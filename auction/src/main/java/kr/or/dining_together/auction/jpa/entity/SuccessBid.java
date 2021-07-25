@@ -1,6 +1,6 @@
 package kr.or.dining_together.auction.jpa.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,8 +32,8 @@ public class SuccessBid {
 	private Long successBidId;
 	@ApiModelProperty(notes = "AuctionId")
 	private long auctionId;
-	@ApiModelProperty(notes = "AuctioneerId (storeId)")
-	private long auctioneerId;
+	@ApiModelProperty(notes = "storeId")
+	private long storeId;
 	@ApiModelProperty(notes = "userId")
 	private long userId;
 
@@ -44,13 +44,17 @@ public class SuccessBid {
 	@ApiModelProperty(notes = "단체유형")
 	private String groupType;
 	@ApiModelProperty(notes = "예약 시간")
-	private Date reservation;
+	private LocalDateTime reservation;
 	@ApiModelProperty(notes = "업체 Name")
 	private String storeName;
 
 	@PrePersist
 	void prePersist() {
 		this.isComplete = false;
+	}
+
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
 	}
 
 }

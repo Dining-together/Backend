@@ -1,5 +1,6 @@
 package kr.or.dining_together.auction.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
@@ -60,10 +62,12 @@ public class Auction {
 	private AuctionStatus status;
 	@ApiModelProperty(notes = "단체유형")
 	private String groupType;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@ApiModelProperty(notes = "예약 시간")
-	private Date reservation;
+	private LocalDateTime reservation;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@ApiModelProperty(notes = "공고 종료 시간")
-	private Date deadline;
+	private LocalDateTime deadline;
 	@ApiModelProperty(notes = "사용자 id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private long userId;
@@ -91,7 +95,7 @@ public class Auction {
 
 	public void setUpdate(String title, String content, String storeType, int minPrice, String groupType, int groupCnt,
 		int maxPrice,
-		Date reservation, Date deadline) {
+		LocalDateTime reservation, LocalDateTime deadline) {
 		this.title = title;
 		this.content = content;
 		this.storeType = storeType;

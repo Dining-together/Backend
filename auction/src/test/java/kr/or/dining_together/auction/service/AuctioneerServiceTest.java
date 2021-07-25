@@ -2,7 +2,7 @@ package kr.or.dining_together.auction.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,15 +52,17 @@ class AuctioneerServiceTest {
 			.name("moon")
 			.build();
 
+		LocalDateTime date = LocalDateTime.now();
+
 		Auction auction1 = Auction.builder()
 			.content("내용")
 			.title("공고임")
-			.deadline(new Date())
+			.deadline(date)
 			.maxPrice(10)
 			.minPrice(0)
 			.userId(1L)
 			.groupType("회식")
-			.reservation(new Date())
+			.reservation(date)
 			.build();
 
 		auction = auctionRepository.save(auction1);

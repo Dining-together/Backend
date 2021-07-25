@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.Auctioneer;
 import kr.or.dining_together.auction.jpa.entity.SuccessBid;
@@ -25,7 +26,7 @@ public class SuccessBidService {
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
 		SuccessBid successBid = SuccessBid.builder()
 			.auctionId(auction.getAuctionId())
-			.auctioneerId(auctioneer.getAuctioneerId())
+			.storeId(auctioneer.getStoreId())
 			.userId(auction.getUserId())
 			.groupCnt(auction.getGroupCnt())
 			.reservation(auction.getReservation())
@@ -36,8 +37,8 @@ public class SuccessBidService {
 		return successBidRepository.save(successBid);
 	}
 
-	public List<SuccessBid> getSuccessbidsByUser(long userId) {
-		return successBidRepository.findAllByUserId(userId);
+	public List<SuccessBid> getSuccessbidsByUser(UserIdDto user) {
+		return successBidRepository.findAllByUserId(user.getId());
 	}
 
 }

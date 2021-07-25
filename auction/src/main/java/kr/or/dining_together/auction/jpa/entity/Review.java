@@ -15,6 +15,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -46,6 +48,13 @@ public class Review {
 	private String content;
 	@ApiModelProperty(notes = "별점")
 	private int score;
+	@ApiModelProperty(notes = "사용자 id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	private long userId;
+	@ApiModelProperty(notes = "사용자 Name")
+	private String userName;
+	@ApiModelProperty(notes = "업체 id")
+	private long storeId;
 	@OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
 	private List<ReviewImages> reviewImages = new ArrayList<>();
 
