@@ -41,4 +41,8 @@ public class SuccessBidService {
 		return successBidRepository.findAllByUserId(user.getId());
 	}
 
+	public List<SuccessBid> getSuccessbidsByStore(UserIdDto user) {
+		return successBidRepository.findAllByStoreId(user.getId());
+	}
+
 }

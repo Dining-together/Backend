@@ -65,6 +65,8 @@ public class AuctionService {
 			.groupType(auctionRequest.getGroupType())
 			.groupCnt(auctionRequest.getGroupCnt())
 			.reservation(auctionRequest.getReservation())
+			.age(auctionRequest.getAge())
+			.gender(auctionRequest.getGender())
 			.build();
 
 		return auctionRepository.save(auction);
@@ -83,6 +85,13 @@ public class AuctionService {
 	public boolean deleteAuction(long auctionId) {
 		Auction auction = getAuction(auctionId);
 		auctionRepository.delete(auction);
+		return true;
+	}
+
+	public boolean endAuction(long auctionId) {
+		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
+		auction.setStatus(AuctionStatus.END);
+		auctionRepository.save(auction);
 		return true;
 	}
 

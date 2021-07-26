@@ -12,6 +12,8 @@ public interface SuccessBidRepository extends JpaRepository<SuccessBid, Long> {
 
 	List<SuccessBid> findAllByUserId(long userId);
 
+	List<SuccessBid> findAllByStoreId(long storeId);
+
 	@Query("select a from SuccessBid a where a.isComplete=false and a.reservation < :date")
 	List<SuccessBid> findAllByCompleteFalseAndReservationAfter(LocalDateTime date);
 

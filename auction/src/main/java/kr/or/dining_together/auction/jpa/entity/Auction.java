@@ -75,6 +75,10 @@ public class Auction {
 	private String userName;
 	@ApiModelProperty(notes = "선호 업체")
 	private String storeType;
+	@ApiModelProperty(notes = "평균 성별")
+	private String gender;
+	@ApiModelProperty(notes = "평균 나이")
+	private String age;
 	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
 	private List<Auctioneer> auctioneers = new ArrayList<>();
 

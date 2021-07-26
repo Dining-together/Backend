@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.commons.annotation.Permission;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.SuccessBid;
 import kr.or.dining_together.auction.model.ListResult;
@@ -28,14 +29,26 @@ public class SuccessBidController {
 	private final UserServiceClient userServiceClient;
 
 	@ApiOperation(value = "사용자별 낙찰 조회", notes = "사용자별 낙찰 불러온다.")
-	@GetMapping(value = "/bids")
+	@GetMapping(value = "/user/bids")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	public ListResult<SuccessBid> getAuction(
+	public ListResult<SuccessBid> getSuccessBidByUser(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken) {
 		UserIdDto userIdDto = userServiceClient.getUserId(xAuthToken);
 		return responseService.getListResult(successBidService.getSuccessbidsByUser(userIdDto));
+	}
+
+	@ApiOperation(value = "업체별 낙찰 조회", notes = "업체별 낙찰 불러온다.")
+	@GetMapping(value = "/store/bids")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
+	})
+	@Permission(target = "STORE")
+	public ListResult<SuccessBid> getSuccessBidByStore(
+		@RequestHeader("X-AUTH-TOKEN") String xAuthToken) {
+		UserIdDto userIdDto = userServiceClient.getUserId(xAuthToken);
+		return responseService.getListResult(successBidService.getSuccessbidsByStore(userIdDto));
 	}
 
 }

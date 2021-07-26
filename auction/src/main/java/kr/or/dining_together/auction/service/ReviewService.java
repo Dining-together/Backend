@@ -42,6 +42,12 @@ public class ReviewService {
 		return reviewRepository.save(review);
 	}
 
+	public Review modifyReview(ReviewDto reviewDto, long reviewId) {
+		Review review = reviewRepository.findById(reviewId).orElseThrow(ResourceNotExistException::new);
+		review.updateReview(reviewDto.getContent(), review.getScore());
+		return reviewRepository.save(review);
+	}
+
 	public List<Review> getReviewsByStore(long storeId) {
 		return reviewRepository.findAllByStoreId(storeId);
 	}

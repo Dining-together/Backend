@@ -25,4 +25,6 @@ public class AuctionRequest {
 	private int groupCnt;
 	private LocalDateTime reservation;
 	private LocalDateTime deadline;
+	private String age;
+	private String gender;
 }

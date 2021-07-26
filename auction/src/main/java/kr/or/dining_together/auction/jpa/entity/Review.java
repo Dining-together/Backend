@@ -68,4 +68,9 @@ public class Review {
 		this.updatedDate = new Date();
 	}
 
+	public void updateReview(String content, int score) {
+		this.content = content;
+		this.score = score;
+	}
+
 }

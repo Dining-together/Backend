@@ -1,5 +1,7 @@
 package kr.or.dining_together.auction.controller;
 
+import javax.transaction.Transactional;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +19,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
-import kr.or.dining_together.auction.advice.exception.UserNotMatchedException;
 import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.commons.annotation.Permission;
+import kr.or.dining_together.auction.commons.annotation.UserCheck;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.AuctionStatus;
@@ -45,6 +47,7 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = {"1. Auction"})
 @RestController
 @RequiredArgsConstructor
+@Transactional
 @RequestMapping(value = "/auction")
 public class AuctionController {
 
@@ -103,6 +106,7 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
+	@UserCheck
 	public SingleResult<Auction> modifyAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
 		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionRequest auctionRequest) {
@@ -114,6 +118,7 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
+	@UserCheck
 	public CommonResult deleteAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
 		return responseService.getSingleResult(auctionService.deleteAuction(auctionId));
@@ -124,16 +129,24 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
+	@UserCheck
 	public SingleResult successBidding(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
-		@ApiParam(value = "낙찰 업체 id", required = true) @RequestParam long auctionnerId) {
-		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		@ApiParam(value = "낙찰자 id", required = true) @RequestParam long auctionnerId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
-		if (user.getId() != auction.getUserId()) {
-			throw new UserNotMatchedException();
-		}
 		auction.setStatus(AuctionStatus.END);
 		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId, auctionnerId));
+	}
+
+	@ApiOperation(value = "공고 마감", notes = "공고 마감 한다.")
+	@PostMapping(value = "/{auctionId}/end")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
+	})
+	@UserCheck
+	public CommonResult endAuction(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
+		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
+		return responseService.getSingleResult(auctionService.endAuction(auctionId));
 	}
 
 }
