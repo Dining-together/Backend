@@ -160,7 +160,7 @@ public class UserService {
 		Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		Customer customer = (Customer)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		user.update(customerProfileRequest.getPassword(), customerProfileRequest.getName());
+		user.update(passwordEncoder.encode(customerProfileRequest.getPassword()), customerProfileRequest.getName());
 		customer.update(customerProfileRequest.getAge(), customerProfileRequest.getGender(),
 			customerProfileRequest.getAddr(), customerProfileRequest.getLatitude(),
 			customerProfileRequest.getLongitude());
@@ -181,7 +181,7 @@ public class UserService {
 
 	public StoreProfileResponse modify(StoreProfileRequest storeProfileRequest, String email) throws Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		user.update(storeProfileRequest.getPassword(), storeProfileRequest.getName());
+		user.update(passwordEncoder.encode(storeProfileRequest.getPassword()), storeProfileRequest.getName());
 		userRepository.save(user);
 		StoreProfileResponse storeProfileResponse = StoreProfileResponse.builder()
 			.email(email)
