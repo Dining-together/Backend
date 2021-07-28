@@ -27,4 +27,5 @@ public class AuctionRequest {
 	private LocalDateTime deadline;
 	private String age;
 	private String gender;
+	private String addr;
 }

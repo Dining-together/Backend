@@ -67,6 +67,7 @@ public class AuctionService {
 			.reservation(auctionRequest.getReservation())
 			.age(auctionRequest.getAge())
 			.gender(auctionRequest.getGender())
+			.addr(auctionRequest.getAddr())
 			.build();
 
 		return auctionRepository.save(auction);
