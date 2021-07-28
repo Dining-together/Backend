@@ -20,5 +20,6 @@ public class CustomerProfileResponse {
 	private String name;
 	private int age;
 	private String gender;
+	private String addr;
 
 }

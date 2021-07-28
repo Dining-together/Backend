@@ -44,7 +44,8 @@ public class StoreService {
 		if (store.getDocumentChecked() == false) {
 			throw new UnprovenStoreException();
 		}
-		store.update(storeRequest.getPhoneNum(), store.getAddr(), storeRequest.getStoreName());
+		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(), storeRequest.getLatitude(),
+			storeRequest.getLongitude());
 		storeRepository.save(store);
 		return store;
 	}

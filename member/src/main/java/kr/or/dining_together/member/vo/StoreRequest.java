@@ -17,7 +17,7 @@ public class StoreRequest {
 	private String phoneNum;
 
 	private String addr;
-
-	private String storeName;
+	private double latitude;
+	private double longitude;
 
 }

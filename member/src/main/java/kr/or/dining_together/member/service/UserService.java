@@ -60,6 +60,9 @@ public class UserService {
 				.password(passwordEncoder.encode(signUpRequest.getPassword()))
 				.name(signUpRequest.getName())
 				.gender(signUpRequest.getGender())
+				.latitude(signUpRequest.getLatitude())
+				.longitude(signUpRequest.getLongitude())
+				.addr(signUpRequest.getAddr())
 				.age(signUpRequest.getAge())
 				.type("CUSTOMER")
 				.build());
@@ -158,7 +161,9 @@ public class UserService {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		Customer customer = (Customer)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		user.update(customerProfileRequest.getPassword(), customerProfileRequest.getName());
-		customer.update(customerProfileRequest.getAge(), customerProfileRequest.getGender());
+		customer.update(customerProfileRequest.getAge(), customerProfileRequest.getGender(),
+			customerProfileRequest.getAddr(), customerProfileRequest.getLatitude(),
+			customerProfileRequest.getLongitude());
 
 		userRepository.save(user);
 		customerRepository.save(customer);
@@ -168,6 +173,7 @@ public class UserService {
 			.age(customer.getAge())
 			.gender(customer.getGender())
 			.name(user.getName())
+			.addr(customer.getAddr())
 			.build();
 
 		return customerProfileResponse;
