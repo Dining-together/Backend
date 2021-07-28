@@ -28,14 +28,20 @@ public class Customer extends User {
 	private int age;
 	@Column(length = 100)
 	private String gender;
+	private String addr;
+	private double latitude;
+	private double longitude;
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<CustomerFavorites> customerFavorites = new ArrayList<>();
 
-	public void update(int age, String gender) {
+	public void update(int age, String gender, String addr, double latitude, double longitude) {
 		this.age = age;
 		this.gender = gender;
+		this.addr = addr;
+		this.latitude = latitude;
+		this.longitude = longitude;
 
 	}
 }

@@ -2,7 +2,7 @@ package kr.or.dining_together.auction.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -46,16 +46,16 @@ class AuctionServiceTest {
 			.id(1L)
 			.name("moon")
 			.build();
-
+		LocalDateTime date = LocalDateTime.now();
 		auction = Auction.builder()
 			.title("제목")
 			.content("내용")
 			.maxPrice(1000)
 			.minPrice(10)
-			.userType("Family")
+			.groupType("Family")
 			.userId(1L)
-			.reservation(new Date())
-			.deadline(new Date())
+			.reservation(date)
+			.deadline(date)
 			.build();
 
 		auctionRepository.save(auction);
@@ -94,9 +94,9 @@ class AuctionServiceTest {
 			.content("내용2")
 			.maxPrice(2000)
 			.minPrice(20)
-			.userType("Friend")
-			.reservation(new Date())
-			.deadline(new Date())
+			.groupType("Friend")
+			.reservation(LocalDateTime.now())
+			.deadline(LocalDateTime.now())
 			.build();
 
 		Auction auction = auctionService.writeAuction(userIdDto, auction1);
@@ -113,9 +113,9 @@ class AuctionServiceTest {
 			.content("내용2")
 			.maxPrice(2000)
 			.minPrice(20)
-			.userType("Friend")
-			.reservation(new Date())
-			.deadline(new Date())
+			.groupType("Friend")
+			.reservation(LocalDateTime.now())
+			.deadline(LocalDateTime.now())
 			.build();
 
 		AuctionRequest auctionRequest = modelMapper.map(modifyAuction, AuctionRequest.class);

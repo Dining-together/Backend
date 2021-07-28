@@ -1,9 +1,11 @@
 package kr.or.dining_together.auction.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
@@ -51,14 +54,20 @@ public class Auction {
 	private int maxPrice;
 	@ApiModelProperty(notes = "공고 최소 가격")
 	private int minPrice;
-	@ApiModelProperty(notes = "공고 상태")
-	private String status;
+	@ApiModelProperty(notes = "인원수")
+	private int groupCnt;
+	@ApiModelProperty(notes = "위치")
+	private String addr;
+	@ApiModelProperty(notes = "마감여부")
+	private AuctionStatus status;
 	@ApiModelProperty(notes = "단체유형")
-	private String userType;
+	private String groupType;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@ApiModelProperty(notes = "예약 시간")
-	private Date reservation;
+	private LocalDateTime reservation;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	@ApiModelProperty(notes = "공고 종료 시간")
-	private Date deadline;
+	private LocalDateTime deadline;
 	@ApiModelProperty(notes = "사용자 id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private long userId;
@@ -66,13 +75,17 @@ public class Auction {
 	private String userName;
 	@ApiModelProperty(notes = "선호 업체")
 	private String storeType;
-	@OneToMany(mappedBy = "auction")
+	@ApiModelProperty(notes = "평균 성별")
+	private String gender;
+	@ApiModelProperty(notes = "평균 나이")
+	private String age;
+	@OneToMany(mappedBy = "auction", cascade = CascadeType.ALL)
 	private List<Auctioneer> auctioneers = new ArrayList<>();
 
 	@PrePersist
 	void prePersist() {
 		this.createdDate = this.updatedDate = new Date();
-		this.status = "PROCEEDING";
+		this.status = AuctionStatus.PROCEEDING;
 	}
 
 	@PreUpdate
@@ -80,13 +93,19 @@ public class Auction {
 		this.updatedDate = new Date();
 	}
 
-	public void setUpdate(String title, String content, String storeType, int minPrice, String userType, int maxPrice,
-		Date reservation, Date deadline) {
+	public void setStatus(AuctionStatus status) {
+		this.status = status;
+	}
+
+	public void setUpdate(String title, String content, String storeType, int minPrice, String groupType, int groupCnt,
+		int maxPrice,
+		LocalDateTime reservation, LocalDateTime deadline) {
 		this.title = title;
 		this.content = content;
 		this.storeType = storeType;
 		this.minPrice = minPrice;
-		this.userType = userType;
+		this.groupType = groupType;
+		this.groupCnt = groupCnt;
 		this.maxPrice = maxPrice;
 		this.reservation = reservation;
 		this.deadline = deadline;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
+import kr.or.dining_together.auction.jpa.entity.AuctionStatus;
 import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,16 @@ public class AuctionService {
 		return auctions;
 	}
 
+	public List<Auction> getAuctionsByProceeding() {
+		List<Auction> auctions = auctionRepository.findAllByStatus(AuctionStatus.PROCEEDING);
+		return auctions;
+	}
+
+	public List<Auction> getAuctionsByEnd() {
+		List<Auction> auctions = auctionRepository.findAllByStatus(AuctionStatus.END);
+		return auctions;
+	}
+
 	public Auction getAuction(long auctionId) {
 		return auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 	}
@@ -51,8 +62,11 @@ public class AuctionService {
 			.minPrice(auctionRequest.getMinPrice())
 			.userId(user.getId())
 			.userName(user.getName())
-			.userType(auctionRequest.getUserType())
+			.groupType(auctionRequest.getGroupType())
+			.groupCnt(auctionRequest.getGroupCnt())
 			.reservation(auctionRequest.getReservation())
+			.age(auctionRequest.getAge())
+			.gender(auctionRequest.getGender())
 			.build();
 
 		return auctionRepository.save(auction);
@@ -62,7 +76,8 @@ public class AuctionService {
 		Auction auction = getAuction(auctionId);
 		auction.setUpdate(auctionRequest.getTitle(), auctionRequest.getContent(), auctionRequest.getStoreType(),
 			auctionRequest.getMinPrice(),
-			auctionRequest.getUserType(), auctionRequest.getMaxPrice(), auctionRequest.getReservation(),
+			auctionRequest.getGroupType(), auctionRequest.getGroupCnt(), auctionRequest.getMaxPrice(),
+			auctionRequest.getReservation(),
 			auctionRequest.getDeadline());
 		return auction;
 	}
@@ -70,6 +85,13 @@ public class AuctionService {
 	public boolean deleteAuction(long auctionId) {
 		Auction auction = getAuction(auctionId);
 		auctionRepository.delete(auction);
+		return true;
+	}
+
+	public boolean endAuction(long auctionId) {
+		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
+		auction.setStatus(AuctionStatus.END);
+		auctionRepository.save(auction);
 		return true;
 	}
 
