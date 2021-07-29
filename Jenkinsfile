@@ -32,10 +32,10 @@ node {
                     sh "cd search && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
             }
 
-            // Unit Test using Junit and archive results for analysis
-            stage('Unit Test'){
-                    junit '**/target/surefire-reports/TEST-*.xml'
-            }
+        //     // Unit Test using Junit and archive results for analysis
+        //     stage('Unit Test'){
+        //             junit '**/target/surefire-reports/TEST-*.xml'
+        //     }
          slackSend (channel: '#jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }catch(e){
             slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
