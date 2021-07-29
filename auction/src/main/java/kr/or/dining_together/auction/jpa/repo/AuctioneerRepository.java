@@ -10,4 +10,6 @@ import kr.or.dining_together.auction.jpa.entity.Auctioneer;
 public interface AuctioneerRepository extends JpaRepository<Auctioneer, Long> {
 
 	List<Auctioneer> findAuctioneersByAuction(Auction auction);
+
+	List<Auctioneer> findAllByAuctionOrderByUpdatedDateDesc(Auction auction);
 }

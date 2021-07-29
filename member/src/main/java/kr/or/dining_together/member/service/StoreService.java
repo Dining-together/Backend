@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
+import kr.or.dining_together.member.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.FacilityEtc;
@@ -19,7 +20,6 @@ import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 
 @Service
 @RequiredArgsConstructor
@@ -41,17 +41,21 @@ public class StoreService {
 
 	public Store registerStore(StoreRequest storeRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		System.out.println("-----> Before save " + store);
-		store.update(storeRequest.getPhoneNum(), store.getAddr(), storeRequest.getStoreName());
+		if (store.getDocumentChecked() == false) {
+			throw new UnprovenStoreException();
+		}
+		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(), storeRequest.getLatitude(),
+			storeRequest.getLongitude());
 		storeRepository.save(store);
-		System.out.println("-----> After save "+store);
 		return store;
 	}
 
 	@Transactional
 	public Facility registerFacility(FacilityRequest facilityRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-
+		if (store.getDocumentChecked() == false) {
+			throw new UnprovenStoreException();
+		}
 		Facility facility = Facility.builder()
 			.capacity(facilityRequest.getCapacity())
 			.parkingCount(facilityRequest.getParkingCount())
@@ -76,7 +80,7 @@ public class StoreService {
 		storeRepository.save(store);
 		return facility;
 	}
-	
+
 	@Transactional
 	public Facility modifyFacility(FacilityRequest facilityRequest, long facilityId, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);

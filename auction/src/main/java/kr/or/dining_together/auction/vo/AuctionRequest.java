@@ -1,5 +1,6 @@
 package kr.or.dining_together.auction.vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +22,11 @@ public class AuctionRequest {
 	private String storeType;
 	private int maxPrice;
 	private int minPrice;
-	private String userType;
-	private Date reservation;
-	private Date deadline;
+	private String groupType;
+	private int groupCnt;
+	private LocalDateTime reservation;
+	private LocalDateTime deadline;
+	private String age;
+	private String gender;
+	private String addr;
 }

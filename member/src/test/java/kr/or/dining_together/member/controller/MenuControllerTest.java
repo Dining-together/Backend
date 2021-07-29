@@ -27,9 +27,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -65,9 +67,16 @@ class MenuControllerTest {
 	private ObjectMapper objectMapper;
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private WebApplicationContext ctx;
 
 	@BeforeEach
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+			.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+			.alwaysDo(print())
+			.build();
+
 		Store store = Store.builder()
 			.email("jifrozen1@naver.com")
 			.name("문지언")

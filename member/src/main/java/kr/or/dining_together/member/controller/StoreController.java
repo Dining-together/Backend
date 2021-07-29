@@ -154,6 +154,8 @@ public class StoreController {
 		}
 		String fileName = user.getId() + "_document";
 		storageService.save(file, fileName, STORE_DOCUMENT_FOLDER_DIRECTORY);
+		user.setDocumentChecked(true);
+		storeRepository.save(user);
 		return responseService.getSuccessResult();
 	}
 
@@ -174,10 +176,10 @@ public class StoreController {
 			.storeType(store.getStoreType().toString())
 			.addr(store.getAddr())
 			.storeId(String.valueOf(store.getId()))
-			.storeName(store.getStoreName())
+			.storeName(store.getName())
 			.build();
 
-		// kafkaProducer.send("member-store-topic",storeDto);
+		kafkaProducer.send("member-store-topic",storeDto);
 		return responseService.getSingleResult(store);
 
 	}
@@ -209,6 +211,15 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		return responseService.getSingleResult(storeService.modifyFacility(facilityRequest, facilityId, email));
+	}
+
+	@ApiOperation(value = "서류 확인 (다른 서비스 호출)", notes = "업체 서류 인증 확인")
+	@GetMapping(value = "/store/document")
+	public boolean isDocumentChecked() throws Throwable {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		return store.getDocumentChecked();
 	}
 
 }

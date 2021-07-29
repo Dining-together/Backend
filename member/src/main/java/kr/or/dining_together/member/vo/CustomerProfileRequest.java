@@ -19,5 +19,8 @@ public class CustomerProfileRequest {
 	private String name;
 	private int age;
 	private String gender;
+	private double latitude;
+	private double longitude;
+	private String addr;
 
 }

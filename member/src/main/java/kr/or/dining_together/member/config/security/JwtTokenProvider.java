@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-
 	private final Environment env;
 	private final UserDetailsService userDetailsService;
 	private String SECRET_KEY;
@@ -75,5 +74,4 @@ public class JwtTokenProvider {
 			return false;
 		}
 	}
-
 }

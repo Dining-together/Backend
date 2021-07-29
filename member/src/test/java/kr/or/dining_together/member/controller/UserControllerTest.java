@@ -21,19 +21,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
-
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,9 +41,7 @@ import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
-import kr.or.dining_together.member.vo.CustomerProfileRequest;
 import kr.or.dining_together.member.vo.LoginRequest;
-import kr.or.dining_together.member.vo.StoreProfileRequest;
 
 /**
  * @package : kr.or.dining_together.member.controller
@@ -76,8 +74,16 @@ class UserControllerTest {
 	private String token;
 	private String token1;
 
+	@Autowired
+	private WebApplicationContext ctx;
+
 	@BeforeEach
-	void setUp() throws Exception {
+	public void setUp() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+			.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+			.alwaysDo(print())
+			.build();
+		
 		Customer user = Customer.builder()
 			.email("jifrozen@naver.com")
 			.name("문지언")
@@ -212,6 +218,7 @@ class UserControllerTest {
 			.andDo(document("getUserId",
 				responseFields(
 					fieldWithPath("id").description("사용자 id"),
+					fieldWithPath("type").description("사용자 타입"),
 					fieldWithPath("name").description("사용자 이름")
 				)
 			));
@@ -318,11 +325,12 @@ class UserControllerTest {
 					fieldWithPath("msg").description("메시지")
 				)));
 	}
+
 	@Test
 	void delete() throws Exception {
 		Optional<User> user = userRepository.findByEmail("jifrozen@naver.com");
 		assertTrue(user.isPresent());
-    
+
 		mockMvc.perform(RestDocumentationRequestBuilders
 			.delete("/member/user")
 			.header("X-AUTH-TOKEN", token))

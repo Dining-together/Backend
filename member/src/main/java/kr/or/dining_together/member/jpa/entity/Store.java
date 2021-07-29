@@ -31,8 +31,8 @@ public class Store extends User {
 	private String phoneNum;
 
 	private String addr;
-
-	private String storeName;
+	private double latitude;
+	private double longitude;
 
 	@ApiModelProperty(notes = "서류 제출 확인여부를 나타낸다")
 	@Column(columnDefinition = "boolean default false")
@@ -57,10 +57,16 @@ public class Store extends User {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 
-	public void update(String phoneNum, String addr, String storeName) {
+	public void update(String phoneNum, String addr, double latitude, double longitude) {
 		this.phoneNum = phoneNum;
 		this.addr = addr;
-		this.storeName = storeName;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+
+	public void setDocumentChecked(boolean documentChecked) {
+		this.documentChecked = documentChecked;
+
 	}
 
 	public void setFacility(Facility facility) {

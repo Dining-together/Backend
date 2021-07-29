@@ -60,7 +60,11 @@ public class UserService {
 				.password(passwordEncoder.encode(signUpRequest.getPassword()))
 				.name(signUpRequest.getName())
 				.gender(signUpRequest.getGender())
+				.latitude(signUpRequest.getLatitude())
+				.longitude(signUpRequest.getLongitude())
+				.addr(signUpRequest.getAddr())
 				.age(signUpRequest.getAge())
+				.type("CUSTOMER")
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
@@ -68,6 +72,7 @@ public class UserService {
 				.password(passwordEncoder.encode(signUpRequest.getPassword()))
 				.name(signUpRequest.getName())
 				.documentChecked(false)
+				.type("STORE")
 				.build());
 		}
 
@@ -155,8 +160,10 @@ public class UserService {
 		Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		Customer customer = (Customer)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		user.update(customerProfileRequest.getPassword(), customerProfileRequest.getName());
-		customer.update(customerProfileRequest.getAge(), customerProfileRequest.getGender());
+		user.update(passwordEncoder.encode(customerProfileRequest.getPassword()), customerProfileRequest.getName());
+		customer.update(customerProfileRequest.getAge(), customerProfileRequest.getGender(),
+			customerProfileRequest.getAddr(), customerProfileRequest.getLatitude(),
+			customerProfileRequest.getLongitude());
 
 		userRepository.save(user);
 		customerRepository.save(customer);
@@ -166,6 +173,7 @@ public class UserService {
 			.age(customer.getAge())
 			.gender(customer.getGender())
 			.name(user.getName())
+			.addr(customer.getAddr())
 			.build();
 
 		return customerProfileResponse;
@@ -173,7 +181,7 @@ public class UserService {
 
 	public StoreProfileResponse modify(StoreProfileRequest storeProfileRequest, String email) throws Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		user.update(storeProfileRequest.getPassword(), storeProfileRequest.getName());
+		user.update(passwordEncoder.encode(storeProfileRequest.getPassword()), storeProfileRequest.getName());
 		userRepository.save(user);
 		StoreProfileResponse storeProfileResponse = StoreProfileResponse.builder()
 			.email(email)

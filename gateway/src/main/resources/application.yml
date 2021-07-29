@@ -13,6 +13,12 @@ spring:
     name: gateway-server
   cloud:
     gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway Global Filter
+            preLogger: true
+            postLogger: true
       routes:
         - id: member
           uri: lb://MEMBER
@@ -26,3 +32,7 @@ spring:
           uri: lb://SEARCH
           predicates:
             - Path=/search/**
+
+token:
+  secret: secret_token
+  expiration_time: 86400000

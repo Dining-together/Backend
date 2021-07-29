@@ -1,0 +1,138 @@
+server:
+  port: 0
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: member
+  profiles:
+    group:
+      production: base,h2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: base
+  redis:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+    host: 118.67.133.150
+    port: 6379
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /member/h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining
+    username: sa
+  jwt:
+    secret: secret_token
+    expiration_time: 100000
+    refresh_token_validation_second_time: 28800000
+  #mail 인증을 위한 정보.
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: moamoa202105@gmail.com
+    password: moa1234!
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            required: true
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+  logging:
+    level:
+      org.hibernate.SQL: debug
+  url:
+    base: https://localhost:8000
+  social:
+    kakao:
+      client_id: cce7add11392983e7402a4bb7ad6fd07
+      redirect: /member/social/login/kakao
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
+    naver:
+      client_id: St2h1wPlAy2EZHfwNfzT
+      client_secret: BB6yF03ond
+      redirect: /member/social/login/naver
+      url:
+        login: https://nid.naver.com/oauth2.0/authorize
+        token: https://nid.naver.com/oauth2.0/token
+        profile: https://openapi.naver.com/v1/nid/me
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /member/h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: mariadb
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /member/h2-console
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://118.67.133.150:3306/member?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 1234
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update

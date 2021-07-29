@@ -1,6 +1,8 @@
 package kr.or.dining_together.member.controller;
 
 import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,17 +44,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/member/auth")
 public class SignController {
 
-	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final ResponseService responseService;
-	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
 	public SingleResult<String> userlogin(
-		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest) throws Throwable {
+		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest, HttpServletRequest req,
+		HttpServletResponse res) throws Throwable {
 		UserDto userDto = userService.login(loginRequest);
 		return responseService.getSingleResult(
 			jwtTokenProvider.createToken(String.valueOf(userDto.getEmail()), userDto.getRoles()));
@@ -74,29 +75,30 @@ public class SignController {
 		return responseService.getSuccessResult();
 	}
 
-	@ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
-	@PostMapping(value = "/signup/verification")
+	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
+	@PostMapping(value = "/verify")
 	public CommonResult userSignUpSendCodeToEmail(
-		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) {
-		emailService.sendAuthMail(email);
-		return responseService.getSuccessResult();
-	}
-
-	@ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
-	@PostMapping(value = "/signup/verification2")
-	public CommonResult userSignUpSendCodeToEmail2(
 		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException {
-		emailService.sendAuthMailBySendGrid(email);
+		emailService.sendVerificationMail(email);
 		return responseService.getSuccessResult();
 	}
-
 
 	@ApiOperation(value = "이메일 키값 인증", notes = "이메일과 키값을 받아 맞는지 확인한다.")
-	@GetMapping(value = "/signup/verification")
-	public CommonResult userSignUpVerification(
+	@GetMapping(value = "/verify")
+	public CommonResult getVerify(
 		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
 		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
-		emailService.checkEmailVerificationKey(email, key);
+		emailService.verifyEmail(email, key);
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "인증 및 비밀번호 전송", notes = "이메일과 키값을 받아 맞는지 확인하고 맞으면 비밀번호를 전송한다.")
+	@GetMapping(value = "/verify/password")
+	public CommonResult getVerifyAndGetPassword(
+		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
+		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) throws IOException {
+		emailService.verifyEmail(email, key);
+		emailService.sendUserPassword(email);
 		return responseService.getSuccessResult();
 	}
 

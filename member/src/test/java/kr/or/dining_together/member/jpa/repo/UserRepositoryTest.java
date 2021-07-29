@@ -83,4 +83,17 @@ public class UserRepositoryTest {
 		assertTrue(user.isPresent());
 		assertEquals(user.get().getName(), name);
 	}
+
+	@Test
+	public void changePassword() {
+		String email = "jifrozen@naver.com";
+		String name = "문지언";
+		String newPassword = "1234";
+		Optional<User> user = userRepository.findByEmail(email);
+		String currentPassword = user.get().getPassword();
+
+		userRepository.updatePassword(newPassword, email);
+		
+		assertNotEquals(newPassword, currentPassword);
+	}
 }
