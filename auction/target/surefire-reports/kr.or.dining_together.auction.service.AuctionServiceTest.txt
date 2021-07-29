@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: kr.or.dining_together.auction.service.AuctionServiceTest
--------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.061 s - in kr.or.dining_together.auction.service.AuctionServiceTest

@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.service;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -24,20 +25,12 @@ public class EmailServiceTest {
 	EmailService emailService;
 
 	@Test
-	public void mailSendAndCheckTest() {
+	public void mailSendTest() throws IOException {
 		//given
-		String email = "qja9605@naver.com";
-		String notTypedEmail = "qja9605@google.com";
+		String email = "qja9605@google.com";
+		String notTypedEmail = "qja9605@naver.com";
 
 		//when
-		emailService.sendAuthMail(email);
-		Optional<EmailInfo> emailInfo = emailInfoRepository.findByEmail(email);
-		String key = emailInfo.get().getKey();
-		Optional<EmailInfo> emailInfo1 = emailInfoRepository.findByKey(key);
-		Optional<EmailInfo> emailInfo2 = emailInfoRepository.findByEmail(notTypedEmail);
-
-		//then
-		emailService.checkEmailExistence(notTypedEmail);
-		emailService.checkEmailVerificationKey(email, key);
+		emailService.sendAuthMailBySendGrid(email);
 	}
 }

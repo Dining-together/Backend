@@ -1,5 +1,7 @@
 package kr.or.dining_together.member.controller;
 
+import java.io.IOException;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +81,15 @@ public class SignController {
 		emailService.sendAuthMail(email);
 		return responseService.getSuccessResult();
 	}
+
+	@ApiOperation(value = "이메일 인증", notes = "이메일을 입력받아 키값을 전송한다.")
+	@PostMapping(value = "/signup/verification2")
+	public CommonResult userSignUpSendCodeToEmail2(
+		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException {
+		emailService.sendAuthMailBySendGrid(email);
+		return responseService.getSuccessResult();
+	}
+
 
 	@ApiOperation(value = "이메일 키값 인증", notes = "이메일과 키값을 받아 맞는지 확인한다.")
 	@GetMapping(value = "/signup/verification")

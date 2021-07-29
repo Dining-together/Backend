@@ -19,6 +19,7 @@ import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +41,10 @@ public class StoreService {
 
 	public Store registerStore(StoreRequest storeRequest, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+		System.out.println("-----> Before save " + store);
 		store.update(storeRequest.getPhoneNum(), store.getAddr(), storeRequest.getStoreName());
 		storeRepository.save(store);
+		System.out.println("-----> After save "+store);
 		return store;
 	}
 

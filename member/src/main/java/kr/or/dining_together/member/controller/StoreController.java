@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
+import kr.or.dining_together.member.dto.StoreDto;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.StoreImages;
@@ -35,6 +36,7 @@ import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.FileService;
+import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.StoreService;
@@ -65,6 +67,7 @@ public class StoreController {
 	private final ResponseService responseService;
 	private final StoreService storeService;
 	private final StorageService storageService;
+	private final KafkaProducer kafkaProducer;
 
 	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
 	@GetMapping(value = "/stores")
@@ -165,8 +168,17 @@ public class StoreController {
 	) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
+		Store store = storeService.registerStore(storeRequest, email);
 
-		return responseService.getSingleResult(storeService.registerStore(storeRequest, email));
+		StoreDto storeDto = StoreDto.builder()
+			.storeType(store.getStoreType().toString())
+			.addr(store.getAddr())
+			.storeId(String.valueOf(store.getId()))
+			.storeName(store.getStoreName())
+			.build();
+
+		// kafkaProducer.send("member-store-topic",storeDto);
+		return responseService.getSingleResult(store);
 
 	}
 

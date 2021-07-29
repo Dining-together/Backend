@@ -23,7 +23,7 @@ public class KafkaConsumerConfig {
 		properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "118.67.133.150:9092");
 		properties.put(ConsumerConfig.GROUP_ID_CONFIG, "consumerGroupId");
 		properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
 		return new DefaultKafkaConsumerFactory<>(properties);
 	}
