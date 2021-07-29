@@ -21,17 +21,17 @@ public class AuctionService {
 		auctionRepository.save(auction);
 	}
 
-	public void createAuctionIndexBulk(List<Auction> auctions) {
-		auctionRepository.saveAll(auctions);
-	}
+	// public void createAuctionIndexBulk(List<Auction> auctions) {
+	// 	auctionRepository.saveAll(auctions);
+	// }
 
-	public void deleteAuctionDocument(String id) throws IOException {
-		auctionRepository.deleteById(id);
-	}
+	// public void deleteAuctionDocument(String id) throws IOException {
+	// 	auctionRepository.deleteById(id);
+	// }
 
-	public List<Auction> findByTitle(final String title) {
-		return auctionRepository.findAllByTitle(title);
-	}
+	// public List<Auction> findByTitle(final String title) {
+	// 	return auctionRepository.findAllByTitle(title);
+	// }
 
 	public List<Auction> findByTitleMatchingNames(final String title) {
 		return auctionRepository.findAllByTitleContaining(title);

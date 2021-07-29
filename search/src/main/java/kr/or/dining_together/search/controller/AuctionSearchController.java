@@ -37,12 +37,12 @@ public class AuctionSearchController {
 		return responseService.getSuccessResult();
 	}
 
-	@ApiOperation(value = "단일 삭제", notes = "단일 경매 공고를 삭제한다")
-	@DeleteMapping(value = "/auction")
-	public CommonResult deletingAuction(@RequestParam @ApiParam(value = "경매공고 id", required = true) String id) throws IOException {
-		auctionService.deleteAuctionDocument(id);
-		return responseService.getSuccessResult();
-	}
+	// @ApiOperation(value = "단일 삭제", notes = "단일 경매 공고를 삭제한다")
+	// @DeleteMapping(value = "/auction")
+	// public CommonResult deletingAuction(@RequestParam @ApiParam(value = "경매공고 id", required = true) String id) throws IOException {
+	// 	auctionService.deleteAuctionDocument(id);
+	// 	return responseService.getSuccessResult();
+	// }
 
 	@ApiOperation(value = "제목 검색", notes = "경매 공고를 키워드로 검색한다.")
 	@GetMapping(value = "/auction")

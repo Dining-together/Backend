@@ -2,8 +2,12 @@ package kr.or.dining_together.member.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +27,18 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
+import kr.or.dining_together.member.dto.StoreDto;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
+import kr.or.dining_together.member.jpa.entity.StoreImages;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.FileService;
+import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
+import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.StoreService;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreRequest;
@@ -51,10 +59,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/member")
 public class StoreController {
 
+	private final static String STORE_DOCUMENT_FOLDER_DIRECTORY = "/store/document";
+	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
+
 	private final StoreRepository storeRepository;
 	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreService storeService;
+	private final StorageService storageService;
+	private final KafkaProducer kafkaProducer;
 
 	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
 	@GetMapping(value = "/stores")
@@ -83,7 +96,45 @@ public class StoreController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_storeImages";
-		fileService.savefiles(files, fileName, "store/images", user);
+		System.out.println(fileName);
+		storageService.savefiles(files, fileName, STORE_IMAGE_FOLDER_DIRECTORY, user);
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "가게 사진 등록222")
+	@PostMapping(value = "/store/imagesss")
+	public CommonResult saveFilessss(
+		@RequestParam("files") MultipartFile[] files) throws IOException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		Store user = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+		if (user.getPath() != null) {
+			new File(user.getPath()).delete();
+		}
+		String fileName = user.getId() + "_storeImages";
+
+		AtomicInteger fileCount = new AtomicInteger(1);
+		List<StoreImages> fileList = new ArrayList<>();
+		Arrays.asList(files).stream().forEach(file -> {
+			String fileDirectoryName = null;
+			try {
+				fileDirectoryName = storageService.save(file, fileName, STORE_IMAGE_FOLDER_DIRECTORY);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			fileCount.getAndIncrement();
+			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
+			StoreImages boardPicture = StoreImages.builder()
+				.fileName(newFileName)
+				.path(fileDirectoryName)
+				.store(user)
+				.build();
+			fileList.add(boardPicture);
+		});
+
+		System.out.println(fileList);
+		
 		return responseService.getSuccessResult();
 	}
 
@@ -94,7 +145,7 @@ public class StoreController {
 	@PostMapping(value = "/store/document")
 	public CommonResult saveDocument(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@RequestBody @ApiParam(value = "서류 사진", required = true) MultipartFile file) {
+		@RequestBody @ApiParam(value = "서류 사진", required = true) MultipartFile file) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		Store user = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
@@ -102,7 +153,7 @@ public class StoreController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_document";
-		fileService.save(file, fileName, "store/document");
+		storageService.save(file, fileName, STORE_DOCUMENT_FOLDER_DIRECTORY);
 		user.setDocumentChecked(true);
 		storeRepository.save(user);
 		return responseService.getSuccessResult();
@@ -119,8 +170,17 @@ public class StoreController {
 	) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
+		Store store = storeService.registerStore(storeRequest, email);
 
-		return responseService.getSingleResult(storeService.registerStore(storeRequest, email));
+		StoreDto storeDto = StoreDto.builder()
+			.storeType(store.getStoreType().toString())
+			.addr(store.getAddr())
+			.storeId(String.valueOf(store.getId()))
+			.storeName(store.getName())
+			.build();
+
+		kafkaProducer.send("member-store-topic",storeDto);
+		return responseService.getSingleResult(store);
 
 	}
 

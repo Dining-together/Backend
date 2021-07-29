@@ -50,15 +50,21 @@ public class StoreSearchControllerTest {
 			.alwaysDo(print())
 			.build();
 
+		// Store store = new Store().builder()
+		// 	.id("2")
+		// 	.title("bbq치킨")
+		// 	.description("마시따")
+		// 	.storeType("치킨")
+		// 	.Latitude("37.5665")
+		// 	.Longitude("126.734086")
+		// 	.bookmark(false)
+		// 	.reviewScore("0")
+		// 	.build();
 		Store store = new Store().builder()
 			.id("2")
 			.title("bbq치킨")
-			.description("마시따")
+			.addr("서강대학교")
 			.storeType("치킨")
-			.Latitude("37.5665")
-			.Longitude("126.734086")
-			.bookmark(false)
-			.reviewScore("0")
 			.build();
 
 		storeRepository.save(store);
@@ -66,15 +72,22 @@ public class StoreSearchControllerTest {
 
 	@Test
 	public void postIndex() throws Exception {
+		// Store store = new Store().builder()
+		// 	.id("1")
+		// 	.title("bhc치킨")
+		// 	.description("더 마시따")
+		// 	.storeType("치킨")
+		// 	.Latitude("37.5665")
+		// 	.Longitude("126.734086")
+		// 	.bookmark(false)
+		// 	.reviewScore("0")
+		// 	.build();
+
 		Store store = new Store().builder()
 			.id("1")
 			.title("bhc치킨")
-			.description("더 마시따")
+			.addr("서강대학교")
 			.storeType("치킨")
-			.Latitude("37.5665")
-			.Longitude("126.734086")
-			.bookmark(false)
-			.reviewScore("0")
 			.build();
 
 		Gson gson = new Gson();

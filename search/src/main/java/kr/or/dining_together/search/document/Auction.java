@@ -42,21 +42,18 @@ public class Auction {
 
 	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss'Z'")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
-	private LocalDateTime registerDate;
+	private LocalDateTime reservation;
 
-	// @Field(type = FieldType.Text, name="registerDate")
-	// private String registerDate;
+	@Field(type = FieldType.Text, name = "userType")
+	private String userType;
 
-	@Field(type = FieldType.Text, name = "groupType")
-	private String groupType;
-
-	@Field(type = FieldType.Text, name = "preferredLocation")
-	private String preferredLocation;
-
-	@Field(type = FieldType.Text, name = "preferredMenu")
-	private String preferredMenu;
-
-	@Field(type = FieldType.Integer, name = "preferredPrice")
-	private Integer preferredPrice;
+	// @Field(type = FieldType.Text, name = "preferredLocation")
+	// private String preferredLocation;
+	//
+	// @Field(type = FieldType.Text, name = "preferredMenu")
+	// private String preferredMenu;
+	//
+	// @Field(type = FieldType.Integer, name = "preferredPrice")
+	// private Integer preferredPrice;
 
 }

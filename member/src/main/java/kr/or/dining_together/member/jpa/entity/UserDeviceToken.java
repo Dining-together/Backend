@@ -1,6 +1,5 @@
 package kr.or.dining_together.member.jpa.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,35 +13,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @Entity
-@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "stroeImages")
-@ApiModel(description = "업체 가게 사진")
-public class StoreImages {
+@Table(name = "userDeviceToken")
+@ApiModel(description = "사용자 FCM 토큰정보 관리")
+public class UserDeviceToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "path")
-	@ApiModelProperty(notes = "경로")
-	private String path;
-
-	@Column(name = "file_name")
-	@ApiModelProperty(notes = "파일명")
-	private String fileName;
+	@ApiModelProperty(value = "설명")
+	private String token;
 
 	@ManyToOne
-	@JoinColumn(name = "store_id")
+	@JoinColumn(name = "user_id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private Store store;
-
+	private User user;
 }

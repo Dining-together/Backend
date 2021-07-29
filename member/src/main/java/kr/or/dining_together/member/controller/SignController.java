@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.controller;
 
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,10 +44,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/member/auth")
 public class SignController {
 
-	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final ResponseService responseService;
-	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
 
@@ -78,8 +77,8 @@ public class SignController {
 
 	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
 	@PostMapping(value = "/verify")
-	public CommonResult verify(
-		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) {
+	public CommonResult userSignUpSendCodeToEmail(
+		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException {
 		emailService.sendVerificationMail(email);
 		return responseService.getSuccessResult();
 	}
@@ -97,7 +96,7 @@ public class SignController {
 	@GetMapping(value = "/verify/password")
 	public CommonResult getVerifyAndGetPassword(
 		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
-		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) {
+		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) throws IOException {
 		emailService.verifyEmail(email, key);
 		emailService.sendUserPassword(email);
 		return responseService.getSuccessResult();

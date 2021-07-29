@@ -1,5 +1,7 @@
 package kr.or.dining_together.member.service;
 
+import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,10 @@ public class EmailServiceTest {
 	private EmailService emailService;
 
 	@Test
-	public void mailSendAndCheckTest() {
+	public void mailSendTest() throws IOException {
 		//given
-		String email = "qja9605@naver.com";
-		String notTypedEmail = "qja9605@google.com";
+		String email = "qja9605@google.com";
+		String notTypedEmail = "qja9605@naver.com";
 
 		//when
 		emailService.sendVerificationMail(email);

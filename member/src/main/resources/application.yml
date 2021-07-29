@@ -1,6 +1,15 @@
 server:
   port: 0
 
+storage:
+  credentials:
+    accessKey: PwaPlllZUGTKtO3HJVtp
+    secretKey: DW4BHX246JR5Efi928hRsCtvHtC0sCKIOx9OAdbn
+  s3:
+    bucket: diningtogether
+    region: kr-standard
+    endPoint: https://kr.object.ncloudstorage.com
+
 spring:
   application:
     name: member
@@ -72,7 +81,6 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
-
 
 eureka:
   instance:
