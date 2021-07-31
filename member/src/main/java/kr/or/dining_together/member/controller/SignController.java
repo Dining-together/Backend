@@ -4,7 +4,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,16 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sendgrid.SendGrid;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.config.security.JwtTokenProvider;
 import kr.or.dining_together.member.dto.UserDto;
 import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
+import kr.or.dining_together.member.service.SendgridEmailService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.LoginRequest;
@@ -48,6 +49,7 @@ public class SignController {
 	private final ResponseService responseService;
 	private final UserService userService;
 	private final EmailService emailService;
+	private final SendgridEmailService sendgridEmailService;
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
@@ -80,6 +82,13 @@ public class SignController {
 	public CommonResult userSignUpSendCodeToEmail(
 		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException {
 		emailService.sendVerificationMail(email);
+		return responseService.getSuccessResult();
+	}
+	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
+	@PostMapping(value = "/sendgridverify")
+	public CommonResult userSignUpSendCodeToEmailBySendgrid(
+		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException {
+		sendgridEmailService.sendVerificationMail(email);
 		return responseService.getSuccessResult();
 	}
 

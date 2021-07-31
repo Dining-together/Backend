@@ -36,6 +36,7 @@ import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.service.EmailService;
+import kr.or.dining_together.member.service.SendgridEmailService;
 import kr.or.dining_together.member.service.RedisUtil;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.SignUpRequest;
