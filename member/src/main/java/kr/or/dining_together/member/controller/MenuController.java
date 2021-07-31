@@ -22,7 +22,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
-import kr.or.dining_together.member.dto.MenuDto;
 import kr.or.dining_together.member.jpa.entity.Menu;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.repo.MenuRepository;
@@ -64,7 +63,7 @@ public class MenuController {
 
 	@ApiOperation(value = "업체 메뉴 조회", notes = "업체 메뉴를 조회한다.")
 	@GetMapping(value = "/{storeId}/menus")
-	public ListResult<MenuDto> menus(
+	public ListResult<Menu> menus(
 		@ApiParam(value = "업체 Id", required = true) @PathVariable long storeId
 	) {
 		return responseService.getListResult(menuService.getMenus(storeId));

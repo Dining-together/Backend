@@ -1,8 +1,8 @@
 package kr.or.dining_together.member.vo;
 
-import java.util.Date;
 import java.util.List;
 
+import kr.or.dining_together.member.jpa.entity.FacilityType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,10 +23,6 @@ public class FacilityRequest {
 
 	private boolean parking;
 
-	private Date openTime;
-
-	private Date closedTime;
-
-	private List<String> FacilityEtcNames;
+	private List<FacilityType> FacilityTypes;
 
 }

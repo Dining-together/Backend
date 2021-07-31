@@ -25,6 +25,7 @@ public class EmailService {
 	private final UserRepository userRepository;
 	private final RedisUtil redisUtil;
 	private final PasswordEncoder passwordEncoder;
+
 	public void checkEmailExistence(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
 		if (user.isPresent()) {
@@ -32,6 +33,7 @@ public class EmailService {
 		}
 		return;
 	}
+
 	public void sendVerificationMail(String to) {
 		UUID emailKey = UUID.randomUUID();
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -41,6 +43,7 @@ public class EmailService {
 		redisUtil.setDataExpire(emailKey.toString(), to, 60 * 30L);
 		emailSender.send(message);
 	}
+
 	public void verifyEmail(String email, String key) {
 		String verifiedEmail = redisUtil.getData(key);
 		if (verifiedEmail == null) {
@@ -51,6 +54,7 @@ public class EmailService {
 		redisUtil.deleteData(key);
 		return;
 	}
+
 	@Transactional
 	public void sendUserPassword(String email) {
 		Optional<User> user = userRepository.findByEmail(email);

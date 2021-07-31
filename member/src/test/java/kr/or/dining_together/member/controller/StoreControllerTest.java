@@ -1,11 +1,5 @@
 package kr.or.dining_together.member.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.Collections;
-import java.util.Date;
-
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -13,29 +7,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.or.dining_together.member.jpa.entity.FacilityEtc;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
-import kr.or.dining_together.member.vo.LoginRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -62,44 +48,44 @@ class StoreControllerTest {
 	private ObjectMapper objectMapper;
 	@Autowired
 	private WebApplicationContext ctx;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
-			.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
-			.alwaysDo(print())
-			.build();
-
-		Store store = Store.builder()
-			.email("jifrozen1@naver.com")
-			.name("문지언")
-			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
-			.roles(Collections.singletonList("ROLE_USER"))
-			.build();
-
-		user1 = storeRepository.save(store);
-
-		String content1 = objectMapper.writeValueAsString(new LoginRequest("jifrozen1@naver.com", "test1111"));
-		//when//then
-		MvcResult result1 = mockMvc.perform(RestDocumentationRequestBuilders.post("/member/auth/signin")
-			.content(content1)
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andReturn();
-
-		String resultTostring1 = result1.getResponse().getContentAsString();
-		JacksonJsonParser jsonParser1 = new JacksonJsonParser();
-		token = jsonParser1.parseMap(resultTostring1).get("data").toString();
-
-		FacilityEtc facilityEtc = FacilityEtc.builder()
-			.name("aa")
-			.id(1L)
-			.build();
-
-		facilityEtcRepository.save(facilityEtc);
+		// this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+		// 	.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+		// 	.alwaysDo(print())
+		// 	.build();
+		//
+		// Store store = Store.builder()
+		// 	.email("jifrozen1@naver.com")
+		// 	.name("문지언")
+		// 	.password(passwordEncoder.encode("test1111"))
+		// 	.joinDate(new Date())
+		// 	.roles(Collections.singletonList("ROLE_USER"))
+		// 	.build();
+		//
+		// user1 = storeRepository.save(store);
+		//
+		// String content1 = objectMapper.writeValueAsString(new LoginRequest("jifrozen1@naver.com", "test1111"));
+		// //when//then
+		// MvcResult result1 = mockMvc.perform(RestDocumentationRequestBuilders.post("/member/auth/signin")
+		// 	.content(content1)
+		// 	.contentType(MediaType.APPLICATION_JSON)
+		// 	.accept(MediaType.APPLICATION_JSON))
+		// 	.andDo(print())
+		// 	.andExpect(status().isOk())
+		// 	.andReturn();
+		//
+		// String resultTostring1 = result1.getResponse().getContentAsString();
+		// JacksonJsonParser jsonParser1 = new JacksonJsonParser();
+		// token = jsonParser1.parseMap(resultTostring1).get("data").toString();
+		//
+		// FacilityEtc facilityEtc = FacilityEtc.builder()
+		// 	.name("aa")
+		// 	.id(1L)
+		// 	.build();
+		//
+		// facilityEtcRepository.save(facilityEtc);
 
 	}
 

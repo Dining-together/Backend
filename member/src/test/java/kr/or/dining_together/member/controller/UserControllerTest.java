@@ -83,7 +83,7 @@ class UserControllerTest {
 			.addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
 			.alwaysDo(print())
 			.build();
-		
+
 		Customer user = Customer.builder()
 			.email("jifrozen@naver.com")
 			.name("문지언")

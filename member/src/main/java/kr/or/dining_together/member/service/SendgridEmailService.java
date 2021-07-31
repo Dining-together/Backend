@@ -3,7 +3,6 @@ package kr.or.dining_together.member.service;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 
 import javax.transaction.Transactional;
 
@@ -20,7 +19,6 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
-import kr.or.dining_together.member.advice.exception.DataSaveFailedException;
 import kr.or.dining_together.member.advice.exception.UserDuplicationException;
 import kr.or.dining_together.member.advice.exception.VerificationFailedException;
 import kr.or.dining_together.member.jpa.entity.User;
@@ -31,14 +29,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SendgridEmailService {
 
+	static final String SENDGRID_API_KEY = "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";
+	static final String SENDGRID_SENDER = "qja9605@naver.com";
 	private static final String FROM_ADDRESS = "moamoa202105@gmail.com";
 	private final JavaMailSender emailSender;
 	private final UserRepository userRepository;
 	private final RedisUtil redisUtil;
 	private final PasswordEncoder passwordEncoder;
-
-	static final String SENDGRID_API_KEY = "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";
-	static final String SENDGRID_SENDER = "qja9605@naver.com";
 
 	public void checkEmailExistence(String email) {
 		Optional<User> user = userRepository.findByEmail(email);
@@ -56,7 +53,7 @@ public class SendgridEmailService {
 		String subject = "[From 회식모아] 이메일 인증";
 		Email to = new Email(receiver);
 		// Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
-		String contentValue="인증번호는"+key+"입니다";
+		String contentValue = "인증번호는" + key + "입니다";
 		sendEmail(from, subject, to, contentValue);
 
 		return;
@@ -86,7 +83,7 @@ public class SendgridEmailService {
 		String subject = "[From 회식모아] 비밀번호 찾기";
 		Email to = new Email(email);
 		// Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
-		String contentValue="귀하의 비밀번호는 "+newPassword+" 입니다";
+		String contentValue = "귀하의 비밀번호는 " + newPassword + " 입니다";
 		sendEmail(from, subject, to, contentValue);
 
 		if (user.isPresent()) {
@@ -96,7 +93,7 @@ public class SendgridEmailService {
 	}
 
 	private void sendEmail(Email from, String subject, Email to, String contentValue) throws IOException {
-		Content content = new Content("text/plain",contentValue);
+		Content content = new Content("text/plain", contentValue);
 		Mail mail = new Mail(from, subject, to, content);
 
 		SendGrid sg = new SendGrid(SENDGRID_API_KEY);

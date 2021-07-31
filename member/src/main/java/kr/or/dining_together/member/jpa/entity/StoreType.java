@@ -1,33 +1,28 @@
 package kr.or.dining_together.member.jpa.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.RequiredArgsConstructor;
 
-@Entity
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Table(name = "storeType")
-@ApiModel(description = "업체 가게 유형")
-public class StoreType {
+@RequiredArgsConstructor
+public enum StoreType {
+	KOREAN(Values.KOREAN),
+	CHINESE(Values.CHINESE),
+	JAPANESE(Values.JAPANESE),
+	WESTERN(Values.WESTERN);
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String value;
 
-	@Column(name = "name", nullable = false, length = 100)
-	private String name;
+	StoreType(String val) {
+		if (!this.name().equals(val)) {
+			throw new IllegalArgumentException("Incorrect use of StoreType");
+		}
+	}
+
+	public static class Values {
+		public static final String KOREAN = "KOREAN";
+		public static final String CHINESE = "CHINESE";
+		public static final String JAPANESE = "JAPANESE";
+		public static final String WESTERN = "WESTERN";
+	}
 }

@@ -20,19 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class StoreProducer {
-	private KafkaTemplate<String, String> kafkaTemplate;
-
 	List<Field> fields = Arrays.asList(new Field("string", true, "store_id"),
 		new Field("string", true, "store_name"),
 		new Field("string", true, "addr"),
 		new Field("string", true, "store_type"));
-
 	Schema schema = Schema.builder()
 		.type("struct")
 		.fields(fields)
 		.optional(false)
 		.name("store")
 		.build();
+	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
 	public StoreProducer(KafkaTemplate<String, String> kafkaTemplate) {

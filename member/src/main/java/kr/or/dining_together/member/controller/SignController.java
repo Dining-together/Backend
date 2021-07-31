@@ -1,6 +1,7 @@
 package kr.or.dining_together.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sendgrid.SendGrid;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -23,8 +22,8 @@ import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
-import kr.or.dining_together.member.service.SendgridEmailService;
 import kr.or.dining_together.member.service.ResponseService;
+import kr.or.dining_together.member.service.SendgridEmailService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.SignUpRequest;
@@ -84,6 +83,7 @@ public class SignController {
 		emailService.sendVerificationMail(email);
 		return responseService.getSuccessResult();
 	}
+
 	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
 	@PostMapping(value = "/sendgridverify")
 	public CommonResult userSignUpSendCodeToEmailBySendgrid(

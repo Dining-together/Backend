@@ -38,14 +38,11 @@ public class MenuService {
 	private final FileService fileService;
 	private final ModelMapper modelMapper;
 
-	public List<MenuDto> getMenus(long storeId) {
+	public List<Menu> getMenus(long storeId) {
 		Store store = storeRepository.findById(storeId).orElseThrow(UserNotFoundException::new);
 		List<Menu> menus = menuRepository.findMenusByStore(store);
 		List<MenuDto> menuDtos = new ArrayList<>();
-		for (Menu menu : menus) {
-			menuDtos.add(modelMapper.map(menu, MenuDto.class));
-		}
-		return menuDtos;
+		return menus;
 	}
 
 	public Menu registerMenu(MenuRequest menuRequest, Store store) {

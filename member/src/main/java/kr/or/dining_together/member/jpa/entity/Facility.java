@@ -1,7 +1,6 @@
 package kr.or.dining_together.member.jpa.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -39,19 +38,13 @@ public class Facility {
 
 	private boolean parking;
 
-	private Date openTime;
-
-	private Date closedTime;
-
 	@OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
-	private List<FacilityFacilityEtc> facilityFacilityEtcs = new ArrayList<>();
+	private List<FacilityEtc> facilityEtcs = new ArrayList<>();
 
-	public void update(int capacity, int parkingCount, boolean parking, Date openTime, Date closedTime) {
+	public void update(int capacity, int parkingCount, boolean parking) {
 		this.capacity = capacity;
 		this.parking = parking;
 		this.parkingCount = parkingCount;
-		this.openTime = openTime;
-		this.closedTime = closedTime;
 	}
 
 }

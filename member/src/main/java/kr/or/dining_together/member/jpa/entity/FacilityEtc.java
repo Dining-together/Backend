@@ -1,14 +1,11 @@
 package kr.or.dining_together.member.jpa.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,17 +24,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Table(name = "facilityEtc")
-@ApiModel(description = "업체 기타 시설")
+@ApiModel(description = "시설 기타시설 매핑")
 public class FacilityEtc {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String name;
-
-	@OneToMany(mappedBy = "facilityEtc", cascade = CascadeType.ALL)
+	@ManyToOne
+	@JoinColumn(name = "facilityId")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private List<FacilityFacilityEtc> facilityFacilityEtc = new ArrayList<>();
+	private Facility facility;
+
+	private FacilityType facilityType;
 
 }

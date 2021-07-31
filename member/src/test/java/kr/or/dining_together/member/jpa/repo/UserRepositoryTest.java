@@ -93,7 +93,7 @@ public class UserRepositoryTest {
 		String currentPassword = user.get().getPassword();
 
 		userRepository.updatePassword(newPassword, email);
-		
+
 		assertNotEquals(newPassword, currentPassword);
 	}
 }

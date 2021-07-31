@@ -11,10 +11,9 @@ import kr.or.dining_together.member.advice.exception.UnprovenStoreException;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.FacilityEtc;
-import kr.or.dining_together.member.jpa.entity.FacilityFacilityEtc;
+import kr.or.dining_together.member.jpa.entity.FacilityType;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
-import kr.or.dining_together.member.jpa.repo.FacilityFacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.vo.FacilityRequest;
@@ -27,7 +26,6 @@ public class StoreService {
 
 	private final StoreRepository storeRepository;
 	private final FacilityRepository facilityRepository;
-	private final FacilityFacilityEtcRepository facilityFacilityEtcRepository;
 	private final FacilityEtcRepository facilityEtcRepository;
 
 	public Store getStore(long storeId) {
@@ -45,7 +43,8 @@ public class StoreService {
 			throw new UnprovenStoreException();
 		}
 		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(), storeRequest.getLatitude(),
-			storeRequest.getLongitude());
+			storeRequest.getLongitude(), storeRequest.getStoreType(), storeRequest.getOpenTime(),
+			storeRequest.getClosedTime());
 		storeRepository.save(store);
 		return store;
 	}
@@ -60,21 +59,17 @@ public class StoreService {
 			.capacity(facilityRequest.getCapacity())
 			.parkingCount(facilityRequest.getParkingCount())
 			.parking(facilityRequest.isParking())
-			.openTime(facilityRequest.getOpenTime())
-			.closedTime(facilityRequest.getClosedTime())
 			.build();
 
 		facility = facilityRepository.save(facility);
-		List<String> names = facilityRequest.getFacilityEtcNames();
-		for (String name : names) {
-			FacilityEtc facilityEtc = facilityEtcRepository.findByName(name)
-				.orElseThrow(ResourceNotExistException::new);
-			FacilityFacilityEtc facilityFacilityEtc = FacilityFacilityEtc.builder()
-				.facilityEtc(facilityEtc)
+		List<FacilityType> facilityTypes = facilityRequest.getFacilityTypes();
+		for (FacilityType type : facilityTypes) {
+			FacilityEtc facilityEtc = FacilityEtc.builder()
+				.facilityType(type)
 				.facility(facility)
 				.build();
 
-			facilityFacilityEtcRepository.save(facilityFacilityEtc);
+			facilityEtcRepository.save(facilityEtc);
 		}
 		store.setFacility(facility);
 		storeRepository.save(store);
@@ -85,20 +80,17 @@ public class StoreService {
 	public Facility modifyFacility(FacilityRequest facilityRequest, long facilityId, String email) {
 		Store store = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 		Facility facility = facilityRepository.findById(facilityId).orElseThrow(ResourceNotExistException::new);
-		facilityFacilityEtcRepository.deleteAllByFacility(facility);
-		List<String> names = facilityRequest.getFacilityEtcNames();
-		for (String name : names) {
-			FacilityEtc facilityEtc = facilityEtcRepository.findByName(name)
-				.orElseThrow(ResourceNotExistException::new);
-			FacilityFacilityEtc facilityFacilityEtc = FacilityFacilityEtc.builder()
-				.facilityEtc(facilityEtc)
+		facilityEtcRepository.deleteAllByFacility(facility);
+		List<FacilityType> facilityTypes = facilityRequest.getFacilityTypes();
+		for (FacilityType type : facilityTypes) {
+			FacilityEtc facilityEtc = FacilityEtc.builder()
+				.facilityType(type)
 				.facility(facility)
 				.build();
 
-			facilityFacilityEtcRepository.save(facilityFacilityEtc);
+			facilityEtcRepository.save(facilityEtc);
 		}
-		facility.update(facilityRequest.getCapacity(), facilityRequest.getParkingCount(), facilityRequest.isParking(),
-			facilityRequest.getOpenTime(), facilityRequest.getClosedTime());
+		facility.update(facilityRequest.getCapacity(), facilityRequest.getParkingCount(), facilityRequest.isParking());
 		facilityRepository.save(facility);
 		return facility;
 	}

@@ -56,7 +56,7 @@ public class FileService {
 				if (ObjectUtils.isEmpty(contentType)) {
 					break;
 				} else {
-					if (contentType.contains("image/jpeg")) {
+					if (contentType.contains("image/jpeg") || contentType.contains("image/jpg")) {
 						originalFileExtension = ".jpg";
 					} else if (contentType.contains("image/png")) {
 						originalFileExtension = ".png";

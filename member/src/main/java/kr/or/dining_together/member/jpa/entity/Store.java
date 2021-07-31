@@ -1,6 +1,7 @@
 package kr.or.dining_together.member.jpa.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -33,6 +33,9 @@ public class Store extends User {
 	private String addr;
 	private double latitude;
 	private double longitude;
+	private Date openTime;
+
+	private Date closedTime;
 
 	@ApiModelProperty(notes = "서류 제출 확인여부를 나타낸다")
 	@Column(columnDefinition = "boolean default false")
@@ -42,8 +45,7 @@ public class Store extends User {
 	@JoinColumn(name = "facility_id")
 	private Facility facility;
 
-	@ManyToOne
-	@JoinColumn(name = "storeType_id")
+	@ApiModelProperty(notes = "가게 유형")
 	private StoreType storeType;
 
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
@@ -57,11 +59,15 @@ public class Store extends User {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 
-	public void update(String phoneNum, String addr, double latitude, double longitude) {
+	public void update(String phoneNum, String addr, double latitude, double longitude, StoreType storeType,
+		Date openTime, Date closedTime) {
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.storeType = storeType;
+		this.openTime = openTime;
+		this.closedTime = closedTime;
 	}
 
 	public void setDocumentChecked(boolean documentChecked) {

@@ -134,7 +134,7 @@ public class StoreController {
 		});
 
 		System.out.println(fileList);
-		
+
 		return responseService.getSuccessResult();
 	}
 
@@ -179,7 +179,7 @@ public class StoreController {
 			.storeName(store.getName())
 			.build();
 
-		kafkaProducer.send("member-store-topic",storeDto);
+		kafkaProducer.send("member-store-topic", storeDto);
 		return responseService.getSingleResult(store);
 
 	}

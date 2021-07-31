@@ -255,23 +255,23 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>com.github.berkleytechnologyservices.restdocs-spec</groupId>-->
-<!--                <artifactId>restdocs-spec-maven-plugin</artifactId>-->
-<!--                <version>${restdocs-spec.version}</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <specification>OPENAPI_V3</specification>-->
-<!--                            <format>JSON</format>-->
-<!--                            <outputDirectory>${project.build.directory}/classes/static/docs</outputDirectory>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>com.github.berkleytechnologyservices.restdocs-spec</groupId>-->
+            <!--                <artifactId>restdocs-spec-maven-plugin</artifactId>-->
+            <!--                <version>${restdocs-spec.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>generate</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <specification>OPENAPI_V3</specification>-->
+            <!--                            <format>JSON</format>-->
+            <!--                            <outputDirectory>${project.build.directory}/classes/static/docs</outputDirectory>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
     <repositories>
