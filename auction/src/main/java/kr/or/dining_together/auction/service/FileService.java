@@ -13,12 +13,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.dining_together.auction.jpa.entity.Review;
 import kr.or.dining_together.auction.jpa.entity.ReviewImages;
+import kr.or.dining_together.auction.jpa.repo.ReviewImagesRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class FileService {
+
+	private final ReviewImagesRepository reviewImagesRepository;
 
 	public String save(MultipartFile file, String name, String type) {
 		StringBuilder sb = new StringBuilder();
@@ -87,7 +90,7 @@ public class FileService {
 		// 	// mkdir() 함수와 다른 점은 상위 디렉토리가 존재하지 않을 때 그것까지 생성
 		// 	file.mkdirs();
 		// }
-		int count = 1;
+		int count = 0;
 		for (MultipartFile multipartFile : files) {
 			if (!multipartFile.isEmpty()) {
 				// jpeg, png, gif 파일들만 받아서 처리할 예정
@@ -111,7 +114,7 @@ public class FileService {
 				}
 				count += 1;
 				String new_file_name = name + count + originalFileExtension;
-				String path = "/Users/jifrozen/project/Dining-together/Backend/member/upload/" + type + "/";
+				String path = "/Users/jifrozen/project/Dining-together/Backend/auction/upload/" + type + "/";
 
 				// 저장된 파일로 변경하여 이를 보여주기 위함
 				File file = new File(path + new_file_name);
@@ -123,6 +126,8 @@ public class FileService {
 					.path(file.getPath())
 					.review(review)
 					.build();
+
+				reviewImagesRepository.save(reviewPicture);
 				fileList.add(reviewPicture);
 			}
 		}

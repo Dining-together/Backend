@@ -1,6 +1,5 @@
 package kr.or.dining_together.auction.dto;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
