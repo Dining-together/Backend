@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -41,7 +40,6 @@ import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
-import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
@@ -71,7 +69,6 @@ public class StoreController {
 	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
 
 	private final StoreRepository storeRepository;
-	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreService storeService;
 	private final StorageService storageService;
@@ -149,9 +146,9 @@ public class StoreController {
 		AtomicInteger fileCount = new AtomicInteger(1);
 		List<StoreImages> fileList = new ArrayList<>();
 		Arrays.asList(files).stream().forEach(file -> {
-			String fileDirectoryName = null;
+			String fullFilePath = null;
 			try {
-				fileDirectoryName = storageService.save(file, fileName, STORE_IMAGE_FOLDER_DIRECTORY);
+				fullFilePath = storageService.save(file, fileName, STORE_IMAGE_FOLDER_DIRECTORY);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -159,7 +156,7 @@ public class StoreController {
 			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
 			StoreImages boardPicture = StoreImages.builder()
 				.fileName(newFileName)
-				.path(fileDirectoryName)
+				.path(fullFilePath)
 				.store(user)
 				.build();
 			fileList.add(boardPicture);
@@ -185,9 +182,13 @@ public class StoreController {
 			new File(user.getPath()).delete();
 		}
 		String fileName = user.getId() + "_document";
-		storageService.save(file, fileName, STORE_DOCUMENT_FOLDER_DIRECTORY);
+		String fullFilePath=storageService.save(file, fileName, STORE_DOCUMENT_FOLDER_DIRECTORY);
+
 		user.setDocumentChecked(true);
+		user.setDocumentFilePath(fullFilePath);
+
 		storeRepository.save(user);
+
 		return responseService.getSuccessResult();
 	}
 

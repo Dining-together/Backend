@@ -35,7 +35,6 @@ public class MenuService {
 
 	private final MenuRepository menuRepository;
 	private final StoreRepository storeRepository;
-	private final FileService fileService;
 	private final ModelMapper modelMapper;
 
 	public List<MenuDto> getMenus(long storeId) {

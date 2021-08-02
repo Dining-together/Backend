@@ -35,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class StorageService {
 
-	Logger logger = LoggerFactory.getLogger(StorageService.class);
 	private AmazonS3 s3Client;
 
 	@Value("${storage.s3.endpoint}")
@@ -60,11 +59,16 @@ public class StorageService {
 			.withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
 			.build();
 	}
-
+/**
+*   save의 반환값은 fullBucketName+파일이름이다
+ *  ex) save(file,string123.jpg,/menu/photo) 를 호출하면
+ *	https://kr.object.ncloudstorage.com/diningtogether/menu/photo/string.jpg 를 DB에 저장한다.
+ */
 	public String save(MultipartFile file, String name, String folderName) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		String fullBucketName = bucket + folderName;
-
+		String fileName = null;
+			
 		// file image 가 없을 경우
 		if (file.isEmpty()) {
 			sb.append("none");
@@ -89,11 +93,12 @@ public class StorageService {
 
 			File dest = new File(sb.toString());
 
-			String fileName = sb.toString();
+			fileName = sb.toString();
 			fileUpload(file, fullBucketName, fileName);
 			// db에 파일 위치랑 번호 등록
 		}
-		return fullBucketName;
+		String fullFileName=endPoint+"/"+fullBucketName+"/"+fileName;
+		return fullFileName;
 
 	}
 
