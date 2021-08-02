@@ -111,6 +111,12 @@
             <artifactId>spring-kafka</artifactId>
             <version>2.6.7</version>
         </dependency>
+        <!-- Logback -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.3</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

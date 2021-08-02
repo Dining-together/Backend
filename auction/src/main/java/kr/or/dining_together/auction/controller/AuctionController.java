@@ -1,6 +1,8 @@
 package kr.or.dining_together.auction.controller;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -39,6 +44,7 @@ import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.SuccessBidService;
 import kr.or.dining_together.auction.vo.AuctionRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @package : kr.or.dining_together.auction.controller
@@ -54,6 +60,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 @RequestMapping(value = "/auction")
+@Slf4j
 public class AuctionController {
 
 	private final AuctionService auctionService;
@@ -108,6 +115,24 @@ public class AuctionController {
 			.build();
 
 		kafkaProducer.send("auction-auction-topic",auctionDto);
+
+		/*
+		 ** 사용자가 클릭한 공고정보 로깅
+		 */
+		Gson gson=new Gson();
+		/*
+		 ** auction 객체를 JsonObject 객체로 변경.
+		 */
+		JsonObject jsonObject=new Gson().fromJson(gson.toJson(auctionDto),JsonObject.class);
+		/*
+		 ** 현재시간을 포맷팅하여 추가.
+		 */
+		jsonObject.addProperty("Date", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+		jsonObject.addProperty("UserId",user.getId());
+		jsonObject.addProperty("UserName",user.getName());
+
+		log.info("service-log :: {}",jsonObject);
+
 		return responseService.getSingleResult(auction);
 	}
 

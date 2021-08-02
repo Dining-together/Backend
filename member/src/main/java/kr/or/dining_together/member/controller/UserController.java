@@ -72,7 +72,7 @@ public class UserController {
 	public SingleResult<Customer> getCustomer() throws Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
-
+		//회원 정보 조회시 이미지 url도 같이 넘겨주기.
 		return responseService.getSingleResult(userService.getCustomer(email));
 	}
 
@@ -108,7 +108,7 @@ public class UserController {
 		String filePath = storageService.save(file, fileName, USER_IMAGE_FOLDER_DIRECTORY);
 		if (filePath == "none") {
 			throw new FileNotFoundException();
-		} else {
+		} else {//이미지 경로 저장.
 			user.imageUpdate(filePath);
 		}
 		return responseService.getSuccessResult();

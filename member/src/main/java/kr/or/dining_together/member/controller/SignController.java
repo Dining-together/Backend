@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sendgrid.SendGrid;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,8 +54,7 @@ public class SignController {
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
 	public SingleResult<String> userlogin(
-		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest, HttpServletRequest req,
-		HttpServletResponse res) throws Throwable {
+		@RequestBody @ApiParam(value = "이메일 비밀번호", required = true) LoginRequest loginRequest) throws Throwable {
 		UserDto userDto = userService.login(loginRequest);
 		return responseService.getSingleResult(
 			jwtTokenProvider.createToken(String.valueOf(userDto.getEmail()), userDto.getRoles()));
@@ -87,7 +86,8 @@ public class SignController {
 	@ApiOperation(value = "이메일 인증 요청", notes = "이메일에 키값을 보낸다.")
 	@PostMapping(value = "/sendgridverify")
 	public CommonResult userSignUpSendCodeToEmailBySendgrid(
-		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException {
+		@RequestParam @ApiParam(value = "인증하려는 이메일", required = true) String email) throws IOException,
+		UnirestException {
 		sendgridEmailService.sendVerificationMail(email);
 		return responseService.getSuccessResult();
 	}
