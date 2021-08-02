@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -27,6 +28,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.StoreImages;
+import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,6 +55,9 @@ public class StorageService {
 	@Value("${storage.s3.region}")
 	private String regionName;
 
+	@Autowired
+	private StoreImagesRepository storeImagesRepository;
+
 	@PostConstruct
 	public void setS3Client() {
 		s3Client = AmazonS3ClientBuilder.standard()
@@ -64,6 +69,7 @@ public class StorageService {
 	public String save(MultipartFile file, String name, String folderName) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		String fullBucketName = bucket + folderName;
+		String fileName = "";
 
 		// file image 가 없을 경우
 		if (file.isEmpty()) {
@@ -89,11 +95,11 @@ public class StorageService {
 
 			File dest = new File(sb.toString());
 
-			String fileName = sb.toString();
+			fileName = sb.toString();
 			fileUpload(file, fullBucketName, fileName);
 			// db에 파일 위치랑 번호 등록
 		}
-		return fullBucketName;
+		return fullBucketName + "/" + fileName;
 
 	}
 
@@ -108,7 +114,7 @@ public class StorageService {
 			return fileList;
 		}
 
-		int count = 1;
+		int count = 0;
 		System.out.println(count);
 		for (MultipartFile multipartFile : files) {
 			System.out.println(multipartFile.getOriginalFilename());
@@ -150,6 +156,7 @@ public class StorageService {
 				.store(store)
 				.build();
 
+			storeImagesRepository.save(boardPicture);
 			fileList.add(boardPicture);
 		}
 

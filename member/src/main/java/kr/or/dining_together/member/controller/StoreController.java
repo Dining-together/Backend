@@ -31,6 +31,7 @@ import kr.or.dining_together.member.dto.StoreDto;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.StoreImages;
+import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
@@ -63,6 +64,7 @@ public class StoreController {
 	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
 
 	private final StoreRepository storeRepository;
+	private final StoreImagesRepository storeImagesRepository;
 	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreService storeService;
@@ -97,7 +99,8 @@ public class StoreController {
 		}
 		String fileName = user.getId() + "_storeImages";
 		System.out.println(fileName);
-		storageService.savefiles(files, fileName, STORE_IMAGE_FOLDER_DIRECTORY, user);
+		List<StoreImages> storeImages = storageService.savefiles(files, fileName, STORE_IMAGE_FOLDER_DIRECTORY, user);
+
 		return responseService.getSuccessResult();
 	}
 
