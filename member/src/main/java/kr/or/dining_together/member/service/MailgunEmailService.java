@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class SendgridEmailService {
+public class MailgunEmailService {
 
 	private static final String FROM_ADDRESS = "moamoa202105@gmail.com";
 	private final JavaMailSender emailSender;
@@ -37,7 +37,7 @@ public class SendgridEmailService {
 	// static final String SENDGRID_API_KEY = "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";
 	// static final String SENDGRID_SENDER = "qja9605@naver.com";
 
-	static final String YOUR_DOMAIN_NAME="sandbox5edb412db31746b7a7853915d10a9bb3.mailgun.org";
+	static final String YOUR_DOMAIN_NAME="mail.diningtogether.xyz";
 	static final String API_KEY="3e57d92d32717bd7640a69ae8c119e33-64574a68-d473ab4a";
 
 	public void checkEmailExistence(String email) {
@@ -57,7 +57,7 @@ public class SendgridEmailService {
 
 		HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/" + YOUR_DOMAIN_NAME + "/messages")
 			.basicAuth("api", API_KEY)
-			.queryString("from", "Excited User <USER@YOURDOMAIN.COM>")
+			.queryString("from", "회식모아 <moamoa202105@gmail.com>")
 			.queryString("to", receiver)
 			.queryString("subject", subject)
 			.queryString("text", text)
@@ -93,7 +93,7 @@ public class SendgridEmailService {
 
 		HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/" + YOUR_DOMAIN_NAME + "/messages")
 			.basicAuth("api", API_KEY)
-			.queryString("from", "Excited User <USER@YOURDOMAIN.COM>")
+			.queryString("from", "회식모아 <moamoa202105@gmail.com>")
 			.queryString("to", receiver)
 			.queryString("subject", subject)
 			.queryString("text", text)
