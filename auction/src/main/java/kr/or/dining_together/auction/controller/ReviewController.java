@@ -1,13 +1,16 @@
 package kr.or.dining_together.auction.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,17 +23,17 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.client.UserServiceClient;
-import kr.or.dining_together.auction.commons.annotation.UserCheck;
 import kr.or.dining_together.auction.dto.ReviewDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Review;
+import kr.or.dining_together.auction.jpa.entity.ReviewImages;
 import kr.or.dining_together.auction.jpa.repo.ReviewImagesRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
-import kr.or.dining_together.auction.service.FileService;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.ReviewService;
+import kr.or.dining_together.auction.service.StorageService;
 import lombok.RequiredArgsConstructor;
 
 @Api(tags = {"4. Review"})
@@ -42,8 +45,10 @@ public class ReviewController {
 	private final ResponseService responseService;
 	private final ReviewService reviewService;
 	private final UserServiceClient userServiceClient;
-	private final FileService fileService;
+	private final StorageService storageService;
 	private final ReviewImagesRepository reviewImagesRepository;
+
+	private static String REVIEW_FOLDER_DIRECTORY="/review/images";
 
 	@ApiOperation(value = "사용자별 리뷰 조회", notes = "사용자별 리뷰를 조회한다.")
 	@GetMapping("/reviews/user/{userId}")
@@ -93,7 +98,6 @@ public class ReviewController {
 	// 	return responseService.getSingleResult(review);
 	// }
 
-// 사진 추가 부분 objectstorage 로 수정 부탁드립니다. 감사합니다.
 	@ApiOperation(value = "리뷰 작성", notes = "리뷰 작성 한다.")
 	@PostMapping(value = "/{successBidId}/review")
 	@ApiImplicitParams({
@@ -101,20 +105,43 @@ public class ReviewController {
 	})
 	public SingleResult<Review> registerReview(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@RequestParam("successBidId") @PathVariable("successBidId") long successBidId,
+		@PathVariable("successBidId") long successBidId,
 		@RequestParam("content") String content,
 		@RequestParam("score") int score,
-		@RequestParam("files") List<MultipartFile> files
+		@RequestParam("files") MultipartFile[] files
 
-	) throws IOException {
+	)  {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
 		ReviewDto reviewDto = ReviewDto.builder()
 			.content(content)
 			.score(score)
 			.build();
 		Review review = reviewService.writeReview(reviewDto, successBidId, user);
+
 		String fileName = review.getReviewId() + "_" + user.getName();
-		fileService.savefiles(files, fileName, "review/images", review);
+
+		AtomicInteger fileCount = new AtomicInteger(1);
+		List<ReviewImages> fileList = new ArrayList<>();
+		Arrays.asList(files).stream().forEach(file -> {
+			String fileDirectoryName = null;
+			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
+
+			try {
+				fileDirectoryName = storageService.save(file, newFileName, REVIEW_FOLDER_DIRECTORY);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			fileCount.getAndIncrement();
+
+			ReviewImages boardPicture = ReviewImages.builder()
+				.fileName(newFileName)
+				.path(fileDirectoryName)
+				.review(review)
+				.build();
+			reviewImagesRepository.save(boardPicture);
+			System.out.println(boardPicture);
+		});
+
 		return responseService.getSingleResult(review);
 	}
 

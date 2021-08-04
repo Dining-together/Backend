@@ -83,30 +83,13 @@ public class StoreController {
 		return responseService.getSingleResult(storeService.getStore(storeId));
 	}
 
-	@ApiOperation(value = "가게 사진 등록")
+	@ApiOperation(value = "가게 사진 등록222")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 	})
 	@PostMapping(value = "/store/images")
-	public CommonResult saveFiles(
-		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@RequestParam("files") List<MultipartFile> files) throws IOException {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
-		Store user = storeRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		if (user.getPath() != null) {
-			new File(user.getPath()).delete();
-		}
-		String fileName = user.getId() + "_storeImages";
-		System.out.println(fileName);
-		List<StoreImages> storeImages = storageService.savefiles(files, fileName, STORE_IMAGE_FOLDER_DIRECTORY, user);
-
-		return responseService.getSuccessResult();
-	}
-
-	@ApiOperation(value = "가게 사진 등록222")
-	@PostMapping(value = "/store/imagesss")
 	public CommonResult saveFilessss(
+		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam("files") MultipartFile[] files) throws IOException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
@@ -118,25 +101,26 @@ public class StoreController {
 		String fileName = user.getId() + "_storeImages";
 
 		AtomicInteger fileCount = new AtomicInteger(1);
-		List<StoreImages> fileList = new ArrayList<>();
+
 		Arrays.asList(files).stream().forEach(file -> {
 			String fileDirectoryName = null;
+			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
 			try {
-				fileDirectoryName = storageService.save(file, fileName, STORE_IMAGE_FOLDER_DIRECTORY);
+				fileDirectoryName = storageService.save(file, newFileName, STORE_IMAGE_FOLDER_DIRECTORY);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			fileCount.getAndIncrement();
-			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
+
 			StoreImages boardPicture = StoreImages.builder()
 				.fileName(newFileName)
 				.path(fileDirectoryName)
 				.store(user)
 				.build();
-			fileList.add(boardPicture);
-		});
 
-		System.out.println(fileList);
+			storeImagesRepository.save(boardPicture);
+			System.out.println(boardPicture);
+		});
 
 		return responseService.getSuccessResult();
 	}
