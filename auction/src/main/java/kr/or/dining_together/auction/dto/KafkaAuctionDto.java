@@ -1,6 +1,5 @@
 package kr.or.dining_together.auction.dto;
 
-
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;

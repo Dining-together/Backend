@@ -1,16 +1,13 @@
-package kr.or.dining_together.member.service;
+package kr.or.dining_together.auction.service;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -26,9 +23,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import kr.or.dining_together.member.jpa.entity.Store;
-import kr.or.dining_together.member.jpa.entity.StoreImages;
-import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,8 +49,6 @@ public class StorageService {
 	@Value("${storage.s3.region}")
 	private String regionName;
 
-	@Autowired
-	private StoreImagesRepository storeImagesRepository;
 
 	@PostConstruct
 	public void setS3Client() {
@@ -99,68 +91,9 @@ public class StorageService {
 			fileUpload(file, fullBucketName, fileName);
 			// db에 파일 위치랑 번호 등록
 		}
-		return fullBucketName + "/" + fileName;
+		String fullFileName=endPoint+"/"+fullBucketName+"/"+fileName;
+		return fullFileName;
 
-	}
-
-	public List<StoreImages> savefiles(List<MultipartFile> files, String name, String folderName, Store store) throws
-		IOException {
-		System.out.println("savefiles method called");
-		// 반환을 할 파일 리스트
-		List<StoreImages> fileList = new ArrayList<>();
-
-		// 파일이 빈 것이 들어오면 빈 것을 반환
-		if (files.isEmpty()) {
-			return fileList;
-		}
-
-		int count = 0;
-		System.out.println(count);
-		for (MultipartFile multipartFile : files) {
-			System.out.println(multipartFile.getOriginalFilename());
-			if (multipartFile.isEmpty()) {
-				continue;
-			}
-			// jpeg, png, gif 파일들만 받아서 처리할 예정
-			String contentType = multipartFile.getContentType();
-			String originalFileExtension;
-			// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
-			if (ObjectUtils.isEmpty(contentType)) {
-				continue;
-			}
-
-			if (contentType.contains("image/jpeg")) {
-				originalFileExtension = ".jpg";
-			} else if (contentType.contains("image/png")) {
-				originalFileExtension = ".png";
-			} else if (contentType.contains("image/gif")) {
-				originalFileExtension = ".gif";
-			}
-			// 다른 파일 명이면 아무 일 하지 않는다
-			else {
-				continue;
-			}
-
-			count += 1;
-
-			String fullBucketName = bucket + folderName;
-			String newFileName = name + count + originalFileExtension;
-
-			System.out.println(newFileName);
-			fileUpload(multipartFile, fullBucketName, newFileName);
-
-			// 생성 후 리스트에 추가
-			StoreImages boardPicture = StoreImages.builder()
-				.fileName(newFileName)
-				.path(fullBucketName)
-				.store(store)
-				.build();
-
-			storeImagesRepository.save(boardPicture);
-			fileList.add(boardPicture);
-		}
-
-		return fileList;
 	}
 
 	private void fileUpload(MultipartFile multipartFile, String fullBucketName, String newFileName) throws IOException {
