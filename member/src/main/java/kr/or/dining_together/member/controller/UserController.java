@@ -2,8 +2,10 @@ package kr.or.dining_together.member.controller;
 
 import java.io.File;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,12 +59,20 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final static String USER_IMAGE_FOLDER_DIRECTORY = "/user/photo";
-
+	private final Environment env;
 	private final UserService userService;
 	private final ResponseService responseService;
 	private final UserRepository userRepository;
 	private final StorageService storageService;
 	private final FileService fileService;
+
+	@GetMapping("/health_check")
+	public String status(HttpServletRequest httpServletRequest){
+		return String.format("It's Working in Member Service"
+					+ ", port(server.port)="+env.getProperty("server.port")
+					+ ", with token secret="+ env.getProperty("spring.jwt.secret"));
+	}
+
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")

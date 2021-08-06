@@ -37,10 +37,10 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:dining
     username: sa
-
-  jwt:
-    secret: secret_token
-    expiration_time: 86400000
+#
+#  jwt:
+#    secret: secret_token
+#    expiration_time: 86400000
   #mail 인증을 위한 정보.
   mail:
     host: smtp.gmail.com
