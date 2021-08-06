@@ -49,7 +49,6 @@ public class StorageService {
 	@Value("${storage.s3.region}")
 	private String regionName;
 
-
 	@PostConstruct
 	public void setS3Client() {
 		s3Client = AmazonS3ClientBuilder.standard()
@@ -91,7 +90,7 @@ public class StorageService {
 			fileUpload(file, fullBucketName, fileName);
 			// db에 파일 위치랑 번호 등록
 		}
-		String fullFileName=endPoint+"/"+fullBucketName+"/"+fileName;
+		String fullFileName = endPoint + "/" + fullBucketName + "/" + fileName;
 		return fullFileName;
 
 	}

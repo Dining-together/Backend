@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,13 +41,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/auction")
 public class ReviewController {
 
+	private static String REVIEW_FOLDER_DIRECTORY = "/review/images";
 	private final ResponseService responseService;
 	private final ReviewService reviewService;
 	private final UserServiceClient userServiceClient;
 	private final StorageService storageService;
 	private final ReviewImagesRepository reviewImagesRepository;
-
-	private static String REVIEW_FOLDER_DIRECTORY="/review/images";
 
 	@ApiOperation(value = "사용자별 리뷰 조회", notes = "사용자별 리뷰를 조회한다.")
 	@GetMapping("/reviews/user/{userId}")
@@ -110,7 +108,7 @@ public class ReviewController {
 		@RequestParam("score") int score,
 		@RequestParam("files") MultipartFile[] files
 
-	)  {
+	) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
 		ReviewDto reviewDto = ReviewDto.builder()
 			.content(content)
@@ -144,6 +142,5 @@ public class ReviewController {
 
 		return responseService.getSingleResult(review);
 	}
-
 
 }

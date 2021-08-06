@@ -106,7 +106,7 @@ public class StoreSearchControllerTest {
 		assertFalse(storeRepository.findAllByTitleContaining("bbq치킨").isEmpty());
 
 		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
-		info.add("id","2");
+		info.add("id", "2");
 
 		mockMvc.perform(delete("/search/store")
 			.params(info)
@@ -119,9 +119,9 @@ public class StoreSearchControllerTest {
 	}
 
 	@Test
-	public void searchIndex() throws Exception{
+	public void searchIndex() throws Exception {
 		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
-		info.add("keyword","치킨");
+		info.add("keyword", "치킨");
 
 		mockMvc.perform(get("/search/store")
 			.params(info)

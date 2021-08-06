@@ -34,7 +34,7 @@ public class Store {
 	// @Field(type = FieldType.Text)
 	// private String Longitude;
 
-	@Field(type=FieldType.Text)
+	@Field(type = FieldType.Text)
 	private String addr;
 
 	// @Field(type = FieldType.Boolean)

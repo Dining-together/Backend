@@ -1,6 +1,5 @@
 package kr.or.dining_together.search.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.elasticsearch.client.RestHighLevelClient;

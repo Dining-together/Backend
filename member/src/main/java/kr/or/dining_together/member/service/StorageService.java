@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class StorageService {
 
-	Logger logger = LoggerFactory.getLogger(StorageService.class);
 	private AmazonS3 s3Client;
 
 	@Value("${storage.s3.endpoint}")
@@ -66,10 +63,15 @@ public class StorageService {
 			.build();
 	}
 
+	/**
+	 *   save의 반환값은 fullBucketName+파일이름이다
+	 *  ex) save(file,string123.jpg,/menu/photo) 를 호출하면
+	 *	https://kr.object.ncloudstorage.com/diningtogether/menu/photo/string.jpg 를 DB에 저장한다.
+	 */
 	public String save(MultipartFile file, String name, String folderName) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		String fullBucketName = bucket + folderName;
-		String fileName = "";
+		String fileName = null;
 
 		// file image 가 없을 경우
 		if (file.isEmpty()) {
@@ -99,7 +101,8 @@ public class StorageService {
 			fileUpload(file, fullBucketName, fileName);
 			// db에 파일 위치랑 번호 등록
 		}
-		return fullBucketName + "/" + fileName;
+		String fullFileName = endPoint + "/" + fullBucketName + "/" + fileName;
+		return fullFileName;
 
 	}
 

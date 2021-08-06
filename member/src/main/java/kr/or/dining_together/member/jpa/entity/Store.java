@@ -41,6 +41,8 @@ public class Store extends User {
 	@Column(columnDefinition = "boolean default false")
 	private Boolean documentChecked;
 
+	private String documentFilePath;
+
 	@OneToOne
 	@JoinColumn(name = "facility_id")
 	private Facility facility;
@@ -72,7 +74,10 @@ public class Store extends User {
 
 	public void setDocumentChecked(boolean documentChecked) {
 		this.documentChecked = documentChecked;
+	}
 
+	public void setDocumentFilePath(String documentFilePath) {
+		this.documentFilePath = documentFilePath;
 	}
 
 	public void setFacility(Facility facility) {
