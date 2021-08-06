@@ -124,7 +124,7 @@ public class ReviewController {
 		List<ReviewImages> fileList = new ArrayList<>();
 		Arrays.asList(files).stream().forEach(file -> {
 			String fileDirectoryName = null;
-			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
+			String newFileName = fileName + fileCount.get();
 
 			try {
 				fileDirectoryName = storageService.save(file, newFileName, REVIEW_FOLDER_DIRECTORY);

@@ -104,7 +104,7 @@ public class StoreController {
 
 		Arrays.asList(files).stream().forEach(file -> {
 			String fileDirectoryName = null;
-			String newFileName = fileName + fileCount.get() + FilenameUtils.getExtension(file.getOriginalFilename());
+			String newFileName = fileName + fileCount.get();
 			try {
 				fileDirectoryName = storageService.save(file, newFileName, STORE_IMAGE_FOLDER_DIRECTORY);
 			} catch (IOException e) {

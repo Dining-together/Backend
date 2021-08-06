@@ -161,11 +161,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-        <!--        &lt;!&ndash; Kafka &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.kafka</groupId>-->
-        <!--            <artifactId>spring-kafka</artifactId>-->
-        <!--        </dependency>-->
         <!-- Object Storage -->
         <dependency>
             <groupId>com.amazonaws</groupId>
