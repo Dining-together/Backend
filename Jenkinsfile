@@ -19,6 +19,10 @@ node {
                     def mvnHome = tool 'Maven'
                     sh "cd gateway && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
             }
+            stage('Build config') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd config && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
             stage('Build member') {
                     def mvnHome = tool 'Maven'
                     sh "cd member && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
