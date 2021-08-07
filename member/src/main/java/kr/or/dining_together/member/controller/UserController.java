@@ -70,7 +70,10 @@ public class UserController {
 	public String status(HttpServletRequest httpServletRequest){
 		return String.format("It's Working in Member Service"
 					+ ", port(server.port)="+env.getProperty("server.port")
-					+ ", with token secret="+ env.getProperty("spring.jwt.secret"));
+					+ ", with token secret="+ env.getProperty("spring.jwt.secret")
+					+ ", with token secret="+ env.getProperty("spring.mail.port")
+					+ ", with token secret="+ env.getProperty("spring.social.kakao.client_id")
+		);
 	}
 
 

@@ -8,4 +8,4 @@ spring:
     config:
       server:
         git:
-          uri: file:///Users/jifrozen/project/Dining-together/config
+          uri: https://github.com/Dining-together/config.git

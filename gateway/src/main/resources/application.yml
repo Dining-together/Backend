@@ -23,6 +23,14 @@ spring:
         - id: member
           uri: lb://MEMBER
           predicates:
+            - Path=/member/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member/(?<segment>.*),/$\{segment}
+        - id: member
+          uri: lb://MEMBER
+          predicates:
             - Path=/member/**
         - id: auction
           uri: lb://AUCTION
@@ -32,7 +40,15 @@ spring:
           uri: lb://SEARCH
           predicates:
             - Path=/search/**
-
-token:
-  secret: secret_token
-  expiration_time: 86400000
+management:
+  security:
+    enabled: false
+  endpoints:
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: refresh, health, beans,httptrace
+#token:
+#  secret: secret_token
+#  expiration_time: 86400000
