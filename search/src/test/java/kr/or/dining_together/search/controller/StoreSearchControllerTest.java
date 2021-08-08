@@ -94,9 +94,9 @@ public class StoreSearchControllerTest {
 		String content = gson.toJson(store);
 
 		mockMvc.perform(post("/search/store")
-			.content(content)
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
+				.content(content)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}
@@ -109,9 +109,9 @@ public class StoreSearchControllerTest {
 		info.add("id", "2");
 
 		mockMvc.perform(delete("/search/store")
-			.params(info)
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
+				.params(info)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(print());
 
@@ -124,9 +124,9 @@ public class StoreSearchControllerTest {
 		info.add("keyword", "치킨");
 
 		mockMvc.perform(get("/search/store")
-			.params(info)
-			.contentType(MediaType.APPLICATION_JSON)
-			.accept(MediaType.APPLICATION_JSON))
+				.params(info)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}

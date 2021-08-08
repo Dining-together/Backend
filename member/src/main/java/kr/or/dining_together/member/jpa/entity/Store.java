@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -28,14 +32,21 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Store extends User {
 
+	private String storeName;
+
 	private String phoneNum;
 
 	private String addr;
-	private double latitude;
-	private double longitude;
-	private Date openTime;
 
-	private Date closedTime;
+	private double latitude;
+
+	private double longitude;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+	private LocalDateTime openTime;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+	private LocalDateTime closedTime;
 
 	@ApiModelProperty(notes = "서류 제출 확인여부를 나타낸다")
 	@Column(columnDefinition = "boolean default false")
@@ -61,8 +72,9 @@ public class Store extends User {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 
-	public void update(String phoneNum, String addr, double latitude, double longitude, StoreType storeType,
-		Date openTime, Date closedTime) {
+	public void update(String storeName, String phoneNum, String addr, double latitude, double longitude, StoreType storeType,
+		LocalDateTime openTime, LocalDateTime closedTime) {
+		this.storeName=storeName;
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;

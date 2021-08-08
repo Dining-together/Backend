@@ -2,7 +2,10 @@ package kr.or.dining_together.member.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class KafkaProducer {
+
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
@@ -20,18 +24,26 @@ public class KafkaProducer {
 		this.kafkaTemplate = kafkaTemplate;
 	}
 
-	public StoreDto send(String topic, StoreDto storeDto) {
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = "";
-		try {
-			jsonInString = mapper.writeValueAsString(storeDto);
-		} catch (JsonProcessingException ex) {
-			ex.printStackTrace();
-		}
+	@Autowired
+	private KafkaTemplate<String, StoreDto> storeKafkaTemplate;
 
-		kafkaTemplate.send(topic, jsonInString);
-		log.info("Kafka Producer sent data from the Member microservice: " + storeDto);
+	public void send(String topicName,StoreDto storeDto)
+	{
+		ListenableFuture<SendResult<String, StoreDto>> future
+			= this.storeKafkaTemplate.send(topicName, storeDto);
 
-		return storeDto;
+		future.addCallback(new ListenableFutureCallback<SendResult<String, StoreDto>>() {
+			@Override
+			public void onSuccess(SendResult<String, StoreDto> result) {
+				log.info("User created: "
+					+ storeDto + " with offset: " + result.getRecordMetadata().offset());
+			}
+
+			@Override
+			public void onFailure(Throwable ex) {
+				log.error("User created : " + storeDto, ex);
+			}
+		});
 	}
+
 }

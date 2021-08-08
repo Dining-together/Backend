@@ -11,6 +11,19 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
 
+kafka:
+  bootstrapAddress: 118.67.133.150:9092
+  topic:
+    general:
+      id: generalId
+      name: general-topic
+    auction:
+      id: auctionGroupId
+      name: auction-auction-topic
+    store:
+      id: storeGroupId
+      name: member-store-topic
+
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

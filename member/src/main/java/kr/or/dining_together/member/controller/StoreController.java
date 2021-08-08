@@ -3,8 +3,10 @@ package kr.or.dining_together.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.security.core.Authentication;
@@ -38,9 +40,9 @@ import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
-import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
+import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.StoreService;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreRequest;
@@ -71,7 +73,7 @@ public class StoreController {
 	private final ResponseService responseService;
 	private final StoreService storeService;
 	private final StorageService storageService;
-	private final KafkaProducer kafkaProducer;
+	private final KafkaProducer storeProducer;
 
 	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
 	@GetMapping(value = "/stores")
@@ -191,13 +193,19 @@ public class StoreController {
 		Store store = storeService.registerStore(storeRequest, email);
 
 		StoreDto storeDto = StoreDto.builder()
-			.storeType(store.getStoreType().toString())
-			.addr(store.getAddr())
+			.storeName(store.getStoreName())
 			.storeId(String.valueOf(store.getId()))
-			.storeName(store.getName())
+			.addr(store.getAddr())
+			.storeType(store.getStoreType().toString())
+			.openTime(store.getOpenTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.phoneNum(store.getPhoneNum())
+			.closedTime(store.getClosedTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.longitude(store.getLongitude())
+			.latitude(store.getLatitude())
+			.storeImagePath(store.getPath())
 			.build();
 
-		kafkaProducer.send("member-store-topic", storeDto);
+		storeProducer.send("member-store-topic", storeDto);
 		return responseService.getSingleResult(store);
 
 	}

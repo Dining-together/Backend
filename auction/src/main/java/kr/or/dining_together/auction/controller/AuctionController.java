@@ -38,8 +38,8 @@ import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
+import kr.or.dining_together.auction.service.AuctionProducer;
 import kr.or.dining_together.auction.service.AuctionService;
-import kr.or.dining_together.auction.service.KafkaProducer;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.SuccessBidService;
 import kr.or.dining_together.auction.vo.AuctionRequest;
@@ -68,7 +68,7 @@ public class AuctionController {
 	private final ResponseService responseService;
 	private final AuctionRepository auctionRepository;
 	private final UserServiceClient userServiceClient;
-	private final KafkaProducer kafkaProducer;
+	private final AuctionProducer auctionProducer;
 
 	@ApiOperation(value = "공고 리스트 조회", notes = "공고 리스트 조회한다.")
 	@GetMapping(value = "/auctions")
@@ -110,11 +110,16 @@ public class AuctionController {
 		AuctionDto auctionDto = AuctionDto.builder()
 			.auctionId(auction.getAuctionId().toString())
 			.title(auctionRequest.getTitle())
+			.userName(user.getName())
 			.userType(auctionRequest.getGroupType())
-			.reservation(Date.from(auctionRequest.getReservation().atZone(ZoneId.systemDefault()).toInstant()))
+			.reservation(auctionRequest.getReservation().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.maxPrice(auctionRequest.getMaxPrice())
+			.minPrice(auctionRequest.getMinPrice())
+			.deadline(auctionRequest.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.storeType(auctionRequest.getStoreType())
 			.build();
 
-		kafkaProducer.send("auction-auction-topic", auctionDto);
+		auctionProducer.send("auction-auction-topic", auctionDto);
 
 		/*
 		 ** 사용자가 클릭한 공고정보 로깅
