@@ -4,8 +4,75 @@ server:
 spring:
   application:
     name: config
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/Dining-together/config.git
+          uri: git@github.com:Dining-together/config.git
+          ignoreLocalSshSettings: true
+          skipSslValidation: true
+          privateKey: |
+            -----BEGIN RSA PRIVATE KEY-----
+            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
+            -----END RSA PRIVATE KEY-----
+          timeout: 6
+management:
+  endpoints:
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: busrefresh, health

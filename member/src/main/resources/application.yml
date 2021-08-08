@@ -13,6 +13,11 @@ server:
 spring:
   application:
     name: member
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   redis:
     lettuce:
       pool:
@@ -99,4 +104,4 @@ management:
       show-details: always
     web:
       exposure:
-        include: refresh, health, beans
+        include: refresh, health, beans,busrefresh

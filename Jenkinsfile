@@ -70,6 +70,8 @@ node {
              }
 
         stage('Deploy') {
+                sh "docker stop config"
+                sh "docker rm config"
                 sh "docker stop eureka"
                 sh "docker rm eureka"
                 sh "docker stop gateway"
@@ -81,14 +83,18 @@ node {
                 sh "docker stop search"
                 sh "docker rm search"
 
-
-                sh "docker run -d -p 8761:8761 --network Dining-together\
-                        --name eureka ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}"
-                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
                 sh "docker run -d -p 8888:8888 --network Dining-together \
+                  -e \"spring.rabbitmq.host=rabbitmq\" \
                   --name config ${DOCKER_USER_ID}/config:${BUILD_NUMBER}"
+                sh "docker run -d -p 8761:8761 --network Dining-together\
+                         -e \"spring.cloud.config.uri=http://config:8888\" \
+                        --name eureka ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}"
+                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" e \"spring.cloud.config.uri=http://config:8888\"  -e \"spring.rabbitmq.host=rabbitmq\"  ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
+
                 sh "docker run -d --network Dining-together \
                   --name member \
+                   -e \"spring.cloud.config.uri=http://config:8888\" \
+                   -e \"spring.rabbitmq.host=rabbitmq\" \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
                 ${DOCKER_USER_ID}/member:${BUILD_NUMBER}"
                 sh "docker run -d --network Dining-together \
