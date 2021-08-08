@@ -6,14 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.solr.SolrAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-@SpringBootApplication(exclude = { SolrAutoConfiguration.class })
+@SpringBootApplication(exclude = {SolrAutoConfiguration.class})
 @EnableDiscoveryClient
 public class MemberApplication {
 
@@ -45,6 +44,5 @@ public class MemberApplication {
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
-
 
 }

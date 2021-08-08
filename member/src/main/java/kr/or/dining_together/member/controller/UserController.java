@@ -67,15 +67,14 @@ public class UserController {
 	private final FileService fileService;
 
 	@GetMapping("/health_check")
-	public String status(HttpServletRequest httpServletRequest){
+	public String status(HttpServletRequest httpServletRequest) {
 		return String.format("It's Working in Member Service"
-					+ ", port(server.port)="+env.getProperty("server.port")
-					+ ", with token secret="+ env.getProperty("spring.jwt.secret")
-					+ ", with token secret="+ env.getProperty("spring.mail.port")
-					+ ", with token secret="+ env.getProperty("spring.social.kakao.client_id")
+			+ ", port(server.port)=" + env.getProperty("server.port")
+			+ ", with token secret=" + env.getProperty("spring.jwt.secret")
+			+ ", with token secret=" + env.getProperty("spring.mail.port")
+			+ ", with token secret=" + env.getProperty("spring.social.kakao.client_id")
 		);
 	}
-
 
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
