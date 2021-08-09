@@ -38,6 +38,9 @@ public class Auction {
 	@Field(type = FieldType.Text, name = "title")
 	private String title;
 
+	@Field(type = FieldType.Text, name = "userName")
+	private String userName;
+
 	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss'Z'")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
 	private LocalDateTime reservation;
@@ -45,13 +48,17 @@ public class Auction {
 	@Field(type = FieldType.Text, name = "userType")
 	private String userType;
 
-	// @Field(type = FieldType.Text, name = "preferredLocation")
-	// private String preferredLocation;
-	//
-	// @Field(type = FieldType.Text, name = "preferredMenu")
-	// private String preferredMenu;
-	//
-	// @Field(type = FieldType.Integer, name = "preferredPrice")
-	// private Integer preferredPrice;
+	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss'Z'")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
+	private LocalDateTime deadLine;
+
+	@Field(type = FieldType.Integer, name = "maxPrice")
+	private int maxPrice;
+
+	@Field(type = FieldType.Integer, name = "minPrice")
+	private int minPrice;
+
+	@Field(type = FieldType.Text, name = "storeType")
+	private String storeType;
 
 }

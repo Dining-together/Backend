@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -28,16 +32,23 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Store extends User {
 
+	private String storeName;
+
 	private String phoneNum;
 
 	private String addr;
 
 	private String comment;
-	private double latitude;
-	private double longitude;
-	private Date openTime;
 
-	private Date closedTime;
+	private double latitude;
+
+	private double longitude;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+	private LocalDateTime openTime;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+	private LocalDateTime closedTime;
 
 	private double reviewAvg;
 	private int reviewCnt;
@@ -68,7 +79,7 @@ public class Store extends User {
 
 	public void update(String phoneNum, String addr, double latitude, double longitude, String comment,
 		StoreType storeType,
-		Date openTime, Date closedTime) {
+		LocalDateTime openTime, LocalDateTime closedTime) {
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;

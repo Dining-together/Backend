@@ -52,6 +52,7 @@ public class StoreService {
 		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(), storeRequest.getLatitude(),
 			storeRequest.getLongitude(), storeRequest.getComment(), storeRequest.getStoreType(),
 			storeRequest.getOpenTime(),
+
 			storeRequest.getClosedTime());
 		storeRepository.save(store);
 		return store;

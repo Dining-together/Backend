@@ -1,63 +1,42 @@
 package kr.or.dining_together.auction.service;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.dining_together.auction.dto.AuctionDto;
-import kr.or.dining_together.auction.dto.Field;
-import kr.or.dining_together.auction.dto.KafkaAuctionDto;
-import kr.or.dining_together.auction.dto.Payload;
-import kr.or.dining_together.auction.dto.Schema;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class AuctionProducer {
-	List<Field> fields = Arrays.asList(new Field("string", true, "auction_id"),
-		new Field("string", true, "title"),
-		new Field("string", true, "userType"),
-		new Field("date", true, "reservation"));
-	Schema schema = Schema.builder()
-		.type("struct")
-		.fields(fields)
-		.optional(false)
-		.name("auction")
-		.build();
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
-	public AuctionProducer(KafkaTemplate<String, String> kafkaTemplate) {
-		this.kafkaTemplate = kafkaTemplate;
-	}
+	private KafkaTemplate<String, AuctionDto> auctionKafkaTemplate;
 
-	public AuctionDto send(String topic, AuctionDto AuctionDto) {
-		Payload payload = Payload.builder()
-			.id(AuctionDto.getAuctionId())
-			.userType(AuctionDto.getUserType().toString())
-			.title(AuctionDto.getTitle())
-			.reservation(AuctionDto.getReservation())
-			.build();
+	public void send(String topicName,AuctionDto auctionDto)
+	{
+		ListenableFuture<SendResult<String, AuctionDto>> future
+			= this.auctionKafkaTemplate.send(topicName, auctionDto);
 
-		KafkaAuctionDto kafkaAuctionDto = new KafkaAuctionDto(schema, payload);
+		future.addCallback(new ListenableFutureCallback<SendResult<String, AuctionDto>>() {
+			@Override
+			public void onSuccess(SendResult<String, AuctionDto> result) {
+				log.info("User created: "
+					+ auctionDto + " with offset: " + result.getRecordMetadata().offset());
+			}
 
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = "";
-		try {
-			jsonInString = mapper.writeValueAsString(kafkaAuctionDto);
-		} catch (JsonProcessingException ex) {
-			ex.printStackTrace();
-		}
-
-		kafkaTemplate.send(topic, jsonInString);
-		log.info("Order Producer sent data from the Order microservice: " + kafkaAuctionDto);
-
-		return AuctionDto;
+			@Override
+			public void onFailure(Throwable ex) {
+				log.error("User created : " + auctionDto, ex);
+			}
+		});
 	}
 }

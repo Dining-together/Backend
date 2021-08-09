@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.vo;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import kr.or.dining_together.member.jpa.entity.StoreType;
@@ -17,13 +18,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class StoreRequest {
+	private String storeName;
 	private String phoneNum;
 	private StoreType storeType;
 	private String addr;
 	private String comment;
 	private double latitude;
 	private double longitude;
-	private Date openTime;
-	private Date closedTime;
-
+	private LocalDateTime openTime;
+	private LocalDateTime closedTime;
 }
