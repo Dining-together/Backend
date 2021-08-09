@@ -12,4 +12,5 @@ public class StoreDto implements Serializable {
 	private String storeName;
 	private String addr;
 	private String storeType;
+	private String comment;
 }

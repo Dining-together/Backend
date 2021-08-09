@@ -9,7 +9,8 @@ public enum StoreType {
 	KOREAN(Values.KOREAN),
 	CHINESE(Values.CHINESE),
 	JAPANESE(Values.JAPANESE),
-	WESTERN(Values.WESTERN);
+	WESTERN(Values.WESTERN),
+	ETC(Values.ETC);
 
 	private String value;
 
@@ -24,5 +25,6 @@ public enum StoreType {
 		public static final String CHINESE = "CHINESE";
 		public static final String JAPANESE = "JAPANESE";
 		public static final String WESTERN = "WESTERN";
+		public static final String ETC = "ETC";
 	}
 }

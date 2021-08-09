@@ -39,6 +39,10 @@ public class ReviewService {
 			.score(reviewDto.getScore())
 			.build();
 
+		// 리뷰 평점 개수 구하는 부분
+		double reviewAvg = reviewRepository.getReviewAvgByStoreId(userIdDto.getId());
+		int reviewCnt = reviewRepository.getReviewCntByStoreId(userIdDto.getId());
+
 		return reviewRepository.save(review);
 	}
 

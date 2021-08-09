@@ -20,19 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class AuctionProducer {
-	private KafkaTemplate<String, String> kafkaTemplate;
-
 	List<Field> fields = Arrays.asList(new Field("string", true, "auction_id"),
 		new Field("string", true, "title"),
 		new Field("string", true, "userType"),
 		new Field("date", true, "reservation"));
-
 	Schema schema = Schema.builder()
 		.type("struct")
 		.fields(fields)
 		.optional(false)
 		.name("auction")
 		.build();
+	private KafkaTemplate<String, String> kafkaTemplate;
 
 	@Autowired
 	public AuctionProducer(KafkaTemplate<String, String> kafkaTemplate) {

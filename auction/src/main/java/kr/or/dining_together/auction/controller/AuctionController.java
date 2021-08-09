@@ -23,9 +23,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.client.UserServiceClient;
-import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.commons.annotation.Permission;
 import kr.or.dining_together.auction.commons.annotation.UserCheck;
+import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Auction;
 import kr.or.dining_together.auction.jpa.entity.AuctionStatus;
@@ -107,7 +107,7 @@ public class AuctionController {
 			.reservation(Date.from(auctionRequest.getReservation().atZone(ZoneId.systemDefault()).toInstant()))
 			.build();
 
-		kafkaProducer.send("auction-auction-topic",auctionDto);
+		kafkaProducer.send("auction-auction-topic", auctionDto);
 		return responseService.getSingleResult(auction);
 	}
 

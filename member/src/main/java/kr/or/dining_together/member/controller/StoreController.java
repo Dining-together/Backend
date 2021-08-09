@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FilenameUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -172,12 +173,7 @@ public class StoreController {
 		String email = authentication.getName();
 		Store store = storeService.registerStore(storeRequest, email);
 
-		StoreDto storeDto = StoreDto.builder()
-			.storeType(store.getStoreType().toString())
-			.addr(store.getAddr())
-			.storeId(String.valueOf(store.getId()))
-			.storeName(store.getName())
-			.build();
+		StoreDto storeDto = new ModelMapper().map(store, StoreDto.class);
 
 		kafkaProducer.send("member-store-topic", storeDto);
 		return responseService.getSingleResult(store);

@@ -43,7 +43,8 @@ public class StoreService {
 			throw new UnprovenStoreException();
 		}
 		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(), storeRequest.getLatitude(),
-			storeRequest.getLongitude(), storeRequest.getStoreType(), storeRequest.getOpenTime(),
+			storeRequest.getLongitude(), storeRequest.getComment(), storeRequest.getStoreType(),
+			storeRequest.getOpenTime(),
 			storeRequest.getClosedTime());
 		storeRepository.save(store);
 		return store;
@@ -55,6 +56,9 @@ public class StoreService {
 		if (store.getDocumentChecked() == false) {
 			throw new UnprovenStoreException();
 		}
+		if (store.getFacility() != null) {
+			facilityRepository.deleteAllByStore(store);
+		}
 		Facility facility = Facility.builder()
 			.capacity(facilityRequest.getCapacity())
 			.parkingCount(facilityRequest.getParkingCount())
@@ -62,6 +66,9 @@ public class StoreService {
 			.build();
 
 		facility = facilityRepository.save(facility);
+		if (facility.getFacilityEtcs() != null) {
+			facilityEtcRepository.deleteAllByFacility(facility);
+		}
 		List<FacilityType> facilityTypes = facilityRequest.getFacilityTypes();
 		for (FacilityType type : facilityTypes) {
 			FacilityEtc facilityEtc = FacilityEtc.builder()
