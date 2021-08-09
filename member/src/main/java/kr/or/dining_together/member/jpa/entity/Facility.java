@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModel;
@@ -37,6 +38,9 @@ public class Facility {
 	private int parkingCount;
 
 	private boolean parking;
+
+	@OneToOne
+	private Store store;
 
 	@OneToMany(mappedBy = "facility", cascade = CascadeType.ALL)
 	private List<FacilityEtc> facilityEtcs = new ArrayList<>();

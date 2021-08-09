@@ -25,4 +25,5 @@ public class StoreDto implements Serializable {
 	private String openTime;
 	private String closedTime;
 	private String storeImagePath;
+	private String comment;
 }

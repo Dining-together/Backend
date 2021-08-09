@@ -1,7 +1,9 @@
 HELP.md
+target/
 !.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-upload
 ### STS ###
 .apt_generated
 .classpath
@@ -16,7 +18,6 @@ upload
 *.iws
 *.iml
 *.ipr
-upload
 
 ### NetBeans ###
 /nbproject/private/
