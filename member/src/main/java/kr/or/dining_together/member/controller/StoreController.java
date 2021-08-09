@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.io.FilenameUtils;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +41,7 @@ import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.StoreService;
 import kr.or.dining_together.member.vo.FacilityRequest;
+import kr.or.dining_together.member.vo.StoreListResponse;
 import kr.or.dining_together.member.vo.StoreRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -72,7 +72,7 @@ public class StoreController {
 
 	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
 	@GetMapping(value = "/stores")
-	public ListResult<Store> getStores() throws Throwable {
+	public ListResult<StoreListResponse> getStores() throws Throwable {
 		return responseService.getListResult(storeService.getStores());
 	}
 
@@ -173,14 +173,19 @@ public class StoreController {
 		String email = authentication.getName();
 		Store store = storeService.registerStore(storeRequest, email);
 
-		StoreDto storeDto = new ModelMapper().map(store, StoreDto.class);
+		StoreDto storeDto = StoreDto.builder()
+			.storeType(store.getStoreType().toString())
+			.addr(store.getAddr())
+			.storeId(String.valueOf(store.getId()))
+			.storeName(store.getName())
+			.build();
 
 		kafkaProducer.send("member-store-topic", storeDto);
 		return responseService.getSingleResult(store);
 
 	}
 
-	@ApiOperation(value = "업체 상세 시설 등록", notes = "업체 상세 시설 등록")
+	@ApiOperation(value = "업체 상세 시설 등록/수정", notes = "업체 상세 시설 등록")
 	@PostMapping("/store/facility")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
@@ -195,19 +200,6 @@ public class StoreController {
 
 	}
 
-	@ApiOperation(value = "업체 상세 시설 수정", notes = "업체 상세 시설 수정")
-	@PutMapping("/store/facility/{facilityId}")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
-	})
-	public SingleResult<Facility> modifyFacility(
-		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@PathVariable @ApiParam(value = "시설 id", required = true) long facilityId,
-		@RequestBody @ApiParam(value = "가게 시설", required = true) FacilityRequest facilityRequest) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
-		return responseService.getSingleResult(storeService.modifyFacility(facilityRequest, facilityId, email));
-	}
 
 	@ApiOperation(value = "서류 확인 (다른 서비스 호출)", notes = "업체 서류 인증 확인")
 	@GetMapping(value = "/store/document")

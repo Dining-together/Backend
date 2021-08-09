@@ -1,9 +1,11 @@
 package kr.or.dining_together.member.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
@@ -17,6 +19,7 @@ import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.vo.FacilityRequest;
+import kr.or.dining_together.member.vo.StoreListResponse;
 import kr.or.dining_together.member.vo.StoreRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +36,12 @@ public class StoreService {
 		return store;
 	}
 
-	public List<Store> getStores() {
-		return storeRepository.findAll();
+	public List<StoreListResponse> getStores() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<Store> stores = storeRepository.findAll();
+		List<StoreListResponse> collect =
+			stores.stream().map(p -> modelMapper.map(p, StoreListResponse.class)).collect(Collectors.toList());
+		return collect;
 	}
 
 	public Store registerStore(StoreRequest storeRequest, String email) {

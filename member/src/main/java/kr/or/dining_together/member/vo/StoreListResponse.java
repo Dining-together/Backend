@@ -23,5 +23,7 @@ public class StoreListResponse {
 	private double latitude;
 	private double longitude;
 	private StoreType storeType;
+	private double reviewAvg;
+	private int reviewCnt;
 
 }
