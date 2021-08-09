@@ -19,6 +19,10 @@ node {
                     def mvnHome = tool 'Maven'
                     sh "cd gateway && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
             }
+            stage('Build config') {
+                    def mvnHome = tool 'Maven'
+                    sh "cd config && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
+            }
             stage('Build member') {
                     def mvnHome = tool 'Maven'
                     sh "cd member && ${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean compile package"
@@ -36,10 +40,7 @@ node {
         //     stage('Unit Test'){
         //             junit '**/target/surefire-reports/TEST-*.xml'
         //     }
-         slackSend (channel: '#jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }catch(e){
-            slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }
+
         stage('Build image') {
             //     when {
             //     branch 'main'
@@ -47,6 +48,7 @@ node {
 
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER} eureka')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER} gateway')
+                sh(script: 'docker build -t ${DOCKER_USER_ID}/config:${BUILD_NUMBER} config')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/member:${BUILD_NUMBER} member')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/auction:${BUILD_NUMBER} auction')
                 sh(script: 'docker build -t ${DOCKER_USER_ID}/search:${BUILD_NUMBER} search')
@@ -60,6 +62,7 @@ node {
                 sh(script: 'docker login -u ${DOCKER_USER_ID} -p ${DOCKER_USER_PASSWORD}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}')
+                sh(script: 'docker push ${DOCKER_USER_ID}/config:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/member:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}')
                 sh(script: 'docker push ${DOCKER_USER_ID}/search:${BUILD_NUMBER}')
@@ -67,6 +70,8 @@ node {
              }
 
         stage('Deploy') {
+                sh "docker stop config"
+                sh "docker rm config"
                 sh "docker stop eureka"
                 sh "docker rm eureka"
                 sh "docker stop gateway"
@@ -78,23 +83,36 @@ node {
                 sh "docker stop search"
                 sh "docker rm search"
 
+                sh "docker run -d -p 8888:8888 --network Dining-together \
+                  -e \"spring.rabbitmq.host=rabbitmq\" \
+                  --name config ${DOCKER_USER_ID}/config:${BUILD_NUMBER}"
                 sh "docker run -d -p 8761:8761 --network Dining-together\
+                         -e \"spring.cloud.config.uri=http://config:8888\" \
                         --name eureka ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}"
-                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
+                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" e \"spring.cloud.config.uri=http://config:8888\"  -e \"spring.rabbitmq.host=rabbitmq\"  ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
+
                 sh "docker run -d --network Dining-together \
                   --name member \
+                   -e \"spring.cloud.config.uri=http://config:8888\" \
+                   -e \"spring.rabbitmq.host=rabbitmq\" \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
                 ${DOCKER_USER_ID}/member:${BUILD_NUMBER}"
+          
                 sh "docker run -d --network Dining-together \
                   --name auction \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
                 ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}"
+          
                 sh "docker run -d --network Dining-together \
                   --name search \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
                 ${DOCKER_USER_ID}/search:${BUILD_NUMBER}"
 
              }
+                      slackSend (channel: '#jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }catch(e){
+            slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
 
      }
 }

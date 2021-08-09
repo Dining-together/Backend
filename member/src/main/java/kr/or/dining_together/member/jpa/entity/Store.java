@@ -31,11 +31,16 @@ public class Store extends User {
 	private String phoneNum;
 
 	private String addr;
+
+	private String comment;
 	private double latitude;
 	private double longitude;
 	private Date openTime;
 
 	private Date closedTime;
+
+	private double reviewAvg;
+	private int reviewCnt;
 
 	@ApiModelProperty(notes = "서류 제출 확인여부를 나타낸다")
 	@Column(columnDefinition = "boolean default false")
@@ -61,12 +66,14 @@ public class Store extends User {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 
-	public void update(String phoneNum, String addr, double latitude, double longitude, StoreType storeType,
+	public void update(String phoneNum, String addr, double latitude, double longitude, String comment,
+		StoreType storeType,
 		Date openTime, Date closedTime) {
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.comment = comment;
 		this.storeType = storeType;
 		this.openTime = openTime;
 		this.closedTime = closedTime;

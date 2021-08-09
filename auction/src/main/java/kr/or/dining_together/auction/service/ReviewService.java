@@ -15,8 +15,10 @@ import kr.or.dining_together.auction.jpa.entity.SuccessBid;
 import kr.or.dining_together.auction.jpa.repo.ReviewRepository;
 import kr.or.dining_together.auction.jpa.repo.SuccessBidRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
@@ -38,8 +40,15 @@ public class ReviewService {
 			.userId(userIdDto.getId())
 			.score(reviewDto.getScore())
 			.build();
+		review = reviewRepository.save(review);
+		// 리뷰 평점 개수 구하는 부분
 
-		return reviewRepository.save(review);
+		long reviewCnt = reviewRepository.getReviewCntByStoreId(successBid.get().getStoreId());
+		log.info(String.valueOf(reviewCnt));
+		Optional<Double> reviewAvg = Optional.ofNullable(
+			reviewRepository.getReviewAvgByStoreId(successBid.get().getStoreId()));
+		log.info(String.valueOf(reviewAvg));
+		return review;
 	}
 
 	public Review modifyReview(ReviewDto reviewDto, long reviewId) {

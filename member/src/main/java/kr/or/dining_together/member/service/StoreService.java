@@ -1,9 +1,11 @@
 package kr.or.dining_together.member.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.member.advice.exception.ResourceNotExistException;
@@ -17,6 +19,7 @@ import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.vo.FacilityRequest;
+import kr.or.dining_together.member.vo.StoreListResponse;
 import kr.or.dining_together.member.vo.StoreRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +36,12 @@ public class StoreService {
 		return store;
 	}
 
-	public List<Store> getStores() {
-		return storeRepository.findAll();
+	public List<StoreListResponse> getStores() {
+		ModelMapper modelMapper = new ModelMapper();
+		List<Store> stores = storeRepository.findAll();
+		List<StoreListResponse> collect =
+			stores.stream().map(p -> modelMapper.map(p, StoreListResponse.class)).collect(Collectors.toList());
+		return collect;
 	}
 
 	public Store registerStore(StoreRequest storeRequest, String email) {
@@ -43,7 +50,8 @@ public class StoreService {
 			throw new UnprovenStoreException();
 		}
 		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(), storeRequest.getLatitude(),
-			storeRequest.getLongitude(), storeRequest.getStoreType(), storeRequest.getOpenTime(),
+			storeRequest.getLongitude(), storeRequest.getComment(), storeRequest.getStoreType(),
+			storeRequest.getOpenTime(),
 			storeRequest.getClosedTime());
 		storeRepository.save(store);
 		return store;
@@ -55,6 +63,9 @@ public class StoreService {
 		if (store.getDocumentChecked() == false) {
 			throw new UnprovenStoreException();
 		}
+		if (store.getFacility() != null) {
+			facilityRepository.deleteAllByStore(store);
+		}
 		Facility facility = Facility.builder()
 			.capacity(facilityRequest.getCapacity())
 			.parkingCount(facilityRequest.getParkingCount())
@@ -62,6 +73,9 @@ public class StoreService {
 			.build();
 
 		facility = facilityRepository.save(facility);
+		if (facility.getFacilityEtcs() != null) {
+			facilityEtcRepository.deleteAllByFacility(facility);
+		}
 		List<FacilityType> facilityTypes = facilityRequest.getFacilityTypes();
 		for (FacilityType type : facilityTypes) {
 			FacilityEtc facilityEtc = FacilityEtc.builder()

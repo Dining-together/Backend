@@ -11,6 +11,11 @@ eureka:
 spring:
   application:
     name: gateway-server
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     gateway:
       default-filters:
@@ -23,6 +28,14 @@ spring:
         - id: member
           uri: lb://MEMBER
           predicates:
+            - Path=/member/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/member/(?<segment>.*),/$\{segment}
+        - id: member
+          uri: lb://MEMBER
+          predicates:
             - Path=/member/**
         - id: auction
           uri: lb://AUCTION
@@ -32,7 +45,15 @@ spring:
           uri: lb://SEARCH
           predicates:
             - Path=/search/**
-
-token:
-  secret: secret_token
-  expiration_time: 86400000
+management:
+  security:
+    enabled: false
+  endpoints:
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: refresh, health, beans,httptrace,busrefresh
+#token:
+#  secret: secret_token
+#  expiration_time: 86400000
