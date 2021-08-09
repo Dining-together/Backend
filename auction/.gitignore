@@ -16,6 +16,7 @@ upload
 *.iws
 *.iml
 *.ipr
+upload
 
 ### NetBeans ###
 /nbproject/private/

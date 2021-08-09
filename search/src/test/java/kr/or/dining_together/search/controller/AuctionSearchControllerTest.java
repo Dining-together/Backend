@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -100,7 +99,7 @@ public class AuctionSearchControllerTest {
 		assertFalse(auctionRepository.findAllByTitleContaining("경매2").isEmpty());
 
 		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
-		info.add("id","2");
+		info.add("id", "2");
 
 		mockMvc.perform(delete("/search/auction")
 			.params(info)
@@ -113,9 +112,9 @@ public class AuctionSearchControllerTest {
 	}
 
 	@Test
-	public void searchIndex() throws Exception{
+	public void searchIndex() throws Exception {
 		MultiValueMap<String, String> info = new LinkedMultiValueMap<>();
-		info.add("keyword","경매2");
+		info.add("keyword", "경매2");
 
 		mockMvc.perform(get("/search/auction")
 			.params(info)

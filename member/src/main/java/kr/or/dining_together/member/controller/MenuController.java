@@ -29,7 +29,6 @@ import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
-import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.MenuService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
@@ -55,7 +54,6 @@ public class MenuController {
 
 	private final static String MENU_FOLDER_DIRECTORY = "/menu/photo";
 	private final MenuService menuService;
-	private final FileService fileService;
 	private final ResponseService responseService;
 	private final StoreRepository storeRepository;
 	private final MenuRepository menuRepository;
@@ -92,6 +90,7 @@ public class MenuController {
 			.path(path)
 			.description(description).
 				build();
+
 		return responseService.getSingleResult(
 			menuService.registerMenu(menuRequest, store));
 
@@ -119,6 +118,7 @@ public class MenuController {
 			.path(path)
 			.description(description).
 				build();
+
 		return responseService.getSingleResult(
 			menuService.modifyMenu(menuRequest, menu));
 

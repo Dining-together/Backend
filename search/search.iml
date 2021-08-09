@@ -224,5 +224,6 @@
     <orderEntry type="library" name="Maven: com.github.luben:zstd-jni:1.4.4-7" level="project" />
     <orderEntry type="library" name="Maven: org.lz4:lz4-java:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.xerial.snappy:snappy-java:1.1.7.3" level="project" />
+    <orderEntry type="library" name="Maven: net.logstash.logback:logstash-logback-encoder:6.3" level="project" />
   </component>
 </module>

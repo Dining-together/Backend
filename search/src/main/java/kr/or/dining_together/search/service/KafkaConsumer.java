@@ -23,10 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaConsumer {
 	StoreRepository storeRepository;
 	AuctionRepository auctionRepository;
+
 	@Autowired
-	public KafkaConsumer(StoreRepository storeRepository,AuctionRepository auctionRepository) {
-		this.storeRepository=storeRepository;
-		this.auctionRepository =auctionRepository;
+	public KafkaConsumer(StoreRepository storeRepository, AuctionRepository auctionRepository) {
+		this.storeRepository = storeRepository;
+		this.auctionRepository = auctionRepository;
 	}
 
 	@KafkaListener(topics = "member-store-topic")
@@ -36,7 +37,8 @@ public class KafkaConsumer {
 		Map<Object, Object> map = new HashMap<>();
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			map = mapper.readValue(kafkaMessage, new TypeReference<Map<Object, Object>>() {});
+			map = mapper.readValue(kafkaMessage, new TypeReference<Map<Object, Object>>() {
+			});
 		} catch (JsonProcessingException ex) {
 			ex.printStackTrace();
 		}
@@ -58,7 +60,8 @@ public class KafkaConsumer {
 		Map<Object, Object> map = new HashMap<>();
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			map = mapper.readValue(kafkaMessage, new TypeReference<Map<Object, Object>>() {});
+			map = mapper.readValue(kafkaMessage, new TypeReference<Map<Object, Object>>() {
+			});
 		} catch (JsonProcessingException ex) {
 			ex.printStackTrace();
 		}

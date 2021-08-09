@@ -97,10 +97,12 @@ node {
                    -e \"spring.rabbitmq.host=rabbitmq\" \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
                 ${DOCKER_USER_ID}/member:${BUILD_NUMBER}"
+          
                 sh "docker run -d --network Dining-together \
                   --name auction \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \
                 ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}"
+          
                 sh "docker run -d --network Dining-together \
                   --name search \
                 -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" \

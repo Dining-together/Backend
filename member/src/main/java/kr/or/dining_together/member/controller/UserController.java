@@ -33,7 +33,6 @@ import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
-import kr.or.dining_together.member.service.FileService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.UserService;
@@ -42,6 +41,7 @@ import kr.or.dining_together.member.vo.CustomerProfileResponse;
 import kr.or.dining_together.member.vo.StoreProfileRequest;
 import kr.or.dining_together.member.vo.StoreProfileResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @package : kr.or.dining_together.member.controller
@@ -56,6 +56,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/member")
+@Slf4j
 public class UserController {
 
 	private final static String USER_IMAGE_FOLDER_DIRECTORY = "/user/photo";
@@ -64,7 +65,6 @@ public class UserController {
 	private final ResponseService responseService;
 	private final UserRepository userRepository;
 	private final StorageService storageService;
-	private final FileService fileService;
 
 	@GetMapping("/health_check")
 	public String status(HttpServletRequest httpServletRequest) {
@@ -120,9 +120,11 @@ public class UserController {
 		String filePath = storageService.save(file, fileName, USER_IMAGE_FOLDER_DIRECTORY);
 		if (filePath == "none") {
 			throw new FileNotFoundException();
-		} else {
+		} else {//이미지 경로 저장.
 			user.imageUpdate(filePath);
 		}
+
+		log.info(user.getEmail() + " 이 회원사진을 " + filePath + " 에 등록하였습니다.");
 		return responseService.getSuccessResult();
 	}
 
