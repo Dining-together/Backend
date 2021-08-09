@@ -98,6 +98,9 @@ public class Store extends User {
 		this.documentFilePath = documentFilePath;
 	}
 
+	public void setReviewCnt(int reviewCnt) {this.reviewCnt =reviewCnt;}
+
+	public void setReviewAvg(Double reviewAvg) {this.reviewAvg=reviewAvg;}
 	public void setFacility(Facility facility) {
 		this.facility = facility;
 	}

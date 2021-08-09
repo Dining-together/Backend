@@ -33,6 +33,9 @@ public class AuctionDto implements Serializable {
 	@ApiModelProperty(notes = "공고 제목")
 	private String title;
 
+	@ApiModelProperty(notes = "공고 내용")
+	private String content;
+	
 	@ApiModelProperty(notes = "공고 최대 가격")
 	private int maxPrice;
 

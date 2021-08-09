@@ -28,6 +28,9 @@ public class Store {
 	private String title;
 
 	@Field(type = FieldType.Text)
+	private String comment;
+
+	@Field(type = FieldType.Text)
 	private String storeType;
 
 	@Field(type = FieldType.Text)

@@ -9,6 +9,7 @@ import kr.or.dining_together.auction.advice.exception.NotCompletedException;
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.auction.advice.exception.UserNotMatchedException;
 import kr.or.dining_together.auction.dto.ReviewDto;
+import kr.or.dining_together.auction.dto.ReviewScoreDto;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import kr.or.dining_together.auction.jpa.entity.Review;
 import kr.or.dining_together.auction.jpa.entity.SuccessBid;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
 	private final SuccessBidRepository successBidRepository;
+	private final AuctionProducer auctionProducer;
 
 	public Review writeReview(ReviewDto reviewDto, long successId, UserIdDto userIdDto) {
 		Optional<SuccessBid> successBid = successBidRepository.findById(successId);
@@ -43,11 +45,20 @@ public class ReviewService {
 		review = reviewRepository.save(review);
 		// 리뷰 평점 개수 구하는 부분
 
-		long reviewCnt = reviewRepository.getReviewCntByStoreId(successBid.get().getStoreId());
+		int reviewCnt = Math.toIntExact(reviewRepository.getReviewCntByStoreId(successBid.get().getStoreId()));
+		Double reviewAvg = reviewRepository.getReviewAvgByStoreId(successBid.get().getStoreId());
+
 		log.info(String.valueOf(reviewCnt));
-		Optional<Double> reviewAvg = Optional.ofNullable(
-			reviewRepository.getReviewAvgByStoreId(successBid.get().getStoreId()));
 		log.info(String.valueOf(reviewAvg));
+
+		ReviewScoreDto reviewScoreDto=ReviewScoreDto.builder()
+			.storeId(review.getStoreId())
+			.reviewCnt(reviewCnt)
+			.reviewAvg(reviewAvg)
+			.build();
+
+		auctionProducer.sendReviewScoreDto("auction-review-topic",reviewScoreDto);
+
 		return review;
 	}
 

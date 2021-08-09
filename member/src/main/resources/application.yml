@@ -10,6 +10,22 @@ server:
 #    region: kr-standard
 #    endPoint: https://kr.object.ncloudstorage.com
 
+kafka:
+  bootstrapAddress: 118.67.133.150:9092
+  topic:
+    general:
+      id: generalId
+      name: general-topic
+    auction:
+      id: auctionGroupId
+      name: auction-auction-topic
+    store:
+      id: storeGroupId
+      name: member-store-topic
+    review:
+      id: reviewGroupId
+      name: auction-review-topic
+
 spring:
   application:
     name: member

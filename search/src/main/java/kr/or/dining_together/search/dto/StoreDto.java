@@ -29,6 +29,7 @@ import lombok.Setter;
 public class StoreDto implements Serializable {
 	private String storeName;
 	private String storeId;
+	private String comment;
 	private String phoneNum;
 	private String storeType;
 	private String addr;

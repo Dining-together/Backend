@@ -14,6 +14,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import kr.or.dining_together.auction.dto.AuctionDto;
+import kr.or.dining_together.auction.dto.ReviewScoreDto;
 
 @EnableKafka
 @Configuration
@@ -46,5 +47,20 @@ public class KafkaProducerConfig {
 	@Bean
 	public KafkaTemplate<String, AuctionDto> auctionKafkaTemplate() {
 		return new KafkaTemplate<>(auctionProducerFactory());
+	}
+
+	//2. Send Review objects to Kafka
+	@Bean
+	public ProducerFactory<String, ReviewScoreDto> reviewProducerFactory() {
+		Map<String, Object> configProps = new HashMap<>();
+		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "118.67.133.150:9094");
+		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		return new DefaultKafkaProducerFactory<>(configProps);
+	}
+
+	@Bean
+	public KafkaTemplate<String, ReviewScoreDto> reviewKafkaTemplate() {
+		return new KafkaTemplate<>(reviewProducerFactory());
 	}
 }

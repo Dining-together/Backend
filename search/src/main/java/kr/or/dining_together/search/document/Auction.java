@@ -38,6 +38,9 @@ public class Auction {
 	@Field(type = FieldType.Text, name = "title")
 	private String title;
 
+	@Field(type = FieldType.Text, name = "title")
+	private String content;
+
 	@Field(type = FieldType.Text, name = "userName")
 	private String userName;
 

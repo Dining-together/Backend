@@ -194,6 +194,7 @@ public class StoreController {
 
 		StoreDto storeDto = StoreDto.builder()
 			.storeName(store.getStoreName())
+			.comment(store.getComment())
 			.storeId(String.valueOf(store.getId()))
 			.addr(store.getAddr())
 			.storeType(store.getStoreType().toString())

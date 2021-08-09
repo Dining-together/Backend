@@ -65,7 +65,7 @@ public class Auction {
 	@ApiModelProperty(notes = "인원수")
 	private int groupCnt;
 
-	@ApiModelProperty(notes = "위치")
+	@ApiModelProperty(notes = "도로명 주소")
 	private String addr;
 
 	@ApiModelProperty(notes = "마감여부")

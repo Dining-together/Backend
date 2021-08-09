@@ -1,4 +1,4 @@
-package kr.or.dining_together.search.application.config;
+package kr.or.dining_together.member.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,34 +16,12 @@ public class TopicConfig {
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
 
-	@Value(value = "${kafka.topic.general.name}")
-	private String generalTopicName;
-
-	@Value(value = "${kafka.topic.auction.name}")
-	private String auctionTopicName;
-
-	@Value(value = "${kafka.topic.store.name}")
-	private String storeTopicName;
+	@Value(value = "${kafka.topic.review.name}")
+	private String reviewTopicName;
 
 	@Bean
-	public NewTopic generalTopic() {
-		return TopicBuilder.name(generalTopicName)
-			.partitions(1)
-			.replicas(1)
-			.build();
-	}
-
-	@Bean
-	public NewTopic auctionTopic() {
-		return TopicBuilder.name(auctionTopicName)
-			.partitions(1)
-			.replicas(1)
-			.build();
-	}
-
-	@Bean
-	public NewTopic storeTopic() {
-		return TopicBuilder.name(storeTopicName)
+	public NewTopic reviewTopic() {
+		return TopicBuilder.name(reviewTopicName)
 			.partitions(1)
 			.replicas(1)
 			.build();
