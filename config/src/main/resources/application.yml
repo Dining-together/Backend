@@ -75,7 +75,6 @@ spring:
             5rdC+0d8zm0kc+w1KajQojuKV+c5x2CrUB4zD5yernZlyl07LSg5Wn5lr4DMH/Rb
             mOM+f8JIlXizrLKHyU7IJyla1jEOTGkbWvhOsIbeg3q25UK7K03jADFfTSlF
             -----END RSA PRIVATE KEY-----
-          timeout: 6
 management:
   endpoints:
     health:
