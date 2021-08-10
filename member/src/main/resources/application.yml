@@ -18,14 +18,18 @@ kafka:
       name: general-topic
     auction:
       id: auctionGroupId
-      name: auction-auction-topic
+      name: auction-topic
     store:
       id: storeGroupId
-      name: member-store-topic
+      name: member-topic
     review:
       id: reviewGroupId
-      name: auction-review-topic
+      name: review-topic
 
+mailgun:
+  domain:
+    name: mail.diningtogether.xyz
+  api: 3e57d92d32717bd7640a69ae8c119e33-64574a68-d473ab4a
 spring:
   application:
     name: member
@@ -120,4 +124,4 @@ management:
       show-details: always
     web:
       exposure:
-        include: refresh, health, beans,busrefresh
+        include: refresh,health,beans,httptrace,busrefresh

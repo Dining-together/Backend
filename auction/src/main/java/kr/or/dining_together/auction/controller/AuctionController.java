@@ -1,12 +1,11 @@
 package kr.or.dining_together.auction.controller;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +37,7 @@ import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
-import kr.or.dining_together.auction.service.AuctionProducer;
+import kr.or.dining_together.auction.service.AuctionKafkaProducer;
 import kr.or.dining_together.auction.service.AuctionService;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.SuccessBidService;
@@ -63,12 +62,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuctionController {
 
+	@Value(value = "${kafka.topic.auction.name}")
+	private String KAFKA_AUCTION_TOPIC_NAME;
+
 	private final AuctionService auctionService;
 	private final SuccessBidService successBidService;
 	private final ResponseService responseService;
 	private final AuctionRepository auctionRepository;
 	private final UserServiceClient userServiceClient;
-	private final AuctionProducer auctionProducer;
+	private final AuctionKafkaProducer auctionProducer;
 
 	@ApiOperation(value = "공고 리스트 조회", notes = "공고 리스트 조회한다.")
 	@GetMapping(value = "/auctions")
@@ -120,7 +122,7 @@ public class AuctionController {
 			.storeType(auctionRequest.getStoreType())
 			.build();
 
-		auctionProducer.send("auction-auction-topic", auctionDto);
+		auctionProducer.send(KAFKA_AUCTION_TOPIC_NAME, auctionDto);
 
 		/*
 		 ** 사용자가 클릭한 공고정보 로깅

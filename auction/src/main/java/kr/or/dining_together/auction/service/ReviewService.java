@@ -3,6 +3,7 @@ package kr.or.dining_together.auction.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.NotCompletedException;
@@ -22,9 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ReviewService {
+
+	@Value(value = "${kafka.topic.review.name}")
+	private String REVIEW_KAFKA_TOPIC;
 	private final ReviewRepository reviewRepository;
 	private final SuccessBidRepository successBidRepository;
-	private final AuctionProducer auctionProducer;
+	private final AuctionKafkaProducer auctionProducer;
 
 	public Review writeReview(ReviewDto reviewDto, long successId, UserIdDto userIdDto) {
 		Optional<SuccessBid> successBid = successBidRepository.findById(successId);
@@ -57,7 +61,7 @@ public class ReviewService {
 			.reviewAvg(reviewAvg)
 			.build();
 
-		auctionProducer.sendReviewScoreDto("auction-review-topic",reviewScoreDto);
+		auctionProducer.sendReviewScoreDto(REVIEW_KAFKA_TOPIC,reviewScoreDto);
 
 		return review;
 	}

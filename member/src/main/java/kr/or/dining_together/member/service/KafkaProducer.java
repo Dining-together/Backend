@@ -11,21 +11,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.dining_together.member.dto.StoreDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class KafkaProducer {
 
-	private KafkaTemplate<String, String> kafkaTemplate;
-
-	@Autowired
-	public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
-		this.kafkaTemplate = kafkaTemplate;
-	}
-
-	@Autowired
-	private KafkaTemplate<String, StoreDto> storeKafkaTemplate;
+	private final KafkaTemplate<String, String> kafkaTemplate;
+	private final KafkaTemplate<String, StoreDto> storeKafkaTemplate;
 
 	public void send(String topicName,StoreDto storeDto)
 	{

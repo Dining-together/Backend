@@ -60,6 +60,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
 	private final static String USER_IMAGE_FOLDER_DIRECTORY = "/user/photo";
+	private final static String USER_IMAGE_FILES_POSTFIX = "_photo";
+
 	private final Environment env;
 	private final UserService userService;
 	private final ResponseService responseService;
@@ -88,7 +90,6 @@ public class UserController {
 		return responseService.getSingleResult(userService.getCustomer(email));
 	}
 
-	//반환값 마이페이지 값으로 보내기
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 	})
@@ -113,10 +114,11 @@ public class UserController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
 		if (user.getPath() != null) {
 			new File(user.getPath()).delete();
 		}
-		String fileName = user.getId() + "_photo";
+		String fileName = user.getId() + USER_IMAGE_FILES_POSTFIX;
 		String filePath = storageService.save(file, fileName, USER_IMAGE_FOLDER_DIRECTORY);
 		if (filePath == "none") {
 			throw new FileNotFoundException();
@@ -152,6 +154,7 @@ public class UserController {
 		Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
+
 		return responseService.getSingleResult(userService.modify(storeProfileRequest, email));
 	}
 
@@ -163,22 +166,10 @@ public class UserController {
 	public CommonResult delete() throws Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
+
 		userService.delete(email);
 		return responseService.getSuccessResult();
 	}
-
-	// @ApiOperation(value = "비밀번호 변경")
-	// @ApiImplicitParams({
-	// 	@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-	// })
-	// @PutMapping(value = "/password")
-	// public CommonResult changePassword(
-	// 	@ApiParam(value = "새로운 비밀번호", required = true) @RequestParam String newPassword) throws Throwable {
-	// 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	// 	String email = authentication.getName();
-	// 	userService.updatePassword(email, newPassword);
-	// 	return responseService.getSuccessResult();
-	// }
 
 	@ApiOperation(value = "비밀번호 확인")
 	@ApiImplicitParams({
@@ -190,6 +181,7 @@ public class UserController {
 		Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
+
 		if (!userService.isValidPassword(email, password)) {
 			throw new PasswordNotMatchedException();
 

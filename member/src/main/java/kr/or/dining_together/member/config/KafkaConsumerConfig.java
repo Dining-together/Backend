@@ -23,8 +23,8 @@ public class KafkaConsumerConfig {
 	@Value(value = "${kafka.bootstrapAddress}")
 	private String bootstrapAddress;
 
-	@Value(value = "${kafka.topic.auction.id}")
-	private String auctionId;
+	@Value(value = "${kafka.topic.review.id}")
+	private String reviewId;
 
 	//Consume reviewScoreDto objects from Kafka
 	public ConsumerFactory<String, ReviewScoreDto> reviewConsumerFactory() {
@@ -35,7 +35,7 @@ public class KafkaConsumerConfig {
 
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, auctionId);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, reviewId);
 		props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 		return new DefaultKafkaConsumerFactory<>(props,
 			new StringDeserializer(),

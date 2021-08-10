@@ -25,11 +25,14 @@ public class KafkaConsumer {
 		groupId = "${kafka.topic.review.id}",
 		containerFactory = "reviewKafkaListenerContainerFactory")
 	public void consume(ReviewScoreDto reviewScoreDto) {
-		log.info(String.format("ReviewScoreDto recieved -> %s", reviewScoreDto));
+		log.info(String.format("ReviewScoreDto received -> %s", reviewScoreDto));
 
 		Store store = storeRepository.findById(reviewScoreDto.getStoreId()).orElseThrow(UserNotFoundException::new);
 
-		store.setReviewCnt(reviewScoreDto.getReviewCnt());
-		store.setReviewAvg(reviewScoreDto.getReviewAvg());
+		store.updateReviewCntAndReviewAvg(reviewScoreDto.getReviewCnt(),reviewScoreDto.getReviewAvg());
+
+		storeRepository.save(store);
+
+		log.info("Store updated -> %s", store);
 	}
 }

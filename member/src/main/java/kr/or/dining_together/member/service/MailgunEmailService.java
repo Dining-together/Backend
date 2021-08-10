@@ -6,6 +6,7 @@ import java.util.Random;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MailgunEmailService {
 
-	static final String YOUR_DOMAIN_NAME = "mail.diningtogether.xyz";
-	static final String API_KEY = "3e57d92d32717bd7640a69ae8c119e33-64574a68-d473ab4a";
+	@Value(value = "${mailgun.domain.name}")
+	private String YOUR_DOMAIN_NAME;
+
+	@Value(value = "${mailgun.api}")
+	private String API_KEY;
 
 	private final UserRepository userRepository;
 	private final RedisUtil redisUtil;
@@ -73,7 +77,7 @@ public class MailgunEmailService {
 	}
 
 	@Transactional
-	public void sendUserPassword(String receiver) throws IOException, UnirestException {
+	public void sendUserPassword(String receiver) throws UnirestException {
 		Optional<User> user = userRepository.findByEmail(receiver);
 		String newPassword = makeRandomKey();
 		SimpleMailMessage message = new SimpleMailMessage();

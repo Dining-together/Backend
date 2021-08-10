@@ -77,9 +77,14 @@ public class Store extends User {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 
-	public void update(String phoneNum, String addr, double latitude, double longitude, String comment,
+	public void updateReviewCntAndReviewAvg(int reviewCnt, double reviewAvg){
+		this.reviewCnt=reviewCnt;
+		this.reviewAvg=reviewAvg;
+	}
+	public void update(String storeName,String phoneNum, String addr, double latitude, double longitude, String comment,
 		StoreType storeType,
 		LocalDateTime openTime, LocalDateTime closedTime) {
+		this.storeName=storeName;
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;

@@ -112,6 +112,7 @@ public class MenuController {
 		new File(menu.getPath()).delete();
 		String fileName = menu.getStore().getName() + "-" + name;
 		String path = storageService.save(file, fileName, MENU_FOLDER_DIRECTORY);
+
 		MenuRequest menuRequest = MenuRequest.builder()
 			.name(name)
 			.price(price)

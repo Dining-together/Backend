@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-	private static final String FROM_ADDRESS = "moamoa202105@gmail.com";
+
 	private final JavaMailSender emailSender;
 	private final UserRepository userRepository;
 	private final RedisUtil redisUtil;

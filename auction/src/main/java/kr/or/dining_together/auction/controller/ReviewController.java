@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +33,7 @@ import kr.or.dining_together.auction.jpa.repo.ReviewImagesRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
+import kr.or.dining_together.auction.service.AuctionKafkaProducer;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.ReviewService;
 import kr.or.dining_together.auction.service.StorageService;
@@ -42,6 +46,7 @@ import lombok.RequiredArgsConstructor;
 public class ReviewController {
 
 	private static String REVIEW_FOLDER_DIRECTORY = "/review/images";
+
 	private final ResponseService responseService;
 	private final ReviewService reviewService;
 	private final UserServiceClient userServiceClient;
@@ -101,6 +106,7 @@ public class ReviewController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
+	@Transactional
 	public SingleResult<Review> registerReview(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@PathVariable("successBidId") long successBidId,
@@ -119,7 +125,7 @@ public class ReviewController {
 		String fileName = review.getReviewId() + "_" + user.getName();
 
 		AtomicInteger fileCount = new AtomicInteger(1);
-		List<ReviewImages> fileList = new ArrayList<>();
+
 		Arrays.asList(files).stream().forEach(file -> {
 			String fileDirectoryName = null;
 			String newFileName = fileName + fileCount.get();

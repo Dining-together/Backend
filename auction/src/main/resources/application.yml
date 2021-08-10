@@ -18,13 +18,13 @@ kafka:
       name: general-topic
     auction:
       id: auctionGroupId
-      name: auction-auction-topic
+      name: auction-topic
     store:
       id: storeGroupId
-      name: member-store-topic
+      name: member-topic
     review:
       id: reviewGroupId
-      name: auction-review-topic
+      name: review-topic
 
 spring:
   application:

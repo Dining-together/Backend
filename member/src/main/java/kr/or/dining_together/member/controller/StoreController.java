@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,8 +67,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StoreController {
 
+	@Value(value = "${kafka.topic.store.name}")
+	private String KAFKA_STORE_TOPIC_NAME;
+
 	private final static String STORE_DOCUMENT_FOLDER_DIRECTORY = "/store/document";
 	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
+	private final static String STORE_DOCUMENT_FILES_POSTFIX = "_document";
+	private final static String STORE_IMAGE_FILES_POSTFIX = "_storeImages";
 
 	private final StoreRepository storeRepository;
 	private final StoreImagesRepository storeImagesRepository;
@@ -127,7 +133,7 @@ public class StoreController {
 		if (user.getPath() != null) {
 			new File(user.getPath()).delete();
 		}
-		String fileName = user.getId() + "_storeImages";
+		String fileName = user.getId() + STORE_IMAGE_FILES_POSTFIX;
 
 		AtomicInteger fileCount = new AtomicInteger(1);
 
@@ -168,7 +174,7 @@ public class StoreController {
 		if (user.getPath() != null) {
 			new File(user.getPath()).delete();
 		}
-		String fileName = user.getId() + "_document";
+		String fileName = user.getId() + STORE_DOCUMENT_FILES_POSTFIX;
 		String fullFilePath = storageService.save(file, fileName, STORE_DOCUMENT_FOLDER_DIRECTORY);
 
 		user.setDocumentChecked(true);
@@ -206,7 +212,7 @@ public class StoreController {
 			.storeImagePath(store.getPath())
 			.build();
 
-		storeProducer.send("member-store-topic", storeDto);
+		storeProducer.send(KAFKA_STORE_TOPIC_NAME, storeDto);
 		return responseService.getSingleResult(store);
 
 	}

@@ -13,25 +13,21 @@ import kr.or.dining_together.search.dto.AuctionDto;
 import kr.or.dining_together.search.dto.StoreDto;
 import kr.or.dining_together.search.repository.AuctionRepository;
 import kr.or.dining_together.search.repository.StoreRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class KafkaConsumer {
-	StoreRepository storeRepository;
-	AuctionRepository auctionRepository;
-
-	@Autowired
-	public KafkaConsumer(StoreRepository storeRepository, AuctionRepository auctionRepository) {
-		this.storeRepository = storeRepository;
-		this.auctionRepository = auctionRepository;
-	}
+	private final StoreRepository storeRepository;
+	private final AuctionRepository auctionRepository;
 
 	@KafkaListener(topics = "${kafka.topic.auction.name}",
 		groupId = "${kafka.topic.auction.id}",
 		containerFactory = "auctionKafkaListenerContainerFactory")
-	public void consume(AuctionDto auctionDto) {
-		log.info(String.format("AuctionDto recieved -> %s", auctionDto));
+	public void consumeAuctionTopic(AuctionDto auctionDto) {
+		log.info(String.format("AuctionDto received -> %s", auctionDto));
 
 		Auction auction = Auction.builder()
 			.userName(auctionDto.getUserName())
@@ -47,13 +43,15 @@ public class KafkaConsumer {
 			.build();
 
 		auctionRepository.save(auction);
+
+		log.info(String.format("AuctionDto saved -> %s", auction));
 	}
 
 	@KafkaListener(topics = "${kafka.topic.store.name}",
 		groupId = "${kafka.topic.store.id}",
 		containerFactory = "storeKafkaListenerContainerFactory")
-	public void consume(StoreDto storeDto) {
-		log.info(String.format("StoreDto recieved -> %s", storeDto));
+	public void consumeStoreTopic(StoreDto storeDto) {
+		log.info(String.format("StoreDto received -> %s", storeDto));
 
 		Store store = Store.builder()
 			.id(storeDto.getStoreId())
@@ -70,5 +68,7 @@ public class KafkaConsumer {
 			.build();
 
 		storeRepository.save(store);
+
+		log.info(String.format("StoreDto saved -> %s", storeDto));
 	}
 }
