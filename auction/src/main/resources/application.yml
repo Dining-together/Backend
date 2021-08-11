@@ -36,15 +36,16 @@ spring:
         web-allow-others: true
       path: /auction/h2-console
   jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:dining:auction
-    username: sa
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://118.67.133.150:3306/auction
+    username: root
+    password: 1234
 
 eureka:
   instance:
