@@ -111,15 +111,15 @@ public class AuctionController {
 
 		AuctionDto auctionDto = AuctionDto.builder()
 			.auctionId(auction.getAuctionId().toString())
-			.title(auctionRequest.getTitle())
+			.title(auction.getTitle())
 			.content(auction.getContent())
 			.userName(user.getName())
-			.userType(auctionRequest.getGroupType())
-			.reservation(auctionRequest.getReservation().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
-			.maxPrice(auctionRequest.getMaxPrice())
-			.minPrice(auctionRequest.getMinPrice())
-			.deadline(auctionRequest.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
-			.storeType(auctionRequest.getStoreType())
+			.reservation(auction.getReservation().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.userType(auction.getGroupType())
+			.deadline(auction.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.maxPrice(auction.getMaxPrice())
+			.minPrice(auction.getMinPrice())
+			.storeType(auction.getStoreType())
 			.build();
 
 		auctionProducer.send(KAFKA_AUCTION_TOPIC_NAME, auctionDto);

@@ -13,18 +13,16 @@ import com.netflix.discovery.converters.Auto;
 
 import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.ReviewScoreDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AuctionKafkaProducer {
-	// private KafkaTemplate<String, String> kafkaTemplate;
 
-	@Autowired
-	private KafkaTemplate<String, AuctionDto> auctionKafkaTemplate;
-
-	@Autowired
-	private KafkaTemplate<String, ReviewScoreDto> reviewScoreDtoKafkaTemplate;
+	private final KafkaTemplate<String, AuctionDto> auctionKafkaTemplate;
+	private final KafkaTemplate<String, ReviewScoreDto> reviewScoreDtoKafkaTemplate;
 
 	public void send(String topicName,AuctionDto auctionDto)
 	{

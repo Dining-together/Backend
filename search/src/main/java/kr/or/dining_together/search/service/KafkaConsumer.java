@@ -3,7 +3,6 @@ package kr.or.dining_together.search.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +27,15 @@ public class KafkaConsumer {
 		containerFactory = "auctionKafkaListenerContainerFactory")
 	public void consumeAuctionTopic(AuctionDto auctionDto) {
 		log.info(String.format("AuctionDto received -> %s", auctionDto));
+		System.out.println(auctionDto);
 
 		Auction auction = Auction.builder()
-			.userName(auctionDto.getUserName())
-			.reservation(LocalDateTime.parse(auctionDto.getReservation(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.id(auctionDto.getAuctionId())
 			.title(auctionDto.getTitle())
 			.content(auctionDto.getContent())
+			.userName(auctionDto.getUserName())
+			.reservation(LocalDateTime.parse(auctionDto.getReservation(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.userType(auctionDto.getUserType())
-			.id(auctionDto.getAuctionId())
 			.deadLine(LocalDateTime.parse(auctionDto.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.maxPrice(auctionDto.getMaxPrice())
 			.minPrice(auctionDto.getMinPrice())
@@ -52,6 +52,7 @@ public class KafkaConsumer {
 		containerFactory = "storeKafkaListenerContainerFactory")
 	public void consumeStoreTopic(StoreDto storeDto) {
 		log.info(String.format("StoreDto received -> %s", storeDto));
+		System.out.println(storeDto);
 
 		Store store = Store.builder()
 			.id(storeDto.getStoreId())

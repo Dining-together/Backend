@@ -18,13 +18,13 @@ kafka:
       id: generalId
       name: general-topic
     auction:
-      id: auctionGroupId
+      id: auctionId
       name: auction-topic
     store:
-      id: storeGroupId
+      id: storeId
       name: member-topic
     review:
-      id: reviewGroupId
+      id: reviewId
       name: review-topic
 
 eureka:

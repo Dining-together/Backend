@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.search.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.search.client.UserServiceClient;
 import kr.or.dining_together.search.document.Store;
 import kr.or.dining_together.search.dto.UserIdDto;
@@ -63,6 +64,7 @@ public class StoreSearchController {
 	public ListResult<Store> gettingSearchResults(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam @ApiParam(value = "검색 키워드", required = true) String keyword) {
 		List<Store> stores = storeService.findByTitleMatchingNames(keyword);
+
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
 		/*
 		 ** 사용자가 클릭한 가게정보 로깅

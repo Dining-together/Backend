@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import kr.or.dining_together.search.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.search.client.UserServiceClient;
 import kr.or.dining_together.search.document.Auction;
 import kr.or.dining_together.search.dto.UserIdDto;
