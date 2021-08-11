@@ -101,9 +101,6 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 
-		/*
-		 ** 사용자가 클릭한 가게정보 로깅
-		 */
 		Store store = storeService.getStore(storeId);
 		Gson gson = new Gson();
 		StoreDto storeDto = StoreDto.builder()
