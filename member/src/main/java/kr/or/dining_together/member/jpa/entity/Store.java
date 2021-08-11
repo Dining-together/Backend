@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -66,14 +67,17 @@ public class Store extends User {
 	@ApiModelProperty(notes = "가게 유형")
 	private StoreType storeType;
 
+	@Transient
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<Menu> menus = new ArrayList<>();
-
+	
+	@Transient
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<StoreFavorites> storeFavorites = new ArrayList<>();
 
+	@Transient
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 

@@ -64,16 +64,16 @@ node {
              }
 
         stage('Deploy') {
-                sh "docker stop eureka"
-                sh "docker rm eureka"
-                sh "docker stop gateway"
-                sh "docker rm gateway"
-                sh "docker stop member"
-                sh "docker rm member"
-                sh "docker stop auction"
-                sh "docker rm auction"
-                sh "docker stop search"
-                sh "docker rm search"
+                // sh "docker stop eureka"
+                // sh "docker rm eureka"
+                // sh "docker stop gateway"
+                // sh "docker rm gateway"
+                // sh "docker stop member"
+                // sh "docker rm member"
+                // sh "docker stop auction"
+                // sh "docker rm auction"
+                // sh "docker stop search"
+                // sh "docker rm search"
 
                 sh "docker run -d -p 8761:8761 --network Dining-together\
                          -e \"spring.cloud.config.uri=http://config:8888\" \
