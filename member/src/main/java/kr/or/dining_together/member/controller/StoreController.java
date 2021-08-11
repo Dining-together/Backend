@@ -106,10 +106,23 @@ public class StoreController {
 		 */
 		Store store = storeService.getStore(storeId);
 		Gson gson = new Gson();
+		StoreDto storeDto = StoreDto.builder()
+			.storeName(store.getStoreName())
+			.comment(store.getComment())
+			.storeId(String.valueOf(store.getId()))
+			.addr(store.getAddr())
+			.storeType(store.getStoreType().toString())
+			.openTime(store.getOpenTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.phoneNum(store.getPhoneNum())
+			.closedTime(store.getClosedTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.longitude(store.getLongitude())
+			.latitude(store.getLatitude())
+			.storeImagePath(store.getPath())
+			.build();
 		/*
 		 ** store 객체를 JsonObject 객체로 변경.
 		 */
-		JsonObject jsonObject = new Gson().fromJson(gson.toJson(store), JsonObject.class);
+		JsonObject jsonObject = new Gson().fromJson(gson.toJson(storeDto), JsonObject.class);
 		/*
 		 ** 현재시간을 포맷팅하여 추가.
 		 */

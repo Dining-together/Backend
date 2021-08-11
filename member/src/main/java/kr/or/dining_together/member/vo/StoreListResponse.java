@@ -25,5 +25,6 @@ public class StoreListResponse {
 	private StoreType storeType;
 	private double reviewAvg;
 	private int reviewCnt;
+	private Boolean documentChecked;
 
 }

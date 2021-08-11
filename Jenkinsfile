@@ -62,7 +62,10 @@ node {
                 sh(script: 'docker push ${DOCKER_USER_ID}/search:${BUILD_NUMBER}')
             // }
              }
-
+                      slackSend (channel: '#jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }catch(e){
+            slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
         stage('Deploy') {
                 // sh "docker stop eureka"
                 // sh "docker rm eureka"
@@ -78,7 +81,7 @@ node {
                 sh "docker run -d -p 8761:8761 --network Dining-together\
                          -e \"spring.cloud.config.uri=http://config:8888\" \
                         --name eureka ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}"
-                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" e \"spring.cloud.config.uri=http://config:8888\"  -e \"spring.rabbitmq.host=rabbitmq\"  ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
+                sh "docker run -d -p 8000:8000 --network Dining-together  --name gateway -e \"eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/\" -e \"spring.cloud.config.uri=http://config:8888\"  -e \"spring.rabbitmq.host=rabbitmq\"  ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}"
 
                 sh "docker run -d --network Dining-together \
                   --name member \
@@ -98,10 +101,5 @@ node {
                 ${DOCKER_USER_ID}/search:${BUILD_NUMBER}"
 
              }
-                      slackSend (channel: '#jenkins', color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }catch(e){
-            slackSend (channel: '#jenkins', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }
-
      }
 }

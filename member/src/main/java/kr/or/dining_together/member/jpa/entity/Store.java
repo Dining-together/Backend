@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -17,8 +18,11 @@ import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -29,6 +33,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @DiscriminatorValue(value = UserType.Values.STORE)
 @PrimaryKeyJoinColumn(name = "user_id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 @SuperBuilder
 @NoArgsConstructor
 public class Store extends User {
@@ -67,11 +72,9 @@ public class Store extends User {
 	@ApiModelProperty(notes = "가게 유형")
 	private StoreType storeType;
 
-	@Transient
-	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private List<Menu> menus = new ArrayList<>();
-	
+
 	@Transient
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
