@@ -1,15 +1,6 @@
 server:
   port: 0
 
-#storage:
-#  credentials:
-#    accessKey: PwaPlllZUGTKtO3HJVtp
-#    secretKey: DW4BHX246JR5Efi928hRsCtvHtC0sCKIOx9OAdbn
-#  s3:
-#    bucket: diningtogether
-#    region: kr-standard
-#    endPoint: https://kr.object.ncloudstorage.com
-
 kafka:
   bootstrapAddress: 118.67.133.150:9092
   topic:
@@ -26,10 +17,6 @@ kafka:
       id: reviewGroupId
       name: review-topic
 
-mailgun:
-  domain:
-    name: mail.diningtogether.xyz
-  api: 3e57d92d32717bd7640a69ae8c119e33-64574a68-d473ab4a
 spring:
   application:
     name: member
@@ -53,21 +40,16 @@ spring:
         web-allow-others: true
       path: /member/h2-console
   jpa:
-    open-in-view: false
-    generate-ddl: true
-    show-sql: true
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://118.67.133.150:3306/member
     username: root
     password: 1234
-  #
-  #  jwt:
-  #    secret: secret_token
-  #    expiration_time: 86400000
-  #mail 인증을 위한 정보.
   mail:
     host: smtp.gmail.com
     port: 587
@@ -86,24 +68,6 @@ spring:
   logging:
     level:
       org.hibernate.SQL: debug
-  #  url:
-  #    base: https://localhost:8000
-  #  social:
-  #    kakao:
-  #      client_id: cce7add11392983e7402a4bb7ad6fd07
-  #      redirect: /member/social/login/kakao
-  #      url:
-  #        login: https://kauth.kakao.com/oauth/authorize
-  #        token: https://kauth.kakao.com/oauth/token
-  #        profile: https://kapi.kakao.com/v2/user/me
-  #    naver:
-  #      client_id: St2h1wPlAy2EZHfwNfzT
-  #      client_secret: BB6yF03ond
-  #      redirect: /member/social/login/naver
-  #      url:
-  #        login: https://nid.naver.com/oauth2.0/authorize
-  #        token: https://nid.naver.com/oauth2.0/token
-  #        profile: https://openapi.naver.com/v1/nid/me
   web:
     resources:
       static-locations: classpath:/static/

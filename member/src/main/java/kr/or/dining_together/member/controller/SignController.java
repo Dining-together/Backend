@@ -2,6 +2,7 @@ package kr.or.dining_together.member.controller;
 
 import java.io.IOException;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,6 +103,7 @@ public class SignController {
 
 	@ApiOperation(value = "인증 및 비밀번호 전송", notes = "이메일과 키값을 받아 맞는지 확인하고 맞으면 비밀번호를 전송한다.")
 	@GetMapping(value = "/verify/password")
+	@Transactional
 	public CommonResult getVerifyAndGetPassword(
 		@RequestParam @ApiParam(value = "이메일 정보", required = true) String email,
 		@RequestParam @ApiParam(value = "키값 정보", required = true) String key) throws IOException {

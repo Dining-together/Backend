@@ -67,9 +67,6 @@ public class EmailService {
 
 		emailSender.send(message);
 
-		if (user.isPresent()) {
-			throw new UserDuplicationException();
-		}
 		return;
 	}
 
