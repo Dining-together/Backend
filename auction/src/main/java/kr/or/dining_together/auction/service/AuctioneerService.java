@@ -1,6 +1,7 @@
 package kr.or.dining_together.auction.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -34,9 +35,17 @@ public class AuctioneerService {
 	private final AuctioneerRepository auctioneerRepository;
 	private final AuctionRepository auctionRepository;
 
-	public List<Auctioneer> getAuctioneers(long auctionId) {
+	public List<AuctioneerDto> getAuctioneers(long auctionId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 		List<Auctioneer> auctioneers = auctioneerRepository.findAllByAuctionOrderByUpdatedDateDesc(auction);
+		ModelMapper modelMapper = new ModelMapper();
+		List<AuctioneerDto> collect =
+			auctioneers.stream().map(p -> modelMapper.map(p, AuctioneerDto.class)).collect(Collectors.toList());
+		return collect;
+	}
+
+	public List<Auctioneer> getAuctioneersByStoreId(long storeId) {
+		List<Auctioneer> auctioneers = auctioneerRepository.findAuctioneersByStoreId(storeId);
 		return auctioneers;
 	}
 

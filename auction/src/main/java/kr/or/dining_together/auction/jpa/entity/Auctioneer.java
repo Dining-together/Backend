@@ -13,7 +13,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,6 +32,7 @@ import lombok.ToString;
 @ToString
 @Table(name = "auctioneer")
 @ApiModel(description = "공고 참여 업체")
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Auctioneer {
 	@Column(name = "createdDate")
 	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
@@ -43,7 +45,6 @@ public class Auctioneer {
 	private Long auctioneerId;
 	@ManyToOne
 	@JoinColumn(name = "auctionId")
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private Auction auction;
 	@ApiModelProperty(notes = "업체 id")
 	private long storeId;
