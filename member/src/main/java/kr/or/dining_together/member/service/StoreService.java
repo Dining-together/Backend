@@ -49,7 +49,7 @@ public class StoreService {
 		if (store.getDocumentChecked() == false) {
 			throw new UnprovenStoreException();
 		}
-		store.update(storeRequest.getStoreName(), storeRequest.getPhoneNum(), storeRequest.getAddr(),
+		store.update(storeRequest.getPhoneNum(), storeRequest.getAddr(),
 			storeRequest.getLatitude(),
 			storeRequest.getLongitude(), storeRequest.getComment(), storeRequest.getStoreType(),
 			storeRequest.getOpenTime(), storeRequest.getClosedTime());

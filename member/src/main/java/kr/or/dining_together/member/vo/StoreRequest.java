@@ -17,7 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class StoreRequest {
-	private String storeName;
 	private String phoneNum;
 	private StoreType storeType;
 	private String addr;

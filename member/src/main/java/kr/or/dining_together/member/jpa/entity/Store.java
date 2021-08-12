@@ -34,8 +34,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Store extends User {
 
-	private String storeName;
-
 	private String phoneNum;
 
 	private String addr;
@@ -85,11 +83,10 @@ public class Store extends User {
 		this.reviewAvg = reviewAvg;
 	}
 
-	public void update(String storeName, String phoneNum, String addr, double latitude, double longitude,
+	public void update(String phoneNum, String addr, double latitude, double longitude,
 		String comment,
 		StoreType storeType,
 		LocalDateTime openTime, LocalDateTime closedTime) {
-		this.storeName = storeName;
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;

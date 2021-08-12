@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,8 +34,10 @@ import kr.or.dining_together.member.dto.StoreDto;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.StoreImages;
+import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
+import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
@@ -70,6 +73,7 @@ public class StoreController {
 	private final static String STORE_IMAGE_FILES_POSTFIX = "_storeImages";
 	private final StoreRepository storeRepository;
 	private final StoreImagesRepository storeImagesRepository;
+	private final UserRepository userRepository;
 	private final ResponseService responseService;
 	private final StoreService storeService;
 	private final StorageService storageService;
@@ -94,10 +98,11 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 
+		Optional<User> user = userRepository.findByEmail(email);
 		Store store = storeService.getStore(storeId);
 		Gson gson = new Gson();
 		StoreDto storeDto = StoreDto.builder()
-			.storeName(store.getStoreName())
+			.storeName(user.get().getName())
 			.comment(store.getComment())
 			.storeId(String.valueOf(store.getId()))
 			.addr(store.getAddr())
@@ -202,9 +207,9 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		Store store = storeService.registerStore(storeRequest, email);
-
+		Optional<User> user = userRepository.findByEmail(email);
 		StoreDto storeDto = StoreDto.builder()
-			.storeName(store.getStoreName())
+			.storeName(user.get().getName())
 			.comment(store.getComment())
 			.storeId(String.valueOf(store.getId()))
 			.addr(store.getAddr())
