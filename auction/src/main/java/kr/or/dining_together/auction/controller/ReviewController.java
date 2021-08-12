@@ -1,14 +1,11 @@
 package kr.or.dining_together.auction.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +30,6 @@ import kr.or.dining_together.auction.jpa.repo.ReviewImagesRepository;
 import kr.or.dining_together.auction.model.CommonResult;
 import kr.or.dining_together.auction.model.ListResult;
 import kr.or.dining_together.auction.model.SingleResult;
-import kr.or.dining_together.auction.service.AuctionKafkaProducer;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.ReviewService;
 import kr.or.dining_together.auction.service.StorageService;
@@ -109,7 +105,7 @@ public class ReviewController {
 	@Transactional
 	public SingleResult<Review> registerReview(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@PathVariable("successBidId") long successBidId,
+		@RequestParam("successBidId") @PathVariable("successBidId") long successBidId,
 		@RequestParam("content") String content,
 		@RequestParam("score") int score,
 		@RequestParam("files") MultipartFile[] files

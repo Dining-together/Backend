@@ -1,7 +1,6 @@
 package kr.or.dining_together.member.vo;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import kr.or.dining_together.member.jpa.entity.StoreType;
 import lombok.AllArgsConstructor;

@@ -1,14 +1,7 @@
 package kr.or.dining_together.member.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import kr.or.dining_together.member.jpa.entity.StoreType;
 import lombok.Builder;
 import lombok.Data;
 

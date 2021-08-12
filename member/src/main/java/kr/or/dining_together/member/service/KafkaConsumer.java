@@ -1,10 +1,5 @@
 package kr.or.dining_together.member.service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +24,7 @@ public class KafkaConsumer {
 
 		Store store = storeRepository.findById(reviewScoreDto.getStoreId()).orElseThrow(UserNotFoundException::new);
 
-		store.updateReviewCntAndReviewAvg(reviewScoreDto.getReviewCnt(),reviewScoreDto.getReviewAvg());
+		store.updateReviewCntAndReviewAvg(reviewScoreDto.getReviewCnt(), reviewScoreDto.getReviewAvg());
 
 		storeRepository.save(store);
 

@@ -1,12 +1,6 @@
 package kr.or.dining_together.auction.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -54,7 +48,7 @@ public class AuctionDto implements Serializable {
 	@ApiModelProperty(notes = "사용자 Name")
 	private String userName;
 
-	@ApiModelProperty(notes="선호 가게종류")
+	@ApiModelProperty(notes = "선호 가게종류")
 	private String storeType;
 
 }

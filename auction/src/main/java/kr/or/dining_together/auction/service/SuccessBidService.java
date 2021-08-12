@@ -2,6 +2,8 @@ package kr.or.dining_together.auction.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
@@ -16,12 +18,13 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SuccessBidService {
 	private final SuccessBidRepository successBidRepository;
 	private final AuctionRepository auctionRepository;
 	private final AuctioneerRepository auctioneerRepository;
 
-	public SuccessBid writeSuccessBid(long auctioneerId, long auctionId) {
+	public SuccessBid writeSuccessBid(long auctionId, long auctioneerId) {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
 		SuccessBid successBid = SuccessBid.builder()

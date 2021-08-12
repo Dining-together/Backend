@@ -3,8 +3,6 @@ package kr.or.dining_together.member.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -24,8 +22,6 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import kr.or.dining_together.member.jpa.entity.Store;
-import kr.or.dining_together.member.jpa.entity.StoreImages;
 import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

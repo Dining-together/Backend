@@ -3,7 +3,6 @@ package kr.or.dining_together.auction.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,11 +77,11 @@ class AuctioneerServiceTest {
 		auctioneer = auctioneerRepository.save(auctioneer1);
 	}
 
-	@Test
-	void getAuctioneer() {
-		List<Auctioneer> auctioneers = auctioneerService.getAuctioneers(auction.getAuctionId());
-		assertFalse(auctioneers.isEmpty());
-	}
+	// @Test
+	// void getAuctioneer() {
+	// 	List<Auctioneer> auctioneers = auctioneerService.getAuctioneers(auction.getAuctionId());
+	// 	assertFalse(auctioneers.isEmpty());
+	// }
 
 	@Test
 	void registerAuctioneer() {
