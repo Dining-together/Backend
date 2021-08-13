@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Collections;
 
+import javax.persistence.Embedded;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +34,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
+import kr.or.dining_together.member.config.KafkaConsumerConfig;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
@@ -45,6 +48,7 @@ import kr.or.dining_together.member.vo.SignUpRequest;
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @Transactional
+
 public class SignControllerTest {
 
 	@Autowired
@@ -60,6 +64,9 @@ public class SignControllerTest {
 	private EmailService emailService;
 
 	@Autowired
+	private JavaMailSender javaMailSender;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -70,6 +77,7 @@ public class SignControllerTest {
 
 	@Autowired
 	private WebApplicationContext ctx;
+
 
 	@Before
 	public void setUp() throws Exception {
