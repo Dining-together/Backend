@@ -56,10 +56,13 @@ public class Auctioneer {
 	private int price;
 	@ApiModelProperty(notes = "업체 소개")
 	private String content;
+	@ApiModelProperty(notes = "낙찰여부")
+	private boolean success;
 
 	@PrePersist
 	void prePersist() {
 		this.createdDate = this.updatedDate = new Date();
+		this.success=false;
 	}
 
 	@PreUpdate
@@ -71,6 +74,10 @@ public class Auctioneer {
 		this.content = content;
 		this.menu = menu;
 		this.price = price;
+	}
+
+	public void setSuccess(boolean success){
+		this.success=success;
 	}
 
 }

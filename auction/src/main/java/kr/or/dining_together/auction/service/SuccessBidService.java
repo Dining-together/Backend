@@ -29,6 +29,7 @@ public class SuccessBidService {
 		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
 		auction.setStatus(AuctionStatus.END);
 		Auctioneer auctioneer = auctioneerRepository.findById(auctioneerId).orElseThrow(ResourceNotExistException::new);
+		auctioneer.setSuccess(true);
 		SuccessBid successBid = SuccessBid.builder()
 			.auctionId(auction.getAuctionId())
 			.storeId(auctioneer.getStoreId())
