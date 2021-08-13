@@ -36,7 +36,10 @@ public class SuccessBid {
 	private long storeId;
 	@ApiModelProperty(notes = "userId")
 	private long userId;
-
+	@ApiModelProperty(notes = "예상 가격")
+	private int price;
+	@ApiModelProperty(notes = "업체 메뉴")
+	private String menu;
 	@ApiModelProperty(notes = "완료")
 	private boolean isComplete;
 	@ApiModelProperty(notes = "인원수")
@@ -47,14 +50,20 @@ public class SuccessBid {
 	private LocalDateTime reservation;
 	@ApiModelProperty(notes = "업체 Name")
 	private String storeName;
-
+	@ApiModelProperty(notes = "리뷰여부")
+	private boolean isReview;
 	@PrePersist
 	void prePersist() {
 		this.isComplete = false;
+		this.isReview=false;
 	}
 
 	public void setComplete(boolean isComplete) {
 		this.isComplete = isComplete;
+	}
+
+	public void setReview(boolean isReview) {
+		this.isReview = isReview;
 	}
 
 }

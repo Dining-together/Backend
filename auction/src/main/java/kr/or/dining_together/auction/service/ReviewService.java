@@ -50,7 +50,7 @@ public class ReviewService {
 			.build();
 		review = reviewRepository.save(review);
 		// 리뷰 평점 개수 구하는 부분
-
+		successBid.setReview(true);
 		int reviewCnt = Math.toIntExact(reviewRepository.getReviewCntByStoreId(successBid.getStoreId()));
 		Double reviewAvg = reviewRepository.getReviewAvgByStoreId(successBid.getStoreId());
 

@@ -183,8 +183,6 @@ public class AuctionController {
 	public SingleResult successBidding(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
 		@ApiParam(value = "낙찰자 id", required = true) @RequestParam long auctionnerId) {
-		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
-		auction.setStatus(AuctionStatus.END);
 		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId, auctionnerId));
 	}
 
