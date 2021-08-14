@@ -10,7 +10,10 @@ storage:
     region: kr-standard
     endPoint: https://kr.object.ncloudstorage.com
 
-
+logback:
+  destination:
+    url: 118.67.133.150
+    port: 5000
 kafka:
   bootstrapAddress: 118.67.133.150:9092
   topic:

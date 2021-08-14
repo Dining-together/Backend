@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
+    <springProperty name="LOGBACK_URL" source="logback.destination.url"/>
+    <springProperty name="LOGBACK_PORT" source="logback.destination.port"/>
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%-5level %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n</pattern>
@@ -8,7 +9,7 @@
     </appender>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>118.67.133.150:5000</destination>
+        <destination>${LOGBACK_URL:- }:${LOGBACK_PORT:- }</destination>
         <filter class="kr.or.dining_together.member.logback.LogbackFilter"/>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>

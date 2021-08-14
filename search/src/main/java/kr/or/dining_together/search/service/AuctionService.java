@@ -36,11 +36,11 @@ public class AuctionService {
 	// }
 
 	public List<Auction> findByTitleMatchingNames(final String title) {
-		List<Auction> auctions= auctionRepository.findAllByTitleContaining(title);
+		List<Auction> auctions = auctionRepository.findAllByTitleContaining(title);
 
-		if(auctions.isEmpty()){
-			String message="search result is not exist";
-			log.info("error-log :: {}",message);
+		if (auctions.isEmpty()) {
+			String message = "search result is not exist";
+			log.info("error-log :: {}", message);
 			throw new ResourceNotExistException();
 		}
 

@@ -34,9 +34,11 @@ public class KafkaConsumer {
 			.title(auctionDto.getTitle())
 			.content(auctionDto.getContent())
 			.userName(auctionDto.getUserName())
-			.reservation(LocalDateTime.parse(auctionDto.getReservation(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.reservation(LocalDateTime.parse(auctionDto.getReservation(),
+				DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.userType(auctionDto.getUserType())
-			.deadLine(LocalDateTime.parse(auctionDto.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.deadLine(
+				LocalDateTime.parse(auctionDto.getDeadline(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.maxPrice(auctionDto.getMaxPrice())
 			.minPrice(auctionDto.getMinPrice())
 			.storeType(auctionDto.getStoreType())
@@ -60,8 +62,10 @@ public class KafkaConsumer {
 			.comment(storeDto.getComment())
 			.addr(storeDto.getAddr())
 			.storeType(storeDto.getStoreType())
-			.openTime(LocalDateTime.parse(storeDto.getOpenTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
-			.closedTime(LocalDateTime.parse(storeDto.getClosedTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.openTime(
+				LocalDateTime.parse(storeDto.getOpenTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.closedTime(
+				LocalDateTime.parse(storeDto.getClosedTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.Longitude(Double.toString(storeDto.getLongitude()))
 			.Latitude(Double.toString(storeDto.getLatitude()))
 			.phoneNum(storeDto.getPhoneNum())

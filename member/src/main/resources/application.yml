@@ -1,6 +1,11 @@
 server:
   port: 0
 
+logback:
+  destination:
+    url: 118.67.133.150
+    port: 5000
+
 kafka:
   bootstrapAddress: 118.67.133.150:9092
   topic:

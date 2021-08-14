@@ -8,7 +8,7 @@
     </appender>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>118.67.133.150:5000</destination>
+        <destination>${LOGBACK_URL:- }:${LOGBACK_PORT:- }</destination>
         <filter class="kr.or.dining_together.auction.logback.LogbackFilter"/>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
