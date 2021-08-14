@@ -81,7 +81,6 @@ public class StoreController {
 	private final StoreService storeService;
 	private final StorageService storageService;
 	private final KafkaProducer storeProducer;
-	private final UserRepository userRepository;
 
 	@Value(value = "${kafka.topic.store.name}")
 	private String KAFKA_STORE_TOPIC_NAME;
