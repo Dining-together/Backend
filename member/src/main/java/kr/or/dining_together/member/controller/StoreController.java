@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -31,6 +32,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.advice.exception.UserNotFoundException;
 import kr.or.dining_together.member.dto.StoreDto;
+import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.StoreImages;
@@ -45,6 +47,7 @@ import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.StoreService;
+import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreListResponse;
 import kr.or.dining_together.member.vo.StoreRequest;
@@ -78,6 +81,8 @@ public class StoreController {
 	private final StoreService storeService;
 	private final StorageService storageService;
 	private final KafkaProducer storeProducer;
+	private final UserRepository userRepository;
+
 	@Value(value = "${kafka.topic.store.name}")
 	private String KAFKA_STORE_TOPIC_NAME;
 
@@ -93,37 +98,38 @@ public class StoreController {
 	})
 	@GetMapping(value = "/store/{storeId}")
 	public SingleResult<Store> getStore(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@PathVariable long storeId) throws Throwable {
-		//업체 정보 조회시 이미지 url도 같이 넘겨주기.
+		@PathVariable long storeId){
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 
-		Optional<User> user = userRepository.findByEmail(email);
-		Store store = storeService.getStore(storeId);
-		Gson gson = new Gson();
-		StoreDto storeDto = StoreDto.builder()
-			.storeName(user.get().getName())
-			.comment(store.getComment())
-			.storeId(String.valueOf(store.getId()))
-			.addr(store.getAddr())
-			.storeType(store.getStoreType().toString())
-			.openTime(store.getOpenTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
-			.phoneNum(store.getPhoneNum())
-			.closedTime(store.getClosedTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
-			.longitude(store.getLongitude())
-			.latitude(store.getLatitude())
-			.storeImagePath(store.getPath())
-			.build();
-		/*
-		 ** store 객체를 JsonObject 객체로 변경.
-		 */
-		JsonObject jsonObject = new Gson().fromJson(gson.toJson(storeDto), JsonObject.class);
-		/*
-		 ** 현재시간을 포맷팅하여 추가.
-		 */
-		jsonObject.addProperty("Date", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-		jsonObject.addProperty("Email", email);
-		log.info("service-log :: {}", jsonObject);
+		Optional<Customer> customer = userRepository.findByEmail(email);
+
+		/**
+		* Make Tracking log when customer request endpoint.
+    */
+		if(customer.get().getType().equals("CUSTOMER")){
+			Store store = storeService.getStore(storeId);
+			Gson gson = new Gson();
+
+
+			/*
+			 ** store 객체를 JsonObject 객체로 변경.
+			 */
+			JsonObject jsonObject = new JsonObject();
+			/*
+			 ** 현재시간을 포맷팅하여 추가.
+			 */
+			jsonObject.addProperty("msgType","tracking");
+			jsonObject.addProperty("logType","info");
+			jsonObject.addProperty("actionType","view");
+			jsonObject.addProperty("target","store_log");
+			jsonObject.addProperty("storeId",storeId);
+			jsonObject.addProperty("email", email);
+			jsonObject.addProperty("gender",customer.get().getGender());
+
+			log.info(String.valueOf(jsonObject));
+		}
 
 		return responseService.getSingleResult(storeService.getStore(storeId));
 	}

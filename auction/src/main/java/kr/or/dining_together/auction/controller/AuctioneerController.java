@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.JsonObject;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,6 +30,7 @@ import kr.or.dining_together.auction.service.AuctioneerService;
 import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.vo.AuctioneerRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @package : kr.or.dining_together.auction.controller
@@ -42,6 +45,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/auction")
+@Slf4j
 public class AuctioneerController {
 	private final AuctioneerService auctioneerService;
 	private final ResponseService responseService;
@@ -77,8 +81,23 @@ public class AuctioneerController {
 		if (userServiceClient.isDocumentChecked(xAuthToken) == false) {
 			throw new UnprovenStoreException();
 		}
-		return responseService.getSingleResult(
-			auctioneerService.registerAuctioneer(auctioneerRequest, user, auctionId));
+
+		AuctioneerDto auctioneerDto = auctioneerService.registerAuctioneer(auctioneerRequest, user, auctionId);
+
+		JsonObject jsonObject = new JsonObject();
+		/*
+		 ** 현재시간을 포맷팅하여 추가.
+		 */
+		jsonObject.addProperty("msgType","tracking");
+		jsonObject.addProperty("logType","info");
+		jsonObject.addProperty("actionType","bid");
+		jsonObject.addProperty("target","auction_log");
+		jsonObject.addProperty("auctionId",auctionId);
+		jsonObject.addProperty("email", user.getName());
+		jsonObject.addProperty("bidPrice",auctioneerRequest.getPrice());
+
+		log.info(String.valueOf(jsonObject));
+		return responseService.getSingleResult(auctioneerDto);
 
 	}
 

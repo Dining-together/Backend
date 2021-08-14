@@ -1,6 +1,19 @@
 server:
   port: 0
 
+storage:
+  credentials:
+    accessKey: PwaPlllZUGTKtO3HJVtp
+    secretKey: DW4BHX246JR5Efi928hRsCtvHtC0sCKIOx9OAdbn
+  s3:
+    bucket: diningtogether
+    region: kr-standard
+    endPoint: https://kr.object.ncloudstorage.com
+
+logback:
+  destination:
+    url: 118.67.133.150
+    port: 5000
 
 kafka:
   bootstrapAddress: 118.67.133.150:9092

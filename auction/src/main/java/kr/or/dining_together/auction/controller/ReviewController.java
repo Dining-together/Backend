@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -34,11 +37,14 @@ import kr.or.dining_together.auction.service.ResponseService;
 import kr.or.dining_together.auction.service.ReviewService;
 import kr.or.dining_together.auction.service.StorageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.spring.web.json.Json;
 
 @Api(tags = {"4. Review"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/auction")
+@Slf4j
 public class ReviewController {
 
 	private static String REVIEW_FOLDER_DIRECTORY = "/review/images";
@@ -139,8 +145,21 @@ public class ReviewController {
 				.review(review)
 				.build();
 			reviewImagesRepository.save(boardPicture);
-			System.out.println(boardPicture);
 		});
+
+		JsonObject jsonObject = new JsonObject();
+		/*
+		 ** 현재시간을 포맷팅하여 추가.
+		 */
+		jsonObject.addProperty("msgType","tracking");
+		jsonObject.addProperty("logType","info");
+		jsonObject.addProperty("actionType","review");
+		jsonObject.addProperty("target","store_log");
+		jsonObject.addProperty("storeId",review.getStoreId());
+		jsonObject.addProperty("email", user.getName());
+		jsonObject.addProperty("score",review.getScore());
+
+		log.info(String.valueOf(jsonObject));
 
 		return responseService.getSingleResult(review);
 	}

@@ -1,15 +1,15 @@
-spring.elasticsearch.rest.uris: http://101.101.216.26:9300
-elasticsearch.cluster_name: docker-cluster
-spring.main.allow-bean-definition-overriding: true
-
 server:
   port: 0
+
 spring:
   application:
     name: search
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
+  elasticsearch:
+    rest:
+      uris: 118.67.133.150:9200
 
 kafka:
   bootstrapAddress: 118.67.133.150:9092

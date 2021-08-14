@@ -51,7 +51,7 @@ public class AuctionRepositoryTest {
 	}
 
 	@Test
-	public void deleteById(){
+	public void deleteById() {
 		auctionRepository.deleteById("1");
 		assertTrue(auctionRepository.findById("1").isEmpty());
 	}

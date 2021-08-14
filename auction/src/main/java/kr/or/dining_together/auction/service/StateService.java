@@ -31,15 +31,15 @@ public class StateService {
 		List<Auction> auctions = auctionRepository.findAllByStatusAndDeadlineAfter(AuctionStatus.PROCEEDING, endDate);
 		List<SuccessBid> successBids = successBidRepository.findAllByCompleteFalseAndReservationAfter(endDate);
 		auctions.forEach(auction -> {
-			log.info(String.valueOf(auction.getDeadline()));
+			// log.info(String.valueOf(auction.getDeadline()));
 			auction.setStatus(AuctionStatus.END);
 		});
 		successBids.forEach(successBid -> {
-			log.info(String.valueOf(successBid.getReservation()));
+			// log.info(String.valueOf(successBid.getReservation()));
 			successBid.setComplete(true);
 		});
 
-		log.info(String.valueOf(endDate));
+		// log.info(String.valueOf(endDate));
 		auctionRepository.saveAll(auctions);
 		successBidRepository.saveAll(successBids);
 	}

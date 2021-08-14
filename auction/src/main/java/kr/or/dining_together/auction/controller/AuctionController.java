@@ -92,6 +92,19 @@ public class AuctionController {
 	@ApiOperation(value = "공고 단건 조회", notes = "공고 단건 조회한다.")
 	@GetMapping(value = "/{auctionId}")
 	public SingleResult<Auction> auction(@ApiParam(value = "공고id", required = true) @PathVariable long auctionId) {
+
+		JsonObject jsonObject = new JsonObject();
+		/*
+		 ** 현재시간을 포맷팅하여 추가.
+		 */
+		jsonObject.addProperty("msgType","tracking");
+		jsonObject.addProperty("logType","info");
+		jsonObject.addProperty("actionType","view");
+		jsonObject.addProperty("auctionId",auctionId);
+		jsonObject.addProperty("target","auction_log");
+
+		log.info(String.valueOf(jsonObject));
+
 		return responseService.getSingleResult(auctionService.getAuction(auctionId));
 	}
 

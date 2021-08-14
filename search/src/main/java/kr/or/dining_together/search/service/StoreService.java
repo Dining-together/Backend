@@ -40,9 +40,9 @@ public class StoreService {
 	public List<Store> findByTitleMatchingNames(final String title) {
 		List<Store> stores = storeRepository.findAllByTitleContaining(title);
 
-		if(stores.isEmpty()){
-			String message="search result is not exist";
-			log.info("error-log :: {}",message);
+		if (stores.isEmpty()) {
+			String message = "search result is not exist";
+			log.info("error-log :: {}", message);
 			throw new ResourceNotExistException();
 		}
 
