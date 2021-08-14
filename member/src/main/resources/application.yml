@@ -23,8 +23,6 @@ spring:
   rabbitmq:
     host: 49.50.167.119
     port: 5672
-    username: guest
-    password: guest
   redis:
     lettuce:
       pool:
@@ -48,13 +46,9 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://118.67.133.150:3306/member
-    username: root
-    password: 1234
   mail:
     host: smtp.gmail.com
     port: 587
-    username: moamoa202105@gmail.com
-    password: moa1234!
     properties:
       mail:
         smtp:
@@ -71,7 +65,6 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
-
 
 eureka:
   instance:
