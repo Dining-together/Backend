@@ -1,7 +1,8 @@
 package kr.or.dining_together.auction.service;
 
 import java.util.List;
-import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,23 +25,24 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ReviewService {
 
-	@Value(value = "${kafka.topic.review.name}")
-	private String REVIEW_KAFKA_TOPIC;
 	private final ReviewRepository reviewRepository;
 	private final SuccessBidRepository successBidRepository;
 	private final AuctionKafkaProducer auctionProducer;
+	@Value(value = "${kafka.topic.review.name}")
+	private String REVIEW_KAFKA_TOPIC;
 
-	public Review writeReview(ReviewDto reviewDto, long successId, UserIdDto userIdDto) {
-		Optional<SuccessBid> successBid = successBidRepository.findById(successId);
+	@Transactional
+	public Review writeReview(ReviewDto reviewDto, long successBidId, UserIdDto userIdDto) {
+		SuccessBid successBid = successBidRepository.findById(successBidId).orElseThrow(ResourceNotExistException::new);
 
-		if (successBid.get().getUserId() != userIdDto.getId()) {
+		if (successBid.getUserId() != userIdDto.getId()) {
 			throw new UserNotMatchedException();
 		}
-		if (successBid.get().isComplete() == false) {
+		if (successBid.isComplete() == false) {
 			throw new NotCompletedException();
 		}
 		Review review = Review.builder()
-			.storeId(successBid.get().getStoreId())
+			.storeId(successBid.getStoreId())
 			.content(reviewDto.getContent())
 			.userName(userIdDto.getName())
 			.userId(userIdDto.getId())
@@ -48,17 +50,21 @@ public class ReviewService {
 			.build();
 		review = reviewRepository.save(review);
 		// 리뷰 평점 개수 구하는 부분
+		successBid.setReview(true);
+		int reviewCnt = Math.toIntExact(reviewRepository.getReviewCntByStoreId(successBid.getStoreId()));
+		Double reviewAvg = reviewRepository.getReviewAvgByStoreId(successBid.getStoreId());
 
-		int reviewCnt = Math.toIntExact(reviewRepository.getReviewCntByStoreId(successBid.get().getStoreId()));
-		Double reviewAvg = reviewRepository.getReviewAvgByStoreId(successBid.get().getStoreId());
 
-		ReviewScoreDto reviewScoreDto=ReviewScoreDto.builder()
+		log.info(String.valueOf(reviewCnt));
+		log.info(String.valueOf(reviewAvg));
+
+		ReviewScoreDto reviewScoreDto = ReviewScoreDto.builder()
 			.storeId(review.getStoreId())
 			.reviewCnt(reviewCnt)
 			.reviewAvg(reviewAvg)
 			.build();
 
-		auctionProducer.sendReviewScoreDto(REVIEW_KAFKA_TOPIC,reviewScoreDto);
+		auctionProducer.sendReviewScoreDto(REVIEW_KAFKA_TOPIC, reviewScoreDto);
 
 		return review;
 	}

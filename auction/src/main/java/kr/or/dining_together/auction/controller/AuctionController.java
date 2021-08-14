@@ -62,15 +62,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuctionController {
 
-	@Value(value = "${kafka.topic.auction.name}")
-	private String KAFKA_AUCTION_TOPIC_NAME;
-
 	private final AuctionService auctionService;
 	private final SuccessBidService successBidService;
 	private final ResponseService responseService;
 	private final AuctionRepository auctionRepository;
 	private final UserServiceClient userServiceClient;
 	private final AuctionKafkaProducer auctionProducer;
+	@Value(value = "${kafka.topic.auction.name}")
+	private String KAFKA_AUCTION_TOPIC_NAME;
 
 	@ApiOperation(value = "공고 리스트 조회", notes = "공고 리스트 조회한다.")
 	@GetMapping(value = "/auctions")
@@ -193,11 +192,10 @@ public class AuctionController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@UserCheck
+	@Transactional
 	public SingleResult successBidding(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
 		@ApiParam(value = "낙찰자 id", required = true) @RequestParam long auctionnerId) {
-		Auction auction = auctionRepository.findById(auctionId).orElseThrow(ResourceNotExistException::new);
-		auction.setStatus(AuctionStatus.END);
 		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId, auctionnerId));
 	}
 

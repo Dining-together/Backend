@@ -2,7 +2,6 @@ package kr.or.dining_together.member.jpa.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,9 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,8 +33,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class Store extends User {
-
-	private String storeName;
 
 	private String phoneNum;
 
@@ -72,7 +66,7 @@ public class Store extends User {
 	@ApiModelProperty(notes = "가게 유형")
 	private StoreType storeType;
 
-	@OneToMany(mappedBy = "store", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Menu> menus = new ArrayList<>();
 
 	@Transient
@@ -84,14 +78,15 @@ public class Store extends User {
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 
-	public void updateReviewCntAndReviewAvg(int reviewCnt, double reviewAvg){
-		this.reviewCnt=reviewCnt;
-		this.reviewAvg=reviewAvg;
+	public void updateReviewCntAndReviewAvg(int reviewCnt, double reviewAvg) {
+		this.reviewCnt = reviewCnt;
+		this.reviewAvg = reviewAvg;
 	}
-	public void update(String storeName,String phoneNum, String addr, double latitude, double longitude, String comment,
+
+	public void update(String phoneNum, String addr, double latitude, double longitude,
+		String comment,
 		StoreType storeType,
 		LocalDateTime openTime, LocalDateTime closedTime) {
-		this.storeName=storeName;
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;
@@ -110,9 +105,14 @@ public class Store extends User {
 		this.documentFilePath = documentFilePath;
 	}
 
-	public void setReviewCnt(int reviewCnt) {this.reviewCnt =reviewCnt;}
+	public void setReviewCnt(int reviewCnt) {
+		this.reviewCnt = reviewCnt;
+	}
 
-	public void setReviewAvg(Double reviewAvg) {this.reviewAvg=reviewAvg;}
+	public void setReviewAvg(Double reviewAvg) {
+		this.reviewAvg = reviewAvg;
+	}
+
 	public void setFacility(Facility facility) {
 		this.facility = facility;
 	}

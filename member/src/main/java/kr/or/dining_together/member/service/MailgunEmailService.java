@@ -1,6 +1,5 @@
 package kr.or.dining_together.member.service;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
 
@@ -26,15 +25,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MailgunEmailService {
 
-	@Value(value = "${mailgun.domain.name}")
-	private String YOUR_DOMAIN_NAME;
-
-	@Value(value = "${mailgun.api}")
-	private String API_KEY;
-
 	private final UserRepository userRepository;
 	private final RedisUtil redisUtil;
 	private final PasswordEncoder passwordEncoder;
+	@Value(value = "${mailgun.domain.name}")
+	private String YOUR_DOMAIN_NAME;
+	@Value(value = "${mailgun.api}")
+	private String API_KEY;
 
 	public void checkEmailExistence(String email) {
 		Optional<User> user = userRepository.findByEmail(email);

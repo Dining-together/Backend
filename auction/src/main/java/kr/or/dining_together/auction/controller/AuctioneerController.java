@@ -51,12 +51,20 @@ public class AuctioneerController {
 	private final ResponseService responseService;
 	private final UserServiceClient userServiceClient;
 
-	@ApiOperation(value = "참여 업체 리스트 조회", notes = "공고에 참여힌 업체 리스트 조회한다.")
+	@ApiOperation(value = "참여 업체 리스트 조회", notes = "공고에 참여한 업체 리스트 조회한다.")
 	@GetMapping(value = "/{auctionId}/auctioneers")
-	public ListResult<Auctioneer> auctioneers(
+	public ListResult<AuctioneerDto> auctioneers(
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId
 	) {
 		return responseService.getListResult(auctioneerService.getAuctioneers(auctionId));
+	}
+
+	@ApiOperation(value = "업체별 참여 공고 조회", notes = "업체가 참여한 공고를 보여준다.")
+	@GetMapping(value = "/{storeId}/auction")
+	public ListResult<Auctioneer> getAuctioneerByStoreId(
+		@ApiParam(value = "업체 id", required = true) @PathVariable long storeId
+	) {
+		return responseService.getListResult(auctioneerService.getAuctioneersByStoreId(storeId));
 	}
 
 	@ApiOperation(value = "경매에 업체 참여", notes = "경매에 업체가 참여한다.")

@@ -7,10 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.converters.Auto;
-
 import kr.or.dining_together.auction.dto.AuctionDto;
 import kr.or.dining_together.auction.dto.ReviewScoreDto;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +20,7 @@ public class AuctionKafkaProducer {
 	private final KafkaTemplate<String, AuctionDto> auctionKafkaTemplate;
 	private final KafkaTemplate<String, ReviewScoreDto> reviewScoreDtoKafkaTemplate;
 
-	public void send(String topicName,AuctionDto auctionDto)
-	{
+	public void send(String topicName, AuctionDto auctionDto) {
 		ListenableFuture<SendResult<String, AuctionDto>> future
 			= this.auctionKafkaTemplate.send(topicName, auctionDto);
 
@@ -43,12 +38,11 @@ public class AuctionKafkaProducer {
 		});
 	}
 
-	public void sendReviewScoreDto(String topicName, ReviewScoreDto reviewScoreDto)
-	{
-		ListenableFuture<SendResult<String,ReviewScoreDto>> future
+	public void sendReviewScoreDto(String topicName, ReviewScoreDto reviewScoreDto) {
+		ListenableFuture<SendResult<String, ReviewScoreDto>> future
 			= this.reviewScoreDtoKafkaTemplate.send(topicName, reviewScoreDto);
 
-		future.addCallback(new ListenableFutureCallback<SendResult<String,ReviewScoreDto>>() {
+		future.addCallback(new ListenableFutureCallback<SendResult<String, ReviewScoreDto>>() {
 			@Override
 			public void onSuccess(SendResult<String, ReviewScoreDto> result) {
 				log.info("User created: "

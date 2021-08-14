@@ -14,6 +14,7 @@ logback:
   destination:
     url: 118.67.133.150
     port: 5000
+
 kafka:
   bootstrapAddress: 118.67.133.150:9092
   topic:
@@ -33,6 +34,9 @@ kafka:
 spring:
   application:
     name: auction
+  rabbitmq:
+    host: 49.50.167.119
+    port: 5672
   h2:
     console:
       enabled: true
@@ -48,8 +52,6 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://118.67.133.150:3306/auction
-    username: root
-    password: 1234
 
 eureka:
   instance:
@@ -59,3 +61,13 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    health:
+      show-details: always
+    web:
+      exposure:
+        include: refresh,health,beans,httptrace,busrefresh

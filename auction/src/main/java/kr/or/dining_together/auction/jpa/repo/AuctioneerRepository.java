@@ -12,4 +12,7 @@ public interface AuctioneerRepository extends JpaRepository<Auctioneer, Long> {
 	List<Auctioneer> findAuctioneersByAuction(Auction auction);
 
 	List<Auctioneer> findAllByAuctionOrderByUpdatedDateDesc(Auction auction);
+
+	List<Auctioneer> findAuctioneersByStoreId(long storeId);
+
 }

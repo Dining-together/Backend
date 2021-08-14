@@ -19,7 +19,7 @@ import lombok.Setter;
 public class ReviewScoreDto {
 	@ApiModelProperty(value = "가게 ID")
 	private Long storeId;
-	
+
 	@ApiModelProperty(value = "가게 리뷰수")
 	private int reviewCnt;
 

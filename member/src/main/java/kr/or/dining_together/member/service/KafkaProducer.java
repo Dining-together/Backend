@@ -1,14 +1,10 @@
 package kr.or.dining_together.member.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.dining_together.member.dto.StoreDto;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +18,7 @@ public class KafkaProducer {
 	private final KafkaTemplate<String, String> kafkaTemplate;
 	private final KafkaTemplate<String, StoreDto> storeKafkaTemplate;
 
-	public void send(String topicName,StoreDto storeDto)
-	{
+	public void send(String topicName, StoreDto storeDto) {
 		ListenableFuture<SendResult<String, StoreDto>> future
 			= this.storeKafkaTemplate.send(topicName, storeDto);
 

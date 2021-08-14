@@ -3,14 +3,11 @@ package kr.or.dining_together.member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -18,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +36,16 @@ import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.Facility;
 import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.entity.StoreImages;
+import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
+import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
-import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.StoreService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.FacilityRequest;
@@ -73,21 +70,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StoreController {
 
-	@Value(value = "${kafka.topic.store.name}")
-	private String KAFKA_STORE_TOPIC_NAME;
-
 	private final static String STORE_DOCUMENT_FOLDER_DIRECTORY = "/store/document";
 	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
 	private final static String STORE_DOCUMENT_FILES_POSTFIX = "_document";
 	private final static String STORE_IMAGE_FILES_POSTFIX = "_storeImages";
-
 	private final StoreRepository storeRepository;
 	private final StoreImagesRepository storeImagesRepository;
+	private final UserRepository userRepository;
 	private final ResponseService responseService;
 	private final StoreService storeService;
 	private final StorageService storageService;
 	private final KafkaProducer storeProducer;
 	private final UserRepository userRepository;
+
+	@Value(value = "${kafka.topic.store.name}")
+	private String KAFKA_STORE_TOPIC_NAME;
 
 	@ApiOperation(value = "업체 정보 조회", notes = "업체 리스트 조회")
 	@GetMapping(value = "/stores")
@@ -110,7 +107,7 @@ public class StoreController {
 
 		/**
 		* Make Tracking log when customer request endpoint.
-		 */
+    */
 		if(customer.get().getType().equals("CUSTOMER")){
 			Store store = storeService.getStore(storeId);
 			Gson gson = new Gson();
@@ -216,9 +213,9 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		Store store = storeService.registerStore(storeRequest, email);
-
+		Optional<User> user = userRepository.findByEmail(email);
 		StoreDto storeDto = StoreDto.builder()
-			.storeName(store.getStoreName())
+			.storeName(user.get().getName())
 			.comment(store.getComment())
 			.storeId(String.valueOf(store.getId()))
 			.addr(store.getAddr())
@@ -250,7 +247,6 @@ public class StoreController {
 		return responseService.getSingleResult(storeService.registerFacility(facilityRequest, email));
 
 	}
-
 
 	@ApiOperation(value = "서류 확인 (다른 서비스 호출)", notes = "업체 서류 인증 확인")
 	@GetMapping(value = "/store/document")
