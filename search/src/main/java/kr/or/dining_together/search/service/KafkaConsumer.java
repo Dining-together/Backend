@@ -2,6 +2,7 @@ package kr.or.dining_together.search.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,15 @@ public class KafkaConsumer {
 		log.info(String.format("AuctionDto received -> %s", auctionDto));
 		System.out.println(auctionDto);
 
+		Optional<Auction> originalAuction = auctionRepository.findById(auctionDto.getAuctionId());
+
 		Auction auction = Auction.builder()
 			.id(auctionDto.getAuctionId())
+			.userId(auctionDto.getUserId())
 			.title(auctionDto.getTitle())
 			.content(auctionDto.getContent())
 			.userName(auctionDto.getUserName())
+			.imagePath(auctionDto.getPath())
 			.reservation(LocalDateTime.parse(auctionDto.getReservation(),
 				DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.userType(auctionDto.getUserType())
@@ -44,9 +49,17 @@ public class KafkaConsumer {
 			.storeType(auctionDto.getStoreType())
 			.build();
 
-		auctionRepository.save(auction);
-
-		log.info(String.format("AuctionDto saved -> %s", auction));
+		if(originalAuction.isEmpty()) {
+			auctionRepository.save(auction);
+			log.info(String.format("AuctionDto saved -> %s", auction));
+		}else{
+			originalAuction.get().setUpdate(auctionDto.getTitle(), auctionDto.getContent(), auctionDto.getUserName(),
+				auctionDto.getPath(),auctionDto.getStoreType(), auctionDto.getMinPrice(),
+				auctionDto.getMaxPrice(), auction.getReservation(), auction.getDeadLine(),
+				auctionDto.getUserType());
+			auctionRepository.save(originalAuction.get());
+			log.info(String.format("AuctionDto updated -> %s", auction));
+		}
 	}
 
 	@KafkaListener(topics = "${kafka.topic.store.name}",
@@ -55,6 +68,7 @@ public class KafkaConsumer {
 	public void consumeStoreTopic(StoreDto storeDto) {
 		log.info(String.format("StoreDto received -> %s", storeDto));
 		System.out.println(storeDto);
+		Optional<Store> originalStore=storeRepository.findById(storeDto.getStoreId());
 
 		Store store = Store.builder()
 			.id(storeDto.getStoreId())
@@ -66,14 +80,20 @@ public class KafkaConsumer {
 				LocalDateTime.parse(storeDto.getOpenTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.closedTime(
 				LocalDateTime.parse(storeDto.getClosedTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
-			.Longitude(Double.toString(storeDto.getLongitude()))
-			.Latitude(Double.toString(storeDto.getLatitude()))
+			.longitude(Double.toString(storeDto.getLongitude()))
+			.latitude(Double.toString(storeDto.getLatitude()))
 			.phoneNum(storeDto.getPhoneNum())
 			.storeImagePath(storeDto.getStoreImagePath())
 			.build();
-
-		storeRepository.save(store);
-
-		log.info(String.format("StoreDto saved -> %s", storeDto));
+		if(originalStore.isPresent()){
+			originalStore.get().update(store.getTitle(),store.getPhoneNum(), store.getAddr(), store.getLatitude(),
+				store.getLongitude(), store.getComment(), store.getStoreType(),
+				store.getOpenTime(), store.getClosedTime(),store.getStoreImagePath());
+			storeRepository.save(originalStore.get());
+			log.info(String.format("StoreDto updated -> %s", storeDto));
+		}else{
+			storeRepository.save(store);
+			log.info(String.format("StoreDto saved -> %s", storeDto));
+		}
 	}
 }

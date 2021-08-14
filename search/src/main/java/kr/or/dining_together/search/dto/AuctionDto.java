@@ -42,11 +42,14 @@ public class AuctionDto implements Serializable {
 	@ApiModelProperty(notes = "공고 종료 시간")
 	private String deadline;
 
-	// @ApiModelProperty(notes = "사용자 id")
-	// private String userId;
+	@ApiModelProperty(notes = "사용자 id")
+	private String userId;
 
 	@ApiModelProperty(notes = "사용자 Name")
 	private String userName;
+
+	@ApiModelProperty(value = "사용자 이미지 경로")
+	private String path;
 
 	@ApiModelProperty(notes = "선호 가게종류")
 	private String storeType;

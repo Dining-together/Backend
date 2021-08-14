@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Builder
@@ -34,10 +36,10 @@ public class Store {
 	private String storeType;
 
 	@Field(type = FieldType.Text)
-	private String Latitude;
+	private String latitude;
 
 	@Field(type = FieldType.Text)
-	private String Longitude;
+	private String longitude;
 
 	@Field(type = FieldType.Text)
 	private String addr;
@@ -54,4 +56,18 @@ public class Store {
 	private LocalDateTime closedTime;
 
 	private String storeImagePath;
+
+	public void update(String title,String phoneNum, String addr, String latitude, String longitude,
+		String comment, String storeType, LocalDateTime openTime, LocalDateTime closedTime, String storeImagePath) {
+		this.title=title;
+		this.phoneNum = phoneNum;
+		this.addr = addr;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.comment = comment;
+		this.storeType = storeType;
+		this.openTime = openTime;
+		this.closedTime = closedTime;
+		this.storeImagePath=storeImagePath;
+	}
 }

@@ -78,6 +78,7 @@ public class User implements UserDetails {
 	private String name;
 
 	@Column(length = 100)
+	@ApiModelProperty(value = "사용자 이미지 경로")
 	private String path;
 
 	@Past

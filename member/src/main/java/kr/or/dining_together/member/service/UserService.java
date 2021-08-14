@@ -121,7 +121,13 @@ public class UserService {
 
 	public UserIdDto getUserId(String email) throws Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		return modelMapper.map(user, UserIdDto.class);
+		UserIdDto userIdDto=UserIdDto.builder()
+			.path(user.getPath())
+			.id(user.getId())
+			.type(user.getType())
+			.name(user.getName())
+			.build();
+		return userIdDto;
 	}
 
 	public Customer getCustomer(String email) throws Throwable {

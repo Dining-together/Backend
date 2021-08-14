@@ -84,9 +84,7 @@ public class Store extends User {
 	}
 
 	public void update(String phoneNum, String addr, double latitude, double longitude,
-		String comment,
-		StoreType storeType,
-		LocalDateTime openTime, LocalDateTime closedTime) {
+		String comment, StoreType storeType, LocalDateTime openTime, LocalDateTime closedTime) {
 		this.phoneNum = phoneNum;
 		this.addr = addr;
 		this.latitude = latitude;
@@ -103,14 +101,6 @@ public class Store extends User {
 
 	public void setDocumentFilePath(String documentFilePath) {
 		this.documentFilePath = documentFilePath;
-	}
-
-	public void setReviewCnt(int reviewCnt) {
-		this.reviewCnt = reviewCnt;
-	}
-
-	public void setReviewAvg(Double reviewAvg) {
-		this.reviewAvg = reviewAvg;
 	}
 
 	public void setFacility(Facility facility) {

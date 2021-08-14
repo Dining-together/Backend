@@ -1,12 +1,14 @@
 package kr.or.dining_together.search.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.search.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.search.document.Store;
+import kr.or.dining_together.search.dto.StoreDto;
 import kr.or.dining_together.search.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +18,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class StoreService {
 
-	private static final String STORE_INDEX = "stores";
-
 	private final StoreRepository storeRepository;
-	private final RestHighLevelClient elasticsearchClient;
 
-	public void createStoreIndex(Store store) {
+	public void createStoreIndex(StoreDto storeDto)
+	{
+		Store store = Store.builder()
+			.id(storeDto.getStoreId())
+			.title(storeDto.getStoreName())
+			.comment(storeDto.getComment())
+			.addr(storeDto.getAddr())
+			.storeType(storeDto.getStoreType())
+			.openTime(
+				LocalDateTime.parse(storeDto.getOpenTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.closedTime(
+				LocalDateTime.parse(storeDto.getClosedTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
+			.longitude(Double.toString(storeDto.getLongitude()))
+			.latitude(Double.toString(storeDto.getLatitude()))
+			.phoneNum(storeDto.getPhoneNum())
+			.storeImagePath(storeDto.getStoreImagePath())
+			.build();
+
 		storeRepository.save(store);
 	}
 

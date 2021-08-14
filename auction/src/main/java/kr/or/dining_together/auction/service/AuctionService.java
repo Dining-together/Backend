@@ -61,6 +61,7 @@ public class AuctionService {
 			.maxPrice(auctionRequest.getMaxPrice())
 			.minPrice(auctionRequest.getMinPrice())
 			.userId(user.getId())
+			.path(user.getPath())
 			.userName(user.getName())
 			.groupType(auctionRequest.getGroupType())
 			.groupCnt(auctionRequest.getGroupCnt())

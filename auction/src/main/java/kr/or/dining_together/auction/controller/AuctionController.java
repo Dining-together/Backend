@@ -123,9 +123,11 @@ public class AuctionController {
 
 		AuctionDto auctionDto = AuctionDto.builder()
 			.auctionId(auction.getAuctionId().toString())
+			.userId(String.valueOf(user.getId()))
 			.title(auction.getTitle())
 			.content(auction.getContent())
 			.userName(user.getName())
+			.path(user.getPath())
 			.reservation(auction.getReservation().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))
 			.userType(auction.getGroupType())
 			.deadline(auction.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")))

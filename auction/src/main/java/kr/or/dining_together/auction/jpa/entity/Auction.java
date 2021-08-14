@@ -89,6 +89,9 @@ public class Auction {
 	@ApiModelProperty(notes = "사용자 Name")
 	private String userName;
 
+	@ApiModelProperty(value = "사용자 이미지 경로")
+	private String path;
+
 	@ApiModelProperty(notes = "선호 업체")
 	private String storeType;
 

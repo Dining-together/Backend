@@ -10,10 +10,13 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @package : kr.or.dining_together.search.document
@@ -35,6 +38,9 @@ public class Auction {
 	@Id
 	private String id;
 
+	@Field(type= FieldType.Text, name="userId")
+	private String userId;
+
 	@Field(type = FieldType.Text, name = "title")
 	private String title;
 
@@ -43,6 +49,9 @@ public class Auction {
 
 	@Field(type = FieldType.Text, name = "userName")
 	private String userName;
+
+	@Field(type=FieldType.Text, name ="userProfileImagePath")
+	private String imagePath;
 
 	@Field(type = FieldType.Date, format = DateFormat.custom, pattern = "uuuu-MM-dd'T'HH:mm:ss'Z'")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "Asia/Seoul")
@@ -64,4 +73,18 @@ public class Auction {
 	@Field(type = FieldType.Text, name = "storeType")
 	private String storeType;
 
+	public void setUpdate(String title, String content, String userName, String imagePath,String storeType, int minPrice,
+		int maxPrice, LocalDateTime reservation, LocalDateTime deadLine,String userType) {
+		this.title = title;
+		this.content = content;
+		this.userName=userName;
+		this.imagePath=imagePath;
+		this.userType=userType;
+		this.reservation = reservation;
+		this.deadLine=deadLine;
+		this.minPrice = minPrice;
+		this.maxPrice = maxPrice;
+		this.storeType = storeType;
+
+	}
 }
