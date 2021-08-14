@@ -1,25 +1,35 @@
 version: '3.4'
 
 services:
-  eureka:
-    image: ${DOCKER_USER_ID}/eureka:${BUILD_NUMBER}
+  mariadb:
+    image: mariadb
     ports:
-      - '8761:8761'
-  gateway:
-    image: ${DOCKER_USER_ID}/gateway:${BUILD_NUMBER}
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    networks:
+      - default
+  redis:
+    image: redis:alpine
     ports:
-      - '8000:8000'
+      - '6379:6379'
+    networks:
+      - default
+  rabbitmq:
+    image: rabbitmq:3.8.20-management
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+      - '15671:15671'
+      - '5671:5671'
+      - '4369:4369'
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
-  member:
-    image: ${DOCKER_USER_ID}/member:${BUILD_NUMBER}
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
-  auction:
-    image: ${DOCKER_USER_ID}/auction:${BUILD_NUMBER}
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
-  search:
-    image: ${DOCKER_USER_ID}/search:${BUILD_NUMBER}
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: Dining-together
