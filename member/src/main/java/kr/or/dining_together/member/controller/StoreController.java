@@ -102,16 +102,15 @@ public class StoreController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 
-		Optional<Customer> customer = userRepository.findByEmail(email);
+		Optional<User> user = userRepository.findByEmail(email);
 
 		/**
 		* Make Tracking log when customer request endpoint.
     */
-		if(customer.get().getType().equals("CUSTOMER")){
+		if(user.get().getType().equals("CUSTOMER")){
 			Store store = storeService.getStore(storeId);
 			Gson gson = new Gson();
-
-
+			Optional<Customer> customer = userRepository.findByEmail(email);
 			/*
 			 ** store 객체를 JsonObject 객체로 변경.
 			 */
