@@ -8,10 +8,27 @@
     </appender>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>101.101.210.52:5000</destination>
-
-        <!-- encoder is required -->
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <destination>118.67.133.150:5000</destination>
+        <filter class="kr.or.dining_together.member.logback.LogbackFilter"/>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc />
+                <pattern>
+                    <!-- 아래와 같은 키밸류 타입이 들어가면서 나중에 키바나에서 찾기 수월함-->
+                    <pattern>{"serviceID":"myServiceName"}</pattern>
+                </pattern>
+                <timestamp />
+                <!--<version />-->
+                <context />
+                <threadName />
+                <logLevel />
+                <message />
+                <loggerName />
+                <logstashMarkers />
+                <stackTrace />
+                <callerData />
+            </providers>
+        </encoder>
     </appender>
 
     <root level="INFO">

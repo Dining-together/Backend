@@ -52,9 +52,6 @@ public class ReviewService {
 		int reviewCnt = Math.toIntExact(reviewRepository.getReviewCntByStoreId(successBid.get().getStoreId()));
 		Double reviewAvg = reviewRepository.getReviewAvgByStoreId(successBid.get().getStoreId());
 
-		log.info(String.valueOf(reviewCnt));
-		log.info(String.valueOf(reviewAvg));
-
 		ReviewScoreDto reviewScoreDto=ReviewScoreDto.builder()
 			.storeId(review.getStoreId())
 			.reviewCnt(reviewCnt)
