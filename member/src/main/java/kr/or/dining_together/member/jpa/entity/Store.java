@@ -74,7 +74,6 @@ public class Store extends User {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private List<StoreFavorites> storeFavorites = new ArrayList<>();
 
-	@Transient
 	@OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
 	private List<StoreImages> storeImages = new ArrayList<>();
 

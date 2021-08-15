@@ -67,7 +67,7 @@ public class StorageService {
 	public String save(MultipartFile file, String name, String folderName) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		String fullBucketName = bucket + folderName;
-		String fileName = null;
+		String fileName = "";
 
 		// file image 가 없을 경우
 		if (file.isEmpty()) {
