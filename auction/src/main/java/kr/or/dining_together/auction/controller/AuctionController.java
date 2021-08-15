@@ -198,6 +198,9 @@ public class AuctionController {
 	public SingleResult successBidding(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@ApiParam(value = "공고id", required = true) @PathVariable long auctionId,
 		@ApiParam(value = "낙찰자 id", required = true) @RequestParam long auctionnerId) {
+		/**
+		 * 공고를 낙찰 시키고, 마감하고 상태를 sucessbid isComplete를 1로 만든다.
+		 */
 		return responseService.getSingleResult(successBidService.writeSuccessBid(auctionId, auctionnerId));
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.query.criteria.internal.expression.SubqueryComparisonModifierExpression;
 import org.springframework.stereotype.Service;
 
 import kr.or.dining_together.auction.advice.exception.ResourceNotExistException;
@@ -16,10 +17,12 @@ import kr.or.dining_together.auction.jpa.repo.AuctionRepository;
 import kr.or.dining_together.auction.jpa.repo.AuctioneerRepository;
 import kr.or.dining_together.auction.jpa.repo.SuccessBidRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class SuccessBidService {
 	private final SuccessBidRepository successBidRepository;
 	private final AuctionRepository auctionRepository;
@@ -32,6 +35,7 @@ public class SuccessBidService {
 		auctioneer.setSuccess(true);
 		SuccessBid successBid = SuccessBid.builder()
 			.auctionId(auction.getAuctionId())
+			.isComplete(true)
 			.storeId(auctioneer.getStoreId())
 			.userId(auction.getUserId())
 			.menu(auctioneer.getMenu())
@@ -42,7 +46,12 @@ public class SuccessBidService {
 			.storeName(auctioneer.getStoreName())
 			.build();
 
-		return successBidRepository.save(successBid);
+		log.info(String.valueOf(successBid));
+		SuccessBid successBid1= successBidRepository.save(successBid);
+		successBid1.setComplete(true);
+
+		log.info(String.valueOf(successBid1));
+		return successBid1;
 	}
 
 	public List<SuccessBid> getSuccessbidsByUser(UserIdDto user) {

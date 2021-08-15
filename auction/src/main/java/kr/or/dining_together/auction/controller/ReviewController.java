@@ -154,7 +154,7 @@ public class ReviewController {
 		jsonObject.addProperty("msgType","tracking");
 		jsonObject.addProperty("logType","info");
 		jsonObject.addProperty("actionType","review");
-		jsonObject.addProperty("target","store_log");
+		jsonObject.addProperty("target","review_log");
 		jsonObject.addProperty("storeId",review.getStoreId());
 		jsonObject.addProperty("email", user.getName());
 		jsonObject.addProperty("score",review.getScore());
