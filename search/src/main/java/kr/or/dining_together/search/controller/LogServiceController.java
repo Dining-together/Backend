@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Api(tags = {"3. LogService"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/log")
+@RequestMapping(value = "/search/log")
 @Slf4j
 public class LogServiceController {
 	@ApiOperation(value = "경매 조회수 로그", notes = "1주일간의 경매 조회수 로그 정보를 반환한다.")
