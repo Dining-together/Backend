@@ -24,7 +24,7 @@
 ## :point_down:프로젝트의 자세한 설계과정을 보고싶다면 click :point_down:
 
 
-<a href="https://github.com/Dining-together/Backend/wiki"><img width="264" alt="image" src="https://user-images.githubusercontent.com/62784314/129598099-ff37d45f-201f-4659-84bd-836ad47385e0.png"></a>
+<a href="https://github.com/Dining-together/Backend/wiki"><img width="240" alt="image" src="https://user-images.githubusercontent.com/62784314/129601422-07d63d69-2778-4c35-a1dc-5c02a30cceaf.png"></a>
 
 ## 디렉터리별 설명
 
