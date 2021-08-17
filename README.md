@@ -129,6 +129,7 @@ docker run -d --network Dining-together \
 -e "spring.redis.host=redis" \
 -e "spring.datasource.url=jdbc:mariadb://mariadb:3306/member" \
 -e "kafka.bootstrapAddress: kafka-stack-docker-compose_kafka1_1:9092" \
+-e "logback.destination.url=127.0.0.1" \
 -e "eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/" \
 member_image
 ```
@@ -148,6 +149,7 @@ docker run -d --network Dining-together \
 -e "spring.rabbitmq.host=rabbitmq" \
 -e "spring.datasource.url=jdbc:mariadb://mariadb:3306/auction" \
 -e "kafka.bootstrapAddress: kafka-stack-docker-compose_kafka1_1:9092" \
+-e "logback.destination.url=127.0.0.1" \
 -e "eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/" \
 auction_image
 ```
@@ -165,6 +167,7 @@ docker run -d --network Dining-together \
 --name search \
 -e "spring.elasticsearch.rest.uris=http://docker-elk-1_elasticsearch_1:9200" \
 -e "kafka.bootstrapAddress: kafka-stack-docker-compose_kafka1_1:9092" \
+-e "logback.destination.url=127.0.0.1" \
 -e "eureka.client.serviceUrl.defaultZone=http://eureka:8761/eureka/" \
 search_image
 ```
