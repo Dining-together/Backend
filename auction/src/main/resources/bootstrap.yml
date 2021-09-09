@@ -1,5 +1,5 @@
 spring:
   cloud:
     config:
-      uri: http://49.50.167.119:8888
+      uri: http://49.50.163.150:8888
       name: token
