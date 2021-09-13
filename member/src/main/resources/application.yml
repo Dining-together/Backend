@@ -3,11 +3,11 @@ server:
 
 logback:
   destination:
-    url: 118.67.133.150
+    url: 49.50.160.149
     port: 5000
 
 kafka:
-  bootstrapAddress: 118.67.133.150:9092
+  bootstrapAddress: 49.50.160.149:9092
   topic:
     general:
       id: generalId
@@ -34,7 +34,7 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-    host: 118.67.133.150
+    host: 49.50.160.149
     port: 6379
   h2:
     console:
@@ -50,7 +50,7 @@ spring:
         format_sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://118.67.133.150:3306/member
+    url: jdbc:mariadb://49.50.160.149:3306/member
   mail:
     host: smtp.gmail.com
     port: 587
