@@ -7,46 +7,34 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.or.dining_together.chat.model.ChatRoom;
 import kr.or.dining_together.chat.model.ChattingMessage;
-import kr.or.dining_together.chat.service.Receiver;
-import kr.or.dining_together.chat.service.Sender;
+import kr.or.dining_together.chat.service.ChatService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
-@CrossOrigin
+@RequestMapping("/chat")
 public class ChattingController {
 	@Value(value = "${kafka.topic.chat.name}")
 	private String chatTopic;
 
-	@Autowired
-	private Sender sender;
+	private final ChatService chatService;
 
-	@Autowired
-	private Receiver receiver;
-
-	@Autowired
-	private ChattingHistoryDAO chattingHistoryDAO;
-
-
-	@MessageMapping("/message")
-	public void sendMessage(ChattingMessage message) throws Exception{
-		message.setTimeStamp(System.currentTimeMillis());
-		chattingHistoryDAO.save(message);
-		sender.send(chatTopic,message);
+	@PostMapping("/room")
+	public ChatRoom createRoom(@RequestParam String name){
+		return chatService.createRoom(name);
 	}
 
-	@RequestMapping("/history")
-	public List<ChattingMessage> getChattingHistory() throws Exception{
-		System.out.println("history!");
-		return chattingHistoryDAO.get();
-	}
-
-	@MessageMapping("/file")
-	@SendTo("/topic/chatting")
-	public ChattingMessage sendFile(ChattingMessage message) throws Exception{
-		return new ChattingMessage(message.getFileName(),message.getRawData(),message.getUser());
+	@GetMapping("/room")
+	public List<ChatRoom> findAllRoom(){
+		return chatService.findAllRoom();
 	}
 
 }
