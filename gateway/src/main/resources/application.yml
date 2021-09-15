@@ -45,6 +45,10 @@ spring:
           uri: lb://SEARCH
           predicates:
             - Path=/search/**
+        - id: chat
+          uri: lb://CAHT
+          predicates:
+            - Path=/chat/**
 management:
   security:
     enabled: false
