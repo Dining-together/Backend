@@ -12,14 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
 public class EmailServiceTest {
 
 	@Autowired
 	private RedisUtil redisUtil;
-
-	@Autowired
-	private JavaMailSender emailSender;
 
 	@Autowired
 	private EmailService emailService;

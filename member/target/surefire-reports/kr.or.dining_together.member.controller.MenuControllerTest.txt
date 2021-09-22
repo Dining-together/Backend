@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.controller.MenuControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 1.939 sec <<< FAILURE! - in kr.or.dining_together.member.controller.MenuControllerTest
+initializationError(kr.or.dining_together.member.controller.MenuControllerTest)  Time elapsed: 0.002 sec  <<< ERROR!
+org.junit.runners.model.InvalidTestClassError: 
+Invalid test class 'kr.or.dining_together.member.controller.MenuControllerTest':
+  1. The class kr.or.dining_together.member.controller.MenuControllerTest is not public.
+  2. Test class should have exactly one public constructor
+  3. No runnable methods
+

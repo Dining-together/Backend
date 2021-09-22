@@ -26,7 +26,7 @@ public class KafkaConsumerConfig {
 	@Value(value = "${kafka.topic.review.id}")
 	private String reviewId;
 
-	//Consume reviewScoreDto objects from Kafka
+	@Bean
 	public ConsumerFactory<String, ReviewScoreDto> reviewConsumerFactory() {
 		JsonDeserializer<ReviewScoreDto> deserializer = new JsonDeserializer<>(ReviewScoreDto.class);
 		deserializer.setRemoveTypeHeaders(false);
@@ -36,7 +36,7 @@ public class KafkaConsumerConfig {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, reviewId);
-		props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+
 		return new DefaultKafkaConsumerFactory<>(props,
 			new StringDeserializer(),
 			deserializer);

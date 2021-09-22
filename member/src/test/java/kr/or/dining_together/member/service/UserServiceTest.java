@@ -10,8 +10,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,13 +33,15 @@ import lombok.extern.java.Log;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Log
 public class UserServiceTest {
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	UserService userService;
-	@Autowired
+
+	@InjectMocks
+	private UserService userService;
+
+	@Mock
+	private UserRepository userRepository;
+
+	@Mock
 	private PasswordEncoder passwordEncoder;
 
 	@Before

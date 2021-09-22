@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="kr.or.dining_together.member.jpa.repo.UserRepositoryTest" time="2.704" tests="3" errors="0" skipped="0" failures="1">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="java.vm.version" value="11.0.11+9-LTS-194"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.11\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\qja96\OneDrive\바탕 화면\Backend\member"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="https://openjdk.java.net/"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="KR"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\qja96\OneDrive\바탕 화면\Backend\member"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="java.runtime.version" value="11.0.11+9-LTS-194"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\qja96\AppData\Local\Temp\"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="classworlds.conf" value="C:\tools\apache-maven-3.8.1\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="MS949"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-11.0.11\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\PuTTY\;C:\Program Files\PowerShell\7\;C:\Users\qja96\AppData\Local\Programs\Python\Python39;C:\Users\qja96\AppData\Local\Programs\Python\Python39\Scripts;C:\Users\qja96\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk1.8.0_281\bin;C:\tools\apache-maven-3.8.1\bin;C:\Users\qja96\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\qja96\AppData\Roaming\npm;C:\tools\apache-tomcat-9.0.45\bin;C:\Program Files\erl-23.1;C:\Program Files\RabbitMQ Server\rabbitmq_server-3.8.16\sbin;C:\src\flutter\flutter_windows_2.2.3-stable\flutter\bin;;C:\Users\qja96\AppData\Local\afreeca;."/>
+    <property name="maven.conf" value="C:\tools\apache-maven-3.8.1\bin\../conf"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="55.0"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="library.jansi.path" value="C:\tools\apache-maven-3.8.1\bin\..\lib\jansi-native"/>
+    <property name="user.home" value="C:\Users\qja96"/>
+    <property name="user.timezone" value="Asia/Seoul"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="file.encoding" value="MS949"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="user.name" value="qja96"/>
+    <property name="java.class.path" value="C:\tools\apache-maven-3.8.1\bin\..\boot\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean verify"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-11.0.11"/>
+    <property name="user.language" value="ko"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="11.0.11"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="sun.stderr.encoding" value="ms949"/>
+    <property name="maven.home" value="C:\tools\apache-maven-3.8.1\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.version.date" value="2021-04-20"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="java.vendor.version" value="18.9"/>
+    <property name="sun.stdout.encoding" value="ms949"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase name="findById" classname="kr.or.dining_together.member.jpa.repo.UserRepositoryTest" time="0.909">
+    <failure type="java.lang.AssertionError">java.lang.AssertionError
+	at kr.or.dining_together.member.jpa.repo.UserRepositoryTest.findById(UserRepositoryTest.java:83)
+</failure>
+    <system-out><![CDATA[INFO  20:24:05.790 [main] o.s.b.t.a.o.j.DataJpaTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [kr.or.dining_together.member.jpa.repo.UserRepositoryTest], using SpringBootContextLoader
+INFO  20:24:05.791 [main] o.s.t.c.s.AbstractContextLoader - Could not detect default resource locations for test class [kr.or.dining_together.member.jpa.repo.UserRepositoryTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+INFO  20:24:05.791 [main] o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [kr.or.dining_together.member.jpa.repo.UserRepositoryTest]: UserRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+INFO  20:24:05.795 [main] o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration kr.or.dining_together.member.MemberApplication for test class kr.or.dining_together.member.jpa.repo.UserRepositoryTest
+INFO  20:24:05.796 [main] o.s.b.t.a.o.j.DataJpaTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener]
+INFO  20:24:05.797 [main] o.s.b.t.a.o.j.DataJpaTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@65ac1ace, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@67dc588d, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@655e5de4, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@4131a769, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@444ebfeb, org.springframework.test.context.support.DirtiesContextTestExecutionListener@41539fdf, org.springframework.test.context.transaction.TransactionalTestExecutionListener@56f55b6c, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@1a33b434, org.springframework.test.context.event.EventPublishingTestExecutionListener@2bb3f17e, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@76c32eb0, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@a11353f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@d84a25d, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@39888a92, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@565185bd, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@55eaea85, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@7dd42c2f, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@f5e51d]
+INFO  20:24:05.806 [main] o.s.t.c.t.TransactionContext - Began transaction (1) for test context [DefaultTestContext@6ec435e9 testClass = UserRepositoryTest, testInstance = kr.or.dining_together.member.jpa.repo.UserRepositoryTest@4a112a0c, testMethod = findById@UserRepositoryTest, testException = [null], mergedContextConfiguration = [MergedContextConfiguration@7d6dd1cf testClass = UserRepositoryTest, locations = '{}', classes = '{class kr.or.dining_together.member.MemberApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTestContextBootstrapper=true}', contextCustomizers = set[[ImportsContextCustomizer@735e0aa3 key = [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration, org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration, org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration, org.springframework.boot.test.autoconfigure.jdbc.TestDatabaseAutoConfiguration, org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManagerAutoConfiguration]], org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@756b703d, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@10cf3e4f, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.autoconfigure.OverrideAutoConfigurationContextCustomizerFactory$DisableAutoConfigurationContextCustomizer@71402310, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@60f6d689, org.springframework.boot.test.autoconfigure.filter.TypeExcludeFiltersContextCustomizer@351584c0, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@bbacf505, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@85eabca, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@0], contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.event.ApplicationEventsTestExecutionListener.recordApplicationEvents' -> false]]; transaction manager [org.springframework.orm.jpa.JpaTransactionManager@3546a29f]; rollback [true]
+DEBUG 20:24:05.933 [main] org.hibernate.SQL - 
+    insert 
+    into
+        user
+        (id, created_date, email, join_date, name, password, path, provider, type, updated_date, user_type) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'STORE')
+Hibernate: 
+    insert 
+    into
+        user
+        (id, created_date, email, join_date, name, password, path, provider, type, updated_date, user_type) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'STORE')
+DEBUG 20:24:05.934 [main] org.hibernate.SQL - 
+    insert 
+    into
+        store
+        (addr, closed_time, comment, document_checked, document_file_path, facility_id, latitude, longitude, open_time, phone_num, review_avg, review_cnt, store_type, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        store
+        (addr, closed_time, comment, document_checked, document_file_path, facility_id, latitude, longitude, open_time, phone_num, review_avg, review_cnt, store_type, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+DEBUG 20:24:05.936 [main] org.hibernate.SQL - 
+    insert 
+    into
+        user
+        (id, created_date, email, join_date, name, password, path, provider, type, updated_date, user_type) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')
+Hibernate: 
+    insert 
+    into
+        user
+        (id, created_date, email, join_date, name, password, path, provider, type, updated_date, user_type) 
+    values
+        (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')
+DEBUG 20:24:05.937 [main] org.hibernate.SQL - 
+    insert 
+    into
+        customer
+        (addr, age, gender, latitude, longitude, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        customer
+        (addr, age, gender, latitude, longitude, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+DEBUG 20:24:05.940 [main] org.hibernate.SQL - 
+    select
+        user0_.id as id2_8_0_,
+        user0_.created_date as created_3_8_0_,
+        user0_.email as email4_8_0_,
+        user0_.join_date as join_dat5_8_0_,
+        user0_.name as name6_8_0_,
+        user0_.password as password7_8_0_,
+        user0_.path as path8_8_0_,
+        user0_.provider as provider9_8_0_,
+        user0_.type as type10_8_0_,
+        user0_.updated_date as updated11_8_0_,
+        user0_1_.addr as addr1_0_0_,
+        user0_1_.age as age2_0_0_,
+        user0_1_.gender as gender3_0_0_,
+        user0_1_.latitude as latitude4_0_0_,
+        user0_1_.longitude as longitud5_0_0_,
+        user0_2_.addr as addr1_5_0_,
+        user0_2_.closed_time as closed_t2_5_0_,
+        user0_2_.comment as comment3_5_0_,
+        user0_2_.document_checked as document4_5_0_,
+        user0_2_.document_file_path as document5_5_0_,
+        user0_2_.facility_id as facilit14_5_0_,
+        user0_2_.latitude as latitude6_5_0_,
+        user0_2_.longitude as longitud7_5_0_,
+        user0_2_.open_time as open_tim8_5_0_,
+        user0_2_.phone_num as phone_nu9_5_0_,
+        user0_2_.review_avg as review_10_5_0_,
+        user0_2_.review_cnt as review_11_5_0_,
+        user0_2_.store_type as store_t12_5_0_,
+        user0_.user_type as user_typ1_8_0_,
+        roles1_.user_id as user_id1_9_1_,
+        roles1_.roles as roles2_9_1_,
+        facility2_.id as id1_2_2_,
+        facility2_.capacity as capacity2_2_2_,
+        facility2_.parking as parking3_2_2_,
+        facility2_.parking_count as parking_4_2_2_,
+        facility2_.store_user_id as store_us5_2_2_,
+        store3_.user_id as id2_8_3_,
+        store3_1_.created_date as created_3_8_3_,
+        store3_1_.email as email4_8_3_,
+        store3_1_.join_date as join_dat5_8_3_,
+        store3_1_.name as name6_8_3_,
+        store3_1_.password as password7_8_3_,
+        store3_1_.path as path8_8_3_,
+        store3_1_.provider as provider9_8_3_,
+        store3_1_.type as type10_8_3_,
+        store3_1_.updated_date as updated11_8_3_,
+        store3_.addr as addr1_5_3_,
+        store3_.closed_time as closed_t2_5_3_,
+        store3_.comment as comment3_5_3_,
+        store3_.document_checked as document4_5_3_,
+        store3_.document_file_path as document5_5_3_,
+        store3_.facility_id as facilit14_5_3_,
+        store3_.latitude as latitude6_5_3_,
+        store3_.longitude as longitud7_5_3_,
+        store3_.open_time as open_tim8_5_3_,
+        store3_.phone_num as phone_nu9_5_3_,
+        store3_.review_avg as review_10_5_3_,
+        store3_.review_cnt as review_11_5_3_,
+        store3_.store_type as store_t12_5_3_ 
+    from
+        user user0_ 
+    left outer join
+        customer user0_1_ 
+            on user0_.id=user0_1_.user_id 
+    left outer join
+        store user0_2_ 
+            on user0_.id=user0_2_.user_id 
+    left outer join
+        user_roles roles1_ 
+            on user0_.id=roles1_.user_id 
+    left outer join
+        facility facility2_ 
+            on user0_2_.facility_id=facility2_.id 
+    left outer join
+        store store3_ 
+            on facility2_.store_user_id=store3_.user_id 
+    left outer join
+        user store3_1_ 
+            on store3_.user_id=store3_1_.id 
+    where
+        user0_.id=?
+Hibernate: 
+    select
+        user0_.id as id2_8_0_,
+        user0_.created_date as created_3_8_0_,
+        user0_.email as email4_8_0_,
+        user0_.join_date as join_dat5_8_0_,
+        user0_.name as name6_8_0_,
+        user0_.password as password7_8_0_,
+        user0_.path as path8_8_0_,
+        user0_.provider as provider9_8_0_,
+        user0_.type as type10_8_0_,
+        user0_.updated_date as updated11_8_0_,
+        user0_1_.addr as addr1_0_0_,
+        user0_1_.age as age2_0_0_,
+        user0_1_.gender as gender3_0_0_,
+        user0_1_.latitude as latitude4_0_0_,
+        user0_1_.longitude as longitud5_0_0_,
+        user0_2_.addr as addr1_5_0_,
+        user0_2_.closed_time as closed_t2_5_0_,
+        user0_2_.comment as comment3_5_0_,
+        user0_2_.document_checked as document4_5_0_,
+        user0_2_.document_file_path as document5_5_0_,
+        user0_2_.facility_id as facilit14_5_0_,
+        user0_2_.latitude as latitude6_5_0_,
+        user0_2_.longitude as longitud7_5_0_,
+        user0_2_.open_time as open_tim8_5_0_,
+        user0_2_.phone_num as phone_nu9_5_0_,
+        user0_2_.review_avg as review_10_5_0_,
+        user0_2_.review_cnt as review_11_5_0_,
+        user0_2_.store_type as store_t12_5_0_,
+        user0_.user_type as user_typ1_8_0_,
+        roles1_.user_id as user_id1_9_1_,
+        roles1_.roles as roles2_9_1_,
+        facility2_.id as id1_2_2_,
+        facility2_.capacity as capacity2_2_2_,
+        facility2_.parking as parking3_2_2_,
+        facility2_.parking_count as parking_4_2_2_,
+        facility2_.store_user_id as store_us5_2_2_,
+        store3_.user_id as id2_8_3_,
+        store3_1_.created_date as created_3_8_3_,
+        store3_1_.email as email4_8_3_,
+        store3_1_.join_date as join_dat5_8_3_,
+        store3_1_.name as name6_8_3_,
+        store3_1_.password as password7_8_3_,
+        store3_1_.path as path8_8_3_,
+        store3_1_.provider as provider9_8_3_,
+        store3_1_.type as type10_8_3_,
+        store3_1_.updated_date as updated11_8_3_,
+        store3_.addr as addr1_5_3_,
+        store3_.closed_time as closed_t2_5_3_,
+        store3_.comment as comment3_5_3_,
+        store3_.document_checked as document4_5_3_,
+        store3_.document_file_path as document5_5_3_,
+        store3_.facility_id as facilit14_5_3_,
+        store3_.latitude as latitude6_5_3_,
+        store3_.longitude as longitud7_5_3_,
+        store3_.open_time as open_tim8_5_3_,
+        store3_.phone_num as phone_nu9_5_3_,
+        store3_.review_avg as review_10_5_3_,
+        store3_.review_cnt as review_11_5_3_,
+        store3_.store_type as store_t12_5_3_ 
+    from
+        user user0_ 
+    left outer join
+        customer user0_1_ 
+            on user0_.id=user0_1_.user_id 
+    left outer join
+        store user0_2_ 
+            on user0_.id=user0_2_.user_id 
+    left outer join
+        user_roles roles1_ 
+            on user0_.id=roles1_.user_id 
+    left outer join
+        facility facility2_ 
+            on user0_2_.facility_id=facility2_.id 
+    left outer join
+        store store3_ 
+            on facility2_.store_user_id=store3_.user_id 
+    left outer join
+        user store3_1_ 
+            on store3_.user_id=store3_1_.id 
+    where
+        user0_.id=?
+INFO  20:24:05.963 [main] o.s.t.c.t.TransactionContext - Rolled back transaction for test: [DefaultTestContext@6ec435e9 testClass = UserRepositoryTest, testInstance = kr.or.dining_together.member.jpa.repo.UserRepositoryTest@4a112a0c, testMethod = findById@UserRepositoryTest, testException = java.lang.AssertionError, mergedContextConfiguration = [MergedContextConfiguration@7d6dd1cf testClass = UserRepositoryTest, locations = '{}', classes = '{class kr.or.dining_together.member.MemberApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTestContextBootstrapper=true}', contextCustomizers = set[[ImportsContextCustomizer@735e0aa3 key = [org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration, org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration, org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration, org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration, org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration, org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration, org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration, org.springframework.boot.test.autoconfigure.jdbc.TestDatabaseAutoConfiguration, org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManagerAutoConfiguration]], org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@756b703d, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@10cf3e4f, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.autoconfigure.OverrideAutoConfigurationContextCustomizerFactory$DisableAutoConfigurationContextCustomizer@71402310, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@60f6d689, org.springframework.boot.test.autoconfigure.filter.TypeExcludeFiltersContextCustomizer@351584c0, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@bbacf505, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@85eabca, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@0], contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.event.ApplicationEventsTestExecutionListener.recordApplicationEvents' -> false]]
+]]></system-out>
+  </testcase>
+  <testcase name="changePassword" classname="kr.or.dining_together.member.jpa.repo.UserRepositoryTest" time="0.699"/>
+  <testcase name="findByEmail" classname="kr.or.dining_together.member.jpa.repo.UserRepositoryTest" time="0.816"/>
+</testsuite>

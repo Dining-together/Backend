@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.jpa.repo.FavoritesRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.01 sec - in kr.or.dining_together.member.jpa.repo.FavoritesRepositoryTest

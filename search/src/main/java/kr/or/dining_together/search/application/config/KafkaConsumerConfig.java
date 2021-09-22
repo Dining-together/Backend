@@ -54,6 +54,7 @@ public class KafkaConsumerConfig {
 	}
 
 	// 2. Consume auctionDto objects from Kafka
+	@Bean
 	public ConsumerFactory<String, AuctionDto> auctionConsumerFactory() {
 		JsonDeserializer<AuctionDto> deserializer = new JsonDeserializer<>(AuctionDto.class);
 		deserializer.setRemoveTypeHeaders(false);
@@ -78,6 +79,7 @@ public class KafkaConsumerConfig {
 	}
 
 	// 3. Consume storeDto objects from Kafka
+	@Bean
 	public ConsumerFactory<String, StoreDto> storeConsumerFactory() {
 		JsonDeserializer<StoreDto> deserializer = new JsonDeserializer<>(StoreDto.class);
 		deserializer.setRemoveTypeHeaders(false);

@@ -1,0 +1,14 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.service.RedisUtilTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 14.669 sec <<< FAILURE! - in kr.or.dining_together.member.service.RedisUtilTest
+deleteAndCheckDataTest(kr.or.dining_together.member.service.RedisUtilTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+saveAndGetDataTest(kr.or.dining_together.member.service.RedisUtilTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
