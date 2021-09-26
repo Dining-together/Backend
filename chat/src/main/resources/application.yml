@@ -10,6 +10,23 @@ spring:
     port: 6379
   application:
     name: chat
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /chat/h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:dining:chat
+    username: sa
+
 
 eureka:
   instance:
