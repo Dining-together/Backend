@@ -20,35 +20,20 @@ import lombok.RequiredArgsConstructor;
 public class RedisConfig {
 
 	/**
-	 * 단일 topic 사용
-	 */
-	@Bean
-	public ChannelTopic channelTopic(){
-		return new ChannelTopic("chatroom");
-	}
-
-	/**
 	 * redis pub/sub 메시지를 처리하는 listener 설정
 	 */
 	@Bean
-	public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory){
-		RedisMessageListenerContainer container=new RedisMessageListenerContainer();
+	public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory) {
+		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		return container;
 	}
-	/**
-	 * 실제 메시지를 처리하는 subscriber 설정 추가
-	 */
-	@Bean
-	public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
-		return new MessageListenerAdapter(subscriber, "sendMessage");
-	}
 
 	/**
-	 * redistTemplate
+	 * 어플리케이션에서 사용할 redisTemplate 설정
 	 */
 	@Bean
-	public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+	public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(connectionFactory);
 		redisTemplate.setKeySerializer(new StringRedisSerializer());

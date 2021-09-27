@@ -39,7 +39,6 @@ public class ChatMessage {
 			.message(message)
 			.type(type)
 			.build();
-		chatRoom.addChatMessages(chatMessage);
 		return chatMessage;
 	}
 
