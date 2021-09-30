@@ -30,7 +30,7 @@ public class ChattingController {
 	 * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
 	 */
 	@ApiOperation(value = "채팅방 메시지", notes = "메시지")
-	@MessageMapping("/chat/message")
+	@MessageMapping("/message")
 	public void message(ChatMessageDto message, @RequestHeader("X-AUTH-TOKEN") String xAuthToken) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
 		// 로그인 회원 정보로 대화명 설정

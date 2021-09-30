@@ -35,9 +35,13 @@ public class ChatRoomController {
 
 	@ApiOperation(value = "채팅방 개설", notes = "채팅방을 개설한다.")
 	@PostMapping("/room")
-	public SingleResult<ChatRoom> createRoom(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,@RequestBody UserIdDto store) {
-		UserIdDto customer = userServiceClient.getUserId(xAuthToken);
-		return responseService.getSingleResult(chatService.createChatRoom(customer,store));
+	public SingleResult<ChatRoom> createRoom(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,@RequestBody UserIdDto other) {
+		UserIdDto me = userServiceClient.getUserId(xAuthToken);
+		if(me.getType().equals("CUSTOMER")){
+			return responseService.getSingleResult(chatService.createChatRoom(me,other));
+		}else {
+			return responseService.getSingleResult(chatService.createChatRoom(other, me));
+		}
 	}
 
 	@ApiOperation(value = "방 정보 보기", notes = "방 정보")
@@ -46,17 +50,11 @@ public class ChatRoomController {
 		return responseService.getSingleResult(chatService.findRoomById(roomId));
 	}
 
-	@ApiOperation(value = "customer 별 방 조회")
-	@GetMapping("/customer")
+	@ApiOperation(value = "사용자 별 방 조회")
+	@GetMapping("/user_room")
 	public ListResult<ChatRoom> getRoomsByCustomer(@RequestHeader("X-AUTH-TOKEN") String xAuthToken){
-		UserIdDto customer=userServiceClient.getUserId(xAuthToken);
-		return responseService.getListResult(chatService.getCustomerEnterRooms(customer));
+		UserIdDto me=userServiceClient.getUserId(xAuthToken);
+		return responseService.getListResult(chatService.getUserEnterRooms(me));
 	}
 
-	@ApiOperation(value = "store 별 방 조회")
-	@GetMapping("/store")
-	public ListResult<ChatRoom> getRoomsByStore(@RequestHeader("X-AUTH-TOKEN") String xAuthToken){
-		UserIdDto store=userServiceClient.getUserId(xAuthToken);
-		return responseService.getListResult(chatService.getCustomerEnterRooms(store));
-	}
 }

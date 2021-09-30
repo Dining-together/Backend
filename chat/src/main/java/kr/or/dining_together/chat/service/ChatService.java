@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ChatService {
 	// 채팅방(topic)에 발행되는 메시지를 처리할 Listner
 	private final RedisMessageListenerContainer redisMessageListener;
@@ -79,11 +81,12 @@ public class ChatService {
 	public ChannelTopic getTopic(String roomId) {
 		return topics.get(roomId);
 	}
-	public List<ChatRoom> getCustomerEnterRooms(UserIdDto customer){
-		return chatRoomRepository.findChatRoomsByCustomer(customer);
-	}
-	public List<ChatRoom> getStoreEnterRooms(UserIdDto store){
-		return chatRoomRepository.findChatRoomsByStore(store);
+	public List<ChatRoom> getUserEnterRooms(UserIdDto me){
+		if(me.getType().equals("CUSTOMER")) {
+			return chatRoomRepository.findChatRoomsByCustomer(me);
+		}else{
+			return chatRoomRepository.findChatRoomsByStore(me);
+		}
 	}
 
 	public void deleteById(ChatRoom chatRoom){

@@ -22,7 +22,6 @@ import lombok.Setter;
 public class ChatRoom implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "chatroom_id")
 	private String id;
 
