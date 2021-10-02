@@ -50,6 +50,8 @@ public class SuccessBid {
 	private LocalDateTime reservation;
 	@ApiModelProperty(notes = "업체 Name")
 	private String storeName;
+	@ApiModelProperty(notes = "업체 이미지")
+	private String path;
 	@ApiModelProperty(notes = "리뷰여부")
 	private boolean isReview;
 	@PrePersist

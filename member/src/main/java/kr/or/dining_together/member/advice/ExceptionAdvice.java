@@ -72,7 +72,7 @@ public class ExceptionAdvice {
 	protected CommonResult userDuplicationException(HttpServletRequest request, UserDuplicationException e) {
 		exceptionLogCall(e.toString());
 
-		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "이미 등록된 회원 이메일입니다.");
+		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "이미 등록된 회원 이메일입니다.");
 	}
 
 	@ExceptionHandler(VerificationFailedException.class)

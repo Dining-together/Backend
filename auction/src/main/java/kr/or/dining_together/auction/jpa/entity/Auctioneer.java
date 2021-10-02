@@ -58,6 +58,8 @@ public class Auctioneer {
 	private String content;
 	@ApiModelProperty(notes = "낙찰여부")
 	private boolean success;
+	@ApiModelProperty(notes = "업체 이미지 경로")
+	private String path;
 
 	@PrePersist
 	void prePersist() {

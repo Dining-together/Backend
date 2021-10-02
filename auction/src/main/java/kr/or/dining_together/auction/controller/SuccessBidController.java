@@ -43,18 +43,6 @@ public class SuccessBidController {
 		return responseService.getListResult(successBidService.getSuccessbidsByUser(userIdDto));
 	}
 
-	@ApiOperation(value = "업체별 낙찰 조회", notes = "업체별 낙찰 불러온다.")
-	@GetMapping(value = "/store/bids")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
-	})
-	@Permission(target = "STORE")
-	public ListResult<SuccessBid> getSuccessBidByStore(
-		@RequestHeader("X-AUTH-TOKEN") String xAuthToken) {
-		UserIdDto userIdDto = userServiceClient.getUserId(xAuthToken);
-		return responseService.getListResult(successBidService.getSuccessbidsByStore(userIdDto));
-	}
-
 	@ApiOperation(value = "낙찰 공고 조회", notes = "낙찰된 공고 불러온다.")
 	@GetMapping(value = "/bids/{successBidId}")
 	public SingleResult findAuctionBySuccessBidId(

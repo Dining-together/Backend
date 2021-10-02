@@ -44,6 +44,7 @@ public class SuccessBidService {
 			.reservation(auction.getReservation())
 			.groupType(auction.getGroupType())
 			.storeName(auctioneer.getStoreName())
+			.path(auctioneer.getPath())
 			.build();
 
 		log.info(String.valueOf(successBid));
@@ -55,12 +56,13 @@ public class SuccessBidService {
 	}
 
 	public List<SuccessBid> getSuccessbidsByUser(UserIdDto user) {
-		return successBidRepository.findAllByUserId(user.getId());
+		if(user.getType().equals("CUSTOMER")) {
+			return successBidRepository.findAllByUserId(user.getId());
+		}else{
+			return successBidRepository.findAllByStoreId(user.getId());
+		}
 	}
 
-	public List<SuccessBid> getSuccessbidsByStore(UserIdDto user) {
-		return successBidRepository.findAllByStoreId(user.getId());
-	}
 
 	public Auction findAuctionBySuccessBidId(long successBidId){
 		long auctionId =successBidRepository.findAuctionBySuccessBidId(successBidId);
