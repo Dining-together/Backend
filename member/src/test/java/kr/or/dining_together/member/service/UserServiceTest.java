@@ -45,7 +45,6 @@ public class UserServiceTest {
 			.email("jifrozen@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 
@@ -55,7 +54,6 @@ public class UserServiceTest {
 			.email("jifrozen1@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 
@@ -129,7 +127,6 @@ public class UserServiceTest {
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
 			.age(2)
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 
@@ -155,7 +152,6 @@ public class UserServiceTest {
 			.email("jifrozen22@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 

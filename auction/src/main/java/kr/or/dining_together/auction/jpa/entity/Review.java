@@ -1,5 +1,6 @@
 package kr.or.dining_together.auction.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,11 +36,11 @@ public class Review {
 
 	@Column(name = "createdDate")
 	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
-	public Date createdDate;
+	public LocalDateTime createdDate;
 
 	@Column(name = "updatedDate")
 	@ApiModelProperty(notes = "테이블의 수정일 정보입니다. 자동으로 입력됩니다.")
-	public Date updatedDate;
+	public LocalDateTime updatedDate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,12 +66,14 @@ public class Review {
 
 	@PrePersist
 	void prePersist() {
-		this.createdDate = this.updatedDate = new Date();
+		LocalDateTime now = LocalDateTime.now();
+		this.createdDate = this.updatedDate = now;
 	}
 
 	@PreUpdate
 	void updateDate() {
-		this.updatedDate = new Date();
+		LocalDateTime now = LocalDateTime.now();
+		this.updatedDate = now;
 	}
 
 	public void updateReview(String content, int score) {

@@ -1,5 +1,6 @@
 package kr.or.dining_together.auction.jpa.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,13 +39,15 @@ import lombok.ToString;
 @ApiModel(description = "공고 상세 정보를 위한 도메인 객체")
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Auction {
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
 	@Column(name = "createdDate")
 	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
-	public Date createdDate;
+	public LocalDateTime createdDate;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
 	@Column(name = "updatedDate")
 	@ApiModelProperty(notes = "테이블의 수정일 정보입니다. 자동으로 입력됩니다.")
-	public Date updatedDate;
+	public LocalDateTime updatedDate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,13 +109,15 @@ public class Auction {
 
 	@PrePersist
 	void prePersist() {
-		this.createdDate = this.updatedDate = new Date();
+		LocalDateTime now = LocalDateTime.now();
+		this.createdDate = this.updatedDate = now;
 		this.status = AuctionStatus.PROCEEDING;
 	}
 
 	@PreUpdate
 	void updateDate() {
-		this.updatedDate = new Date();
+		LocalDateTime now = LocalDateTime.now();
+		this.updatedDate = now;
 	}
 
 	public void setStatus(AuctionStatus status) {

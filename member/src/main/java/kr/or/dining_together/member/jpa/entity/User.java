@@ -1,5 +1,6 @@
 package kr.or.dining_together.member.jpa.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,11 +54,11 @@ import lombok.experimental.SuperBuilder;
 public class User implements UserDetails {
 	@Column(name = "createdDate")
 	@ApiModelProperty(notes = "테이블의 생성일 정보입니다. 자동으로 입력됩니다.")
-	public Date createdDate;
+	public LocalDateTime createdDate;
 
 	@Column(name = "updatedDate")
 	@ApiModelProperty(notes = "테이블의 수정일 정보입니다. 자동으로 입력됩니다.")
-	public Date updatedDate;
+	public LocalDateTime updatedDate;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,10 +82,6 @@ public class User implements UserDetails {
 	@ApiModelProperty(value = "사용자 이미지 경로")
 	private String path;
 
-	@Past
-	@ApiModelProperty(notes = "등록일 정보입니다. 자동으로 입력됩니다.")
-	private Date joinDate;
-
 	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
 	private String provider;
 
@@ -104,15 +101,16 @@ public class User implements UserDetails {
 	}
 
 	@PrePersist
-	void setDefaultValues() {
-		this.joinDate = this.createdDate = this.updatedDate = new Date();
+	void prePersist() {
+		LocalDateTime now = LocalDateTime.now();
+		this.createdDate = this.updatedDate = now;
 		this.provider = "application";
 		this.roles = Collections.singletonList("ROLE_USER");
 	}
-
 	@PreUpdate
 	void updateDate() {
-		this.updatedDate = new Date();
+		LocalDateTime now = LocalDateTime.now();
+		this.updatedDate = now;
 	}
 
 	//  json 출력 안함
