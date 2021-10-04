@@ -70,6 +70,14 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
+  url:
+    base: https://localhost:8000
+  social:
+    kakao:
+      url:
+        login: https://kauth.kakao.com/oauth/authorize
+        token: https://kauth.kakao.com/oauth/token
+        profile: https://kapi.kakao.com/v2/user/me
 
 eureka:
   instance:
