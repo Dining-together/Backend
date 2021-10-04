@@ -92,11 +92,12 @@ public class UserService {
 			Customer kakaoUser = Customer.builder()
 				.email(String.valueOf(kakaoAccount.getEmail()))
 				.name(kakaoAccount.getEmail())
+				.gender(kakaoAccount.getGender())
 				.provider(provider)
 				.build();
 
-			userRepository.save(kakaoUser);
-			return kakaoUser;
+
+			return (User)userRepository.save(kakaoUser);
 		}
 	}
 

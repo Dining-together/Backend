@@ -26,7 +26,6 @@ public class KakaoProfile {
 	@ToString
 	public static class Kakao_account {
 		private String email;
-		private String birthday;
 		private String age_range;
 		private String gender;
 	}
