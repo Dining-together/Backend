@@ -27,24 +27,23 @@ public class ChattingController {
 	private final ChatService chatService;
 
 	/**
-	 * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
+	 * websocket "/chat/pub/message"로 들어오는 메시징을 처리한다.
 	 */
 	@ApiOperation(value = "채팅방 메시지", notes = "메시지")
 	@MessageMapping("/message")
-	public void message(ChatMessageDto message, @RequestHeader("X-AUTH-TOKEN") String xAuthToken) {
-		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+	public void message(ChatMessageDto message) {
 		// 로그인 회원 정보로 대화명 설정
 		ChatRoom chatRoom=chatService.findRoomById(message.getRoomId());
-		ChatMessage message1=ChatMessage.createChatMessage(chatRoom, user.getName(), message.getMessage(), message.getType());
+		ChatMessage message1=ChatMessage.createChatMessage(chatRoom, message.getSender(), message.getMessage(), message.getType());
 		// 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
 		log.info("채팅 메시지");
 		if (ChatMessage.MessageType.ENTER.equals(message1.getType())) {
 			chatService.enterChatRoom(message.getRoomId());
 			message1.setSender("[알림]");
-			message1.setMessage(user.getName() + "님이 입장하셨습니다.");
+			message1.setMessage(message.getSender() + "님이 입장하셨습니다.");
 		}else if(ChatMessage.MessageType.QUIT.equals(message1.getType())){
 			message1.setSender("[알림]");
-			message1.setMessage(user.getName() + "님이 퇴장하셨습니다.");
+			message1.setMessage(message.getSender() + "님이 퇴장하셨습니다.");
 			chatService.deleteById(message1.getChatRoom());
 		}
 		chatRoom.addChatMessages(message1);

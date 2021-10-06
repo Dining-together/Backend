@@ -16,6 +16,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
+import kr.or.dining_together.chat.advice.exception.ResourceNotExistException;
 import kr.or.dining_together.chat.model.ChatMessage;
 import kr.or.dining_together.chat.model.ChatRoom;
 import kr.or.dining_together.chat.model.UserIdDto;
@@ -53,7 +54,7 @@ public class ChatService {
 	}
 
 	public ChatRoom findRoomById(String id) {
-		ChatRoom chatRoom=(ChatRoom)chatRoomRepository.findById(id).orElseThrow();
+		ChatRoom chatRoom=(ChatRoom)chatRoomRepository.findById(id).orElseThrow(ResourceNotExistException::new);
 		return chatRoom;
 	}
 
