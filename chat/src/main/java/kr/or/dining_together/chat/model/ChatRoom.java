@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class ChatRoom implements Serializable {
 
 	private UserIdDto store;
 
-	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "chatRoom",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ChatMessage> chatMessages = new ArrayList<>();
 
 	public static ChatRoom create(String name,UserIdDto customer,UserIdDto store) {
