@@ -136,12 +136,12 @@ public class ExceptionAdvice {
 		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "업체 인증을 진행해주세요");
 	}
 
-	public void exceptionLogCall(String errorMessage){
+	public void exceptionLogCall(String errorMessage) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("msgType","tracking");
-		jsonObject.addProperty("logType","error");
+		jsonObject.addProperty("msgType", "tracking");
+		jsonObject.addProperty("logType", "error");
 		jsonObject.addProperty("target", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		jsonObject.addProperty("content",errorMessage);
+		jsonObject.addProperty("content", errorMessage);
 
 		log.info(String.valueOf(jsonObject));
 	}

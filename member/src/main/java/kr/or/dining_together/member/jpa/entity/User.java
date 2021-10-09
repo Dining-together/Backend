@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -107,6 +105,7 @@ public class User implements UserDetails {
 		this.provider = "application";
 		this.roles = Collections.singletonList("ROLE_USER");
 	}
+
 	@PreUpdate
 	void updateDate() {
 		LocalDateTime now = LocalDateTime.now();

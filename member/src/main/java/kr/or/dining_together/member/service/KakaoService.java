@@ -70,13 +70,17 @@ public class KakaoService {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", kakaoClientId);
-		params.add("redirect_uri", baseUrl + kakaoRedirect);
+		params.add("redirect_uri", "http://localhost:8000/member/social/login/kakao");
 		params.add("code", code);
+		System.out.print(params.values().toString());
 		// Set http entity
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-		ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.kakao.url.token"),
+		ResponseEntity<String> response = restTemplate.postForEntity("https://kauth.kakao.com/oauth/token",
 			request, String.class);
+		// return response;
+		System.out.println(response.getStatusCode());
 		if (response.getStatusCode() == HttpStatus.OK) {
+			System.out.println(response.getBody());
 			return gson.fromJson(response.getBody(), RetKakaoAuth.class);
 		}
 		return null;

@@ -121,7 +121,7 @@ public class UserService {
 
 	public UserIdDto getUserId(String email) throws Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		UserIdDto userIdDto=UserIdDto.builder()
+		UserIdDto userIdDto = UserIdDto.builder()
 			.path(user.getPath())
 			.id(user.getId())
 			.type(user.getType())

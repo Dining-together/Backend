@@ -23,6 +23,8 @@ kafka:
       name: review-topic
 
 spring:
+  url:
+    base: http://localhost:8000
   application:
     name: member
   rabbitmq:

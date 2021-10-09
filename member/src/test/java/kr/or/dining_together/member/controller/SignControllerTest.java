@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Collections;
 
-import javax.persistence.Embedded;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
@@ -34,7 +33,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
-import kr.or.dining_together.member.config.KafkaConsumerConfig;
 import kr.or.dining_together.member.jpa.entity.Customer;
 import kr.or.dining_together.member.jpa.entity.UserType;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
@@ -77,7 +75,6 @@ public class SignControllerTest {
 
 	@Autowired
 	private WebApplicationContext ctx;
-
 
 	@Before
 	public void setUp() throws Exception {

@@ -3,7 +3,6 @@ package kr.or.dining_together.member.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
 
 import org.junit.After;
