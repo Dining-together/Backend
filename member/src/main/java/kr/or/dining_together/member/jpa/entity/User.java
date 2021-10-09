@@ -80,7 +80,7 @@ public class User implements UserDetails {
 	@ApiModelProperty(value = "사용자 이미지 경로")
 	private String path;
 
-	@Column(length = 100, columnDefinition = "varchar(100) default 'application'")
+	@Column(length = 100)
 	private String provider;
 
 	@Column(length = 100)
@@ -102,7 +102,6 @@ public class User implements UserDetails {
 	void prePersist() {
 		LocalDateTime now = LocalDateTime.now();
 		this.createdDate = this.updatedDate = now;
-		this.provider = "application";
 		this.roles = Collections.singletonList("ROLE_USER");
 	}
 
