@@ -1,0 +1,19 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.controller.SignControllerTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 42.487 sec <<< FAILURE! - in kr.or.dining_together.member.controller.SignControllerTest
+signIn(kr.or.dining_together.member.controller.SignControllerTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+signup(kr.or.dining_together.member.controller.SignControllerTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+emailVerify(kr.or.dining_together.member.controller.SignControllerTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+

@@ -1,27 +1,6 @@
 server:
   port: 0
 
-logback:
-  destination:
-    url: 49.50.160.149
-    port: 5000
-
-kafka:
-  bootstrapAddress: 49.50.160.149:9092
-  topic:
-    general:
-      id: generalId
-      name: general-topic
-    auction:
-      id: auctionId
-      name: auction-topic
-    store:
-      id: storeId
-      name: member-topic
-    review:
-      id: reviewId
-      name: review-topic
-
 spring:
   application:
     name: member
@@ -45,9 +24,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://49.50.160.149:3306/member
@@ -64,9 +40,6 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
-  logging:
-    level:
-      org.hibernate.SQL: debug
   web:
     resources:
       static-locations: classpath:/static/
@@ -96,3 +69,24 @@ management:
     web:
       exposure:
         include: refresh,health,beans,httptrace,busrefresh
+
+logback:
+  destination:
+    url: 49.50.160.149
+    port: 5000
+
+kafka:
+  bootstrapAddress: 49.50.160.149:9092
+  topic:
+    general:
+      id: generalId
+      name: general-topic
+    auction:
+      id: auctionId
+      name: auction-topic
+    store:
+      id: storeId
+      name: member-topic
+    review:
+      id: reviewId
+      name: review-topic

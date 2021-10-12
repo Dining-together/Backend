@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.jpa.repo.UserRepositoryTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.704 sec <<< FAILURE! - in kr.or.dining_together.member.jpa.repo.UserRepositoryTest
+findById(kr.or.dining_together.member.jpa.repo.UserRepositoryTest)  Time elapsed: 0.909 sec  <<< FAILURE!
+java.lang.AssertionError
+	at kr.or.dining_together.member.jpa.repo.UserRepositoryTest.findById(UserRepositoryTest.java:83)
+

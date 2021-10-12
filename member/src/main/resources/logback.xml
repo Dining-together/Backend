@@ -9,7 +9,8 @@
     </appender>
 
     <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>${LOGBACK_URL:- }:${LOGBACK_PORT:- }</destination>
+<!--        <destination>${LOGBACK_URL:- }:${LOGBACK_PORT:- }</destination>-->
+        <destination>49.50.160.149:5000</destination>
         <filter class="kr.or.dining_together.member.logback.LogbackFilter"/>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>

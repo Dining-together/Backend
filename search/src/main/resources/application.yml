@@ -1,11 +1,6 @@
 server:
   port: 0
 
-logback:
-  destination:
-    url: 49.50.160.149
-    port: 5000
-
 spring:
   application:
     name: search
@@ -31,6 +26,11 @@ kafka:
     review:
       id: reviewId
       name: review-topic
+
+logback:
+  destination:
+    url: 49.50.160.149
+    port: 5000
 
 eureka:
   instance:

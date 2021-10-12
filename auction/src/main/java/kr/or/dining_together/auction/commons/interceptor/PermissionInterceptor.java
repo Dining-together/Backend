@@ -13,7 +13,9 @@ import kr.or.dining_together.auction.client.UserServiceClient;
 import kr.or.dining_together.auction.commons.annotation.Permission;
 import kr.or.dining_together.auction.dto.UserIdDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class PermissionInterceptor implements HandlerInterceptor {
@@ -21,8 +23,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 	private final UserServiceClient userServiceClient;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
-		Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
 
 		HandlerMethod method = (HandlerMethod)handler;
 		Permission permission = method.getMethodAnnotation(Permission.class);
@@ -35,6 +36,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
 			throw new UserNotFoundException();
 		}
 		UserIdDto userIdDto = userServiceClient.getUserId(token);
+		log.info(String.valueOf(userIdDto));
+		log.info(permission.target(), userIdDto.getType());
 		if (!permission.target().equals(userIdDto.getType())) {
 			throw new UnAuthorizedException();
 		}

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,8 +14,6 @@ import lombok.Setter;
 @Builder
 public class TopicMessageRequest {
 	private String topic;
-
 	private String title;
-
 	private String body;
 }

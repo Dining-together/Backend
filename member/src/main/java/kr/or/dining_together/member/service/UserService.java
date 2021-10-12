@@ -41,6 +41,7 @@ public class UserService {
 	private final NaverService naverService;
 	private final CustomerRepository customerRepository;
 	private final StoreRepository storeRepository;
+	private final FirebaseCloudMessagingService firebaseCloudMessagingService;
 
 	public UserDto login(LoginRequest loginRequest) throws Throwable {
 		User user = (User)userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(LoginFailedException::new);
@@ -125,6 +126,7 @@ public class UserService {
 		UserIdDto userIdDto=UserIdDto.builder()
 			.path(user.getPath())
 			.id(user.getId())
+			.email(user.getEmail())
 			.type(user.getType())
 			.name(user.getName())
 			.build();

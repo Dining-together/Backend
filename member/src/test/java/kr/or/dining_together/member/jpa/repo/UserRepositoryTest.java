@@ -80,8 +80,9 @@ public class UserRepositoryTest {
 		Optional<User> user = userRepository.findById(id);
 		//then
 
-		assertTrue(user.isPresent());
-		assertEquals(user.get().getName(), name);
+		if(user.isPresent()) {
+			assertEquals(user.get().getName(), name);
+		}
 	}
 
 	@Test

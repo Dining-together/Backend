@@ -1,0 +1,34 @@
+-------------------------------------------------------------------------------
+Test set: kr.or.dining_together.member.service.UserServiceTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 47.278 sec <<< FAILURE! - in kr.or.dining_together.member.service.UserServiceTest
+storeModify(kr.or.dining_together.member.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+getCustomer(kr.or.dining_together.member.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+signUpTest(kr.or.dining_together.member.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+getUserId(kr.or.dining_together.member.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+customerModify(kr.or.dining_together.member.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+
+getStore(kr.or.dining_together.member.service.UserServiceTest)  Time elapsed: 0 sec  <<< ERROR!
+java.lang.IllegalStateException: Failed to load ApplicationContext
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kafkaConsumerConfig': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'kafka.bootstrapAddress' in value "${kafka.bootstrapAddress}"
+

@@ -20,13 +20,13 @@ import kr.or.dining_together.member.dto.ReviewScoreDto;
 @Configuration
 public class KafkaConsumerConfig {
 
-	@Value(value = "${kafka.bootstrapAddress}")
-	private String bootstrapAddress;
+	//@Value(value = "${kafka.bootstrapAddress}")
+	private String bootstrapAddress="49.50.160.149:9092";
 
-	@Value(value = "${kafka.topic.review.id}")
-	private String reviewId;
+	//@Value(value = "${kafka.topic.review.id}")
+	private String reviewId="reviewId";
 
-	//Consume reviewScoreDto objects from Kafka
+	@Bean
 	public ConsumerFactory<String, ReviewScoreDto> reviewConsumerFactory() {
 		JsonDeserializer<ReviewScoreDto> deserializer = new JsonDeserializer<>(ReviewScoreDto.class);
 		deserializer.setRemoveTypeHeaders(false);
@@ -36,7 +36,7 @@ public class KafkaConsumerConfig {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, reviewId);
-		props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+
 		return new DefaultKafkaConsumerFactory<>(props,
 			new StringDeserializer(),
 			deserializer);

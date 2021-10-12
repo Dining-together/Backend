@@ -1,5 +1,9 @@
 package kr.or.dining_together.member.controller;
 
+import java.io.IOException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +21,8 @@ import io.swagger.annotations.ApiParam;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.service.FirebaseCloudMessagingService;
 import kr.or.dining_together.member.service.ResponseService;
+import kr.or.dining_together.member.vo.PushNotificationRequest;
+import kr.or.dining_together.member.vo.PushNotificationResponse;
 import kr.or.dining_together.member.vo.TokenMessageRequest;
 import kr.or.dining_together.member.vo.TopicMessageRequest;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +49,30 @@ public class FirebaseCloudMessagingController {
 
 		firebaseCloudMessagingService.registerDeviceToken(deviceToken, email);
 
+		return responseService.getSuccessResult();
+	}
+
+	@ApiOperation(value = "회원 알림 보내기", notes = "토큰에 해당하는 디바이스에 알림을 보낸다")
+	@PostMapping("/notification/token")
+	public ResponseEntity sendTokenNotification(@RequestBody @ApiParam(value = "메시지 정보", required = true) PushNotificationRequest request) throws
+		IOException {
+		firebaseCloudMessagingService.sendMessageTo(request.getToken(), request.getTitle(), request.getMessage());
+		log.info(request +"has been pushed");
+		return new ResponseEntity<>(new PushNotificationResponse(HttpStatus.OK.value(), "Notification has been sent."), HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "회원 알림 보내기", notes = "토큰에 해당하는 디바이스에 알림을 보낸다")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
+	})
+	@PostMapping("/alert/message")
+	public CommonResult sendMessage(
+		@RequestBody @ApiParam(value = "메시지 정보", required = true) TokenMessageRequest tokenMessageRequest) throws
+		Throwable {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+
+		firebaseCloudMessagingService.sendMessageByToken(email, tokenMessageRequest);
 		return responseService.getSuccessResult();
 	}
 
@@ -78,27 +108,12 @@ public class FirebaseCloudMessagingController {
 		return responseService.getSuccessResult();
 	}
 
-	@ApiOperation(value = "회원 알림 보내기", notes = "토큰에 해당하는 디바이스에 알림을 보낸다")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
-	})
-	@PostMapping("/alert/message/token")
-	public CommonResult sendMessageByDeviceToken(
-		@RequestBody @ApiParam(value = "메시지 정보", required = true) TokenMessageRequest tokenMessageRequest) throws
-		Throwable {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
-
-		firebaseCloudMessagingService.sendMessageByToken(email, tokenMessageRequest);
-		return responseService.getSuccessResult();
-	}
-
 	@ApiOperation(value = "구독 알림 보내기", notes = "구독에 해당하는 회원에 알림을 보낸다")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@PostMapping("/alert/message/topic")
-	public CommonResult sendMessageByDeviceToken(
+	public CommonResult sendMessageByTopic(
 		@RequestBody @ApiParam(value = "메시지 정보", required = true) TopicMessageRequest topicMessageRequest) throws
 		Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -107,4 +122,5 @@ public class FirebaseCloudMessagingController {
 		firebaseCloudMessagingService.sendMessageByTopic(topicMessageRequest);
 		return responseService.getSuccessResult();
 	}
+
 }

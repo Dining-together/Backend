@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -30,6 +31,9 @@ public class UserDeviceToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@ApiModelProperty(value="이메일")
+	private String email;
 
 	@ApiModelProperty(value = "설명")
 	private String token;
