@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 import kr.or.dining_together.chat.client.UserServiceClient;
+import kr.or.dining_together.chat.model.ChatMessage;
 import kr.or.dining_together.chat.model.ChatRoom;
 import kr.or.dining_together.chat.model.ListResult;
 import kr.or.dining_together.chat.model.SingleResult;
@@ -45,9 +46,15 @@ public class ChatRoomController {
 	}
 
 	@ApiOperation(value = "방 정보 보기", notes = "방 정보")
-	@GetMapping("/room/{roomId}")
+	@GetMapping("/room/{roomId}/roomInfo")
 	public SingleResult<ChatRoom> roomInfo(@PathVariable String roomId) {
 		return responseService.getSingleResult(chatService.findRoomById(roomId));
+	}
+
+	@ApiOperation(value = "방별 메시지 보기", notes = "방별 채팅 메시지 list")
+	@GetMapping("/room/{roomId}")
+	public ListResult<ChatMessage> roomChatMessage(@PathVariable String roomId) {
+		return responseService.getListResult(chatService.chatMessageList(roomId));
 	}
 
 	@ApiOperation(value = "사용자 별 방 조회")

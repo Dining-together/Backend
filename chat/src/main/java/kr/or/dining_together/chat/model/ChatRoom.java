@@ -34,8 +34,6 @@ public class ChatRoom implements Serializable {
 
 	private UserIdDto store;
 
-	@OneToMany(mappedBy = "chatRoom",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<ChatMessage> chatMessages = new ArrayList<>();
 
 	public static ChatRoom create(String name,UserIdDto customer,UserIdDto store) {
 		ChatRoom chatRoom = new ChatRoom();
@@ -46,8 +44,5 @@ public class ChatRoom implements Serializable {
 		return chatRoom;
 	}
 
-	public void addChatMessages(ChatMessage chatMessage) {
-		this.chatMessages.add(chatMessage);
-	}
 
 }

@@ -21,6 +21,7 @@ import kr.or.dining_together.chat.model.ChatMessage;
 import kr.or.dining_together.chat.model.ChatRoom;
 import kr.or.dining_together.chat.model.UserIdDto;
 import kr.or.dining_together.chat.pubsub.RedisSubscriber;
+import kr.or.dining_together.chat.repository.ChatMessageRepository;
 import kr.or.dining_together.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +49,7 @@ public class ChatService {
 		topics = new HashMap<>();
 	}
 	private final ChatRoomRepository chatRoomRepository;
+	private final ChatMessageRepository chatMessageRepository;
 
 	public List<ChatRoom> findAllRoom() {
 		return chatRoomRepository.findAll();
@@ -79,6 +81,9 @@ public class ChatService {
 		topics.put(roomId, topic);
 	}
 
+	public ChatMessage save(ChatMessage chatMessage){
+		return chatMessageRepository.save(chatMessage);
+	}
 	public ChannelTopic getTopic(String roomId) {
 		return topics.get(roomId);
 	}
@@ -90,8 +95,12 @@ public class ChatService {
 		}
 	}
 
-	public void deleteById(ChatRoom chatRoom){
-		chatRoomRepository.delete(chatRoom);
+	public void deleteById(String roomId){
+		chatRoomRepository.deleteById(roomId);
+	}
+
+	public List<ChatMessage> chatMessageList(String roomId){
+		return chatMessageRepository.getChatMessagesByRoomId(roomId);
 	}
 
 	/**

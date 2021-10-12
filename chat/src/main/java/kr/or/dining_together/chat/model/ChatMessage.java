@@ -30,14 +30,11 @@ public class ChatMessage {
 	private MessageType type; // 메시지 타입
 	private String sender; // 메시지 보낸사람
 	private String message; // 메시지
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@JoinColumn(name = "chatroom_id")
-	private ChatRoom chatRoom;
+	private String roomId;
 
-	public static ChatMessage createChatMessage(ChatRoom chatRoom, String sender, String message,MessageType type) {
+	public static ChatMessage createChatMessage(String roomId, String sender, String message,MessageType type) {
 		ChatMessage chatMessage= ChatMessage.builder()
-			.chatRoom(chatRoom)
+			.roomId(roomId)
 			.sender(sender)
 			.message(message)
 			.type(type)

@@ -33,24 +33,22 @@ public class ChattingController {
 	 */
 	@ApiOperation(value = "채팅방 메시지", notes = "메시지")
 	@MessageMapping("/message")
-	public void message(ChatMessageDto message) {
-		// 로그인 회원 정보로 대화명 설정
-		ChatRoom chatRoom=chatService.findRoomById(message.getRoomId());
-		ChatMessage message1=ChatMessage.createChatMessage(chatRoom, message.getSender(), message.getMessage(), message.getType());
+	public void message(ChatMessage message) {
 		// 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
 		log.info("채팅 메시지");
-		if (ChatMessage.MessageType.ENTER.equals(message1.getType())) {
+		if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
 			chatService.enterChatRoom(message.getRoomId());
-			message1.setSender("[알림]");
-			message1.setMessage(message.getSender() + "님이 입장하셨습니다.");
-		}else if(ChatMessage.MessageType.QUIT.equals(message1.getType())){
-			message1.setSender("[알림]");
-			message1.setMessage(message.getSender() + "님이 퇴장하셨습니다.");
-			chatService.deleteById(message1.getChatRoom());
+			message.setSender("[알림]");
+			message.setMessage(message.getSender() + "님이 입장하셨습니다.");
+		}else if(ChatMessage.MessageType.QUIT.equals(message.getType())){
+			message.setSender("[알림]");
+			message.setMessage(message.getSender() + "님이 퇴장하셨습니다.");
+			chatService.deleteById(message.getRoomId());
 		}
-		chatRoom.addChatMessages(message1);
+		chatService.save(message);
 		// Websocket에 발행된 메시지를 redis로 발행(publish)
-		redisPublisher.publish(chatService.getTopic(message.getRoomId()), message1);
+		ChannelTopic topic=chatService.getTopic(message.getRoomId());
+		redisPublisher.publish(topic, message);
 	}
 
 }
