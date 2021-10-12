@@ -42,11 +42,13 @@ public class FavoritesServiceTest {
 	CustomerFavoritesRepository customerFavoritesRepository;
 	@Autowired
 	UserRepository userRepository;
+
 	CustomerFavorites customerFavorites;
 	StoreFavorites storeFavorites;
 	Customer user;
 	Store user1;
 	String email = "qja9605@naver.com";
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 

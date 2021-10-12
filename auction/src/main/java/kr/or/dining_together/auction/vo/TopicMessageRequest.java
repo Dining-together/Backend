@@ -1,8 +1,7 @@
-package kr.or.dining_together.member.vo;
+package kr.or.dining_together.auction.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

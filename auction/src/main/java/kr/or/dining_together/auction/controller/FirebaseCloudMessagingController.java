@@ -1,14 +1,13 @@
-package kr.or.dining_together.member.controller;
+package kr.or.dining_together.auction.controller;
 
 import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +17,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import kr.or.dining_together.member.model.CommonResult;
-import kr.or.dining_together.member.service.FirebaseCloudMessagingService;
-import kr.or.dining_together.member.service.ResponseService;
-import kr.or.dining_together.member.vo.PushNotificationRequest;
-import kr.or.dining_together.member.vo.PushNotificationResponse;
-import kr.or.dining_together.member.vo.TokenMessageRequest;
-import kr.or.dining_together.member.vo.TopicMessageRequest;
+import kr.or.dining_together.auction.client.UserServiceClient;
+import kr.or.dining_together.auction.dto.UserIdDto;
+import kr.or.dining_together.auction.model.CommonResult;
+import kr.or.dining_together.auction.service.FirebaseCloudMessagingService;
+import kr.or.dining_together.auction.service.ResponseService;
+import kr.or.dining_together.auction.vo.PushNotificationRequest;
+import kr.or.dining_together.auction.vo.PushNotificationResponse;
+import kr.or.dining_together.auction.vo.TokenMessageRequest;
+import kr.or.dining_together.auction.vo.TopicMessageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FirebaseCloudMessagingController {
 
 	private final FirebaseCloudMessagingService firebaseCloudMessagingService;
+	private final UserServiceClient userServiceClient;
 	private final ResponseService responseService;
 
 	@ApiOperation(value = "디바이스 토큰 등록", notes = "디바이스의 토큰을 DB에 저장한다.")
@@ -43,9 +45,9 @@ public class FirebaseCloudMessagingController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@PostMapping("/alert/register")
-	public CommonResult postDeviceTokenInfo(@RequestParam String deviceToken) throws Throwable {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+	public CommonResult postDeviceTokenInfo(@RequestHeader("X-AUTH-TOKEN") String xAuthToken, @RequestParam String deviceToken) throws Throwable {
+		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		String email = user.getEmail();
 
 		firebaseCloudMessagingService.registerDeviceToken(deviceToken, email);
 
@@ -66,11 +68,11 @@ public class FirebaseCloudMessagingController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@PostMapping("/alert/message")
-	public CommonResult sendMessage(
+	public CommonResult sendMessage(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "메시지 정보", required = true) TokenMessageRequest tokenMessageRequest) throws
 		Throwable {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		String email = user.getEmail();
 
 		firebaseCloudMessagingService.sendMessageByToken(email, tokenMessageRequest);
 		return responseService.getSuccessResult();
@@ -81,11 +83,11 @@ public class FirebaseCloudMessagingController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@PostMapping("/alert/subscribe")
-	public CommonResult postTopicToUser(
+	public CommonResult postTopicToUser(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam @ApiParam(value = "등록하려는 토픽", required = true) String topic) throws
 		Throwable {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		String email = user.getEmail();
 
 		firebaseCloudMessagingService.subscribeTopic(email, topic);
 
@@ -97,11 +99,11 @@ public class FirebaseCloudMessagingController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@PutMapping("/alert/unsubscribe")
-	public CommonResult deleteTopicToUser(
+	public CommonResult deleteTopicToUser(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestParam @ApiParam(value = "취소하려는 토픽", required = true) String topic) throws
 		Throwable {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		String email = user.getEmail();
 
 		firebaseCloudMessagingService.unsubscribeTopic(email, topic);
 
@@ -113,11 +115,11 @@ public class FirebaseCloudMessagingController {
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
 	@PostMapping("/alert/message/topic")
-	public CommonResult sendMessageByTopic(
+	public CommonResult sendMessageByTopic(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "메시지 정보", required = true) TopicMessageRequest topicMessageRequest) throws
 		Throwable {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
+		UserIdDto user = userServiceClient.getUserId(xAuthToken);
+		String email = user.getEmail();
 
 		firebaseCloudMessagingService.sendMessageByTopic(topicMessageRequest);
 		return responseService.getSuccessResult();

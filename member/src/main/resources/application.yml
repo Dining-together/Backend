@@ -24,9 +24,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://49.50.160.149:3306/member

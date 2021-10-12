@@ -18,6 +18,7 @@ import kr.or.dining_together.member.jpa.entity.Store;
 import kr.or.dining_together.member.jpa.repo.FacilityEtcRepository;
 import kr.or.dining_together.member.jpa.repo.FacilityRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
+import kr.or.dining_together.member.jpa.repo.UserDeviceTokenRepository;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreListResponse;
 import kr.or.dining_together.member.vo.StoreRequest;
@@ -54,6 +55,7 @@ public class StoreService {
 			storeRequest.getLongitude(), storeRequest.getComment(), storeRequest.getStoreType(),
 			storeRequest.getOpenTime(), storeRequest.getClosedTime());
 		storeRepository.save(store);
+
 		return store;
 	}
 

@@ -13,11 +13,11 @@ import org.springframework.kafka.core.KafkaAdmin;
 
 @Configuration
 public class TopicConfig {
-	@Value(value = "${kafka.bootstrapAddress}")
-	private String bootstrapAddress;
+	//@Value(value = "${kafka.bootstrapAddress}")
+	private String bootstrapAddress="49.50.160.149:9092";
 
-	@Value(value = "${kafka.topic.review.name}")
-	private String reviewTopicName;
+	//@Value(value = "${kafka.topic.review.name}")
+	private String reviewTopicName="review-topic";
 
 	@Bean
 	public NewTopic reviewTopic() {

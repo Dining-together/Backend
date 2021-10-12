@@ -1,4 +1,4 @@
-package kr.or.dining_together.member.service;
+package kr.or.dining_together.auction.service;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,18 +17,13 @@ import com.google.common.net.HttpHeaders;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.TopicManagementResponse;
 
-import kr.or.dining_together.member.advice.exception.UserNotFoundException;
-import kr.or.dining_together.member.jpa.entity.User;
-import kr.or.dining_together.member.jpa.entity.UserDeviceToken;
-import kr.or.dining_together.member.jpa.repo.UserDeviceTokenRepository;
-import kr.or.dining_together.member.jpa.repo.UserRepository;
-import kr.or.dining_together.member.vo.FcmMessage;
-import kr.or.dining_together.member.vo.TokenMessageRequest;
-import kr.or.dining_together.member.vo.TopicMessageRequest;
+import kr.or.dining_together.auction.jpa.entity.UserDeviceToken;
+import kr.or.dining_together.auction.jpa.repo.UserDeviceTokenRepository;
+import kr.or.dining_together.auction.vo.FcmMessage;
+import kr.or.dining_together.auction.vo.TokenMessageRequest;
+import kr.or.dining_together.auction.vo.TopicMessageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
@@ -47,7 +42,6 @@ public class FirebaseCloudMessagingService {
 	private final ObjectMapper objectMapper;
 
 	private final UserDeviceTokenRepository userDeviceTokenRepository;
-	private final UserRepository userRepository;
 
 	private FirebaseApp firebaseApp;
 
@@ -68,11 +62,9 @@ public class FirebaseCloudMessagingService {
 	}
 
 	public void registerDeviceToken(String token, String email) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-
 		UserDeviceToken userDeviceToken = UserDeviceToken.builder()
 			.token(token)
-			.user(user)
+			.email(email)
 			.build();
 
 		userDeviceTokenRepository.save(userDeviceToken);
@@ -99,8 +91,7 @@ public class FirebaseCloudMessagingService {
 	public void sendMessageByToken(String email, TokenMessageRequest tokenMessageRequest) throws
 		Throwable {
 
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		UserDeviceToken userDeviceToken = userDeviceTokenRepository.getUserDeviceTokenByUser(user);
+		UserDeviceToken userDeviceToken = userDeviceTokenRepository.getUserDeviceTokenByEmail(email);
 
 		String message = makeMessage(userDeviceToken.getToken(), null,tokenMessageRequest.getTitle(), tokenMessageRequest.getBody());
 
@@ -143,8 +134,7 @@ public class FirebaseCloudMessagingService {
 	}
 
 	public void subscribeTopic(String email, String topic) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		UserDeviceToken userDeviceToken = userDeviceTokenRepository.getUserDeviceTokenByUser(user);
+		UserDeviceToken userDeviceToken = userDeviceTokenRepository.getUserDeviceTokenByEmail(email);
 
 		TopicManagementResponse response = FirebaseMessaging.getInstance().subscribeToTopic(
 			Arrays.asList(userDeviceToken.getToken()), topic);
@@ -153,8 +143,7 @@ public class FirebaseCloudMessagingService {
 	}
 
 	public void unsubscribeTopic(String email, String topic) throws Throwable {
-		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		UserDeviceToken userDeviceToken = userDeviceTokenRepository.getUserDeviceTokenByUser(user);
+		UserDeviceToken userDeviceToken = userDeviceTokenRepository.getUserDeviceTokenByEmail(email);
 
 		TopicManagementResponse response = FirebaseMessaging.getInstance().unsubscribeFromTopic(
 			Collections.singletonList(userDeviceToken.getToken()), topic);

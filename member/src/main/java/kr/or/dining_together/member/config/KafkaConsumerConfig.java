@@ -20,11 +20,11 @@ import kr.or.dining_together.member.dto.ReviewScoreDto;
 @Configuration
 public class KafkaConsumerConfig {
 
-	@Value(value = "${kafka.bootstrapAddress}")
-	private String bootstrapAddress;
+	//@Value(value = "${kafka.bootstrapAddress}")
+	private String bootstrapAddress="49.50.160.149:9092";
 
-	@Value(value = "${kafka.topic.review.id}")
-	private String reviewId;
+	//@Value(value = "${kafka.topic.review.id}")
+	private String reviewId="reviewId";
 
 	@Bean
 	public ConsumerFactory<String, ReviewScoreDto> reviewConsumerFactory() {

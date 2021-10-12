@@ -113,12 +113,12 @@ public class AuctionController {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 jwt token", required = true, dataType = "String", paramType = "header")
 	})
-	@Permission(target = "CUSTOMER")
+	@Permission()
 	public SingleResult<Auction> registerAuction(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "공고정보", required = true) AuctionRequest auctionRequest) {
 		UserIdDto user = userServiceClient.getUserId(xAuthToken);
-
+		log.info(String.valueOf(user));
 		Auction auction = auctionService.writeAuction(user, auctionRequest);
 
 		AuctionDto auctionDto = AuctionDto.builder()

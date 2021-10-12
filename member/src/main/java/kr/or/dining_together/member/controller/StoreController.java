@@ -39,10 +39,12 @@ import kr.or.dining_together.member.jpa.entity.StoreImages;
 import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.jpa.repo.StoreImagesRepository;
 import kr.or.dining_together.member.jpa.repo.StoreRepository;
+import kr.or.dining_together.member.jpa.repo.UserDeviceTokenRepository;
 import kr.or.dining_together.member.jpa.repo.UserRepository;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.ListResult;
 import kr.or.dining_together.member.model.SingleResult;
+import kr.or.dining_together.member.service.FirebaseCloudMessagingService;
 import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
@@ -74,6 +76,7 @@ public class StoreController {
 	private final static String STORE_IMAGE_FOLDER_DIRECTORY = "/store/images";
 	private final static String STORE_DOCUMENT_FILES_POSTFIX = "_document";
 	private final static String STORE_IMAGE_FILES_POSTFIX = "_storeImages";
+	private final static String STORE_PUSH_TOPIC_NAME="store";
 	private final StoreRepository storeRepository;
 	private final StoreImagesRepository storeImagesRepository;
 	private final UserRepository userRepository;
@@ -81,6 +84,10 @@ public class StoreController {
 	private final StoreService storeService;
 	private final StorageService storageService;
 	private final KafkaProducer storeProducer;
+	private final UserDeviceTokenRepository userDeviceTokenRepository;
+	private final FirebaseCloudMessagingService firebaseCloudMessagingService;
+
+
 
 	@Value(value = "${kafka.topic.store.name}")
 	private String KAFKA_STORE_TOPIC_NAME;
@@ -207,7 +214,7 @@ public class StoreController {
 	public SingleResult<Store> registerStore(
 		@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
 		@RequestBody @ApiParam(value = "가게 정보", required = true) StoreRequest storeRequest
-	) {
+	) throws Throwable {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
 		Store store = storeService.registerStore(storeRequest, email);
@@ -227,6 +234,7 @@ public class StoreController {
 			.build();
 
 		storeProducer.send(KAFKA_STORE_TOPIC_NAME, storeDto);
+		firebaseCloudMessagingService.subscribeTopic(email,STORE_PUSH_TOPIC_NAME);
 		return responseService.getSingleResult(store);
 
 	}

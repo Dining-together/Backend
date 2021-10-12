@@ -21,10 +21,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EmailService {
 
-	private final JavaMailSender emailSender;
 	private final UserRepository userRepository;
 	private final RedisUtil redisUtil;
 	private final PasswordEncoder passwordEncoder;
+	private final JavaMailSender emailSender;
 
 	public void checkEmailExistence(String email) {
 		Optional<User> user = userRepository.findByEmail(email);

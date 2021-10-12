@@ -17,12 +17,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @ApiModel(value = "UserIdDto", description = "사용자 아이디 (pkey)")
 public class UserIdDto {
-
-	@ApiModelProperty(value = "아이디")
+	@ApiModelProperty(value = "아이디(pkey)")
 	private long id;
 
 	@ApiModelProperty(value = "이름")
 	private String name;
+
+	@ApiModelProperty(value="이메일")
+	private String email;
 
 	@ApiModelProperty(value = "사용자 이미지 경로")
 	private String path;

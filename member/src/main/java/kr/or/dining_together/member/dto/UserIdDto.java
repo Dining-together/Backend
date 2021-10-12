@@ -17,6 +17,9 @@ public class UserIdDto {
 	@ApiModelProperty(value = "이름")
 	private String name;
 
+	@ApiModelProperty(value="이메일")
+	private String email;
+
 	@ApiModelProperty(value = "사용자 이미지 경로")
 	private String path;
 

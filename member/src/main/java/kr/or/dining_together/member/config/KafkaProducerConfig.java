@@ -20,8 +20,8 @@ import kr.or.dining_together.member.dto.StoreDto;
 @Configuration
 public class KafkaProducerConfig {
 
-	@Value(value = "${kafka.bootstrapAddress}")
-	private String bootstrapAddress;
+	//@Value(value = "${kafka.bootstrapAddress}")
+	private String bootstrapAddress="49.50.160.149:9092";
 
 	@Bean
 	public ProducerFactory<String, String> producerFactory() {
