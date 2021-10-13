@@ -6,7 +6,7 @@ spring:
   profiles:
     active: local
   redis:
-    host: localhost
+    host: 49.50.160.149
     port: 6379
   application:
     name: chat
@@ -18,14 +18,18 @@ spring:
       path: /chat/h2-console
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:dining:chat
-    username: sa
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://49.50.160.149:3306/chat
+    username: root
+    password: 1234
+  logging:
+    level:
+      org.hibernate.SQL: debug
 
 
 eureka:
