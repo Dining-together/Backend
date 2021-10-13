@@ -1,0 +1,42 @@
+server:
+  port: 0
+
+
+spring:
+  profiles:
+    active: local
+  redis:
+    host: 49.50.160.149
+    port: 6379
+  application:
+    name: chat
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /chat/h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://49.50.160.149:3306/chat
+    username: root
+    password: 1234
+  logging:
+    level:
+      org.hibernate.SQL: debug
+
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

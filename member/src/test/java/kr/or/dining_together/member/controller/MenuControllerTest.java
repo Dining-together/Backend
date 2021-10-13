@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -81,7 +80,6 @@ class MenuControllerTest {
 			.email("jifrozen1@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 

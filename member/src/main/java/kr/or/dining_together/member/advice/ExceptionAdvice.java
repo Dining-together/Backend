@@ -72,7 +72,7 @@ public class ExceptionAdvice {
 	protected CommonResult userDuplicationException(HttpServletRequest request, UserDuplicationException e) {
 		exceptionLogCall(e.toString());
 
-		return responseService.getFailResult(HttpStatus.INTERNAL_SERVER_ERROR.value(), "이미 등록된 회원 이메일입니다.");
+		return responseService.getFailResult(HttpStatus.BAD_REQUEST.value(), "이미 등록된 회원 이메일입니다.");
 	}
 
 	@ExceptionHandler(VerificationFailedException.class)
@@ -136,12 +136,12 @@ public class ExceptionAdvice {
 		return responseService.getFailResult(HttpStatus.NOT_FOUND.value(), "업체 인증을 진행해주세요");
 	}
 
-	public void exceptionLogCall(String errorMessage){
+	public void exceptionLogCall(String errorMessage) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("msgType","tracking");
-		jsonObject.addProperty("logType","error");
+		jsonObject.addProperty("msgType", "tracking");
+		jsonObject.addProperty("logType", "error");
 		jsonObject.addProperty("target", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		jsonObject.addProperty("content",errorMessage);
+		jsonObject.addProperty("content", errorMessage);
 
 		log.info(String.valueOf(jsonObject));
 	}

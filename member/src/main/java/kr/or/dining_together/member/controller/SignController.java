@@ -22,10 +22,12 @@ import kr.or.dining_together.member.jpa.entity.User;
 import kr.or.dining_together.member.model.CommonResult;
 import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
+import kr.or.dining_together.member.service.KakaoService;
 import kr.or.dining_together.member.service.MailgunEmailService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.LoginRequest;
+import kr.or.dining_together.member.vo.RetKakaoAuth;
 import kr.or.dining_together.member.vo.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -49,6 +51,7 @@ public class SignController {
 	private final UserService userService;
 	private final EmailService emailService;
 	private final MailgunEmailService sendgridEmailService;
+	private final KakaoService kakaoService;
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
@@ -126,16 +129,17 @@ public class SignController {
 	@PostMapping(value = "/signin/{provider}")
 	public SingleResult<String> signinByProvider(
 		@ApiParam(value = "서비스 제공자 provider", required = true, defaultValue = "kakao") @PathVariable String provider,
-		@ApiParam(value = "소셜 access token", required = true) @RequestParam String accessToken) {
+		@ApiParam(value = "소셜 인가 코드", required = true) @RequestParam String code) {
 
 		User signedUser = null;
 
 		switch (provider) {
 			case "naver":
-				signedUser = userService.signupByNaver(accessToken, provider);
+				// signedUser = userService.signupByNaver(accessToken, provider);
 				break;
 			case "kakao":
-				signedUser = userService.signupByKakao(accessToken, provider);
+				RetKakaoAuth retKakaoAuth = kakaoService.getKakaoTokenInfo(code);
+				signedUser = userService.signupByKakao(retKakaoAuth.getAccess_token(), provider);
 				break;
 		}
 

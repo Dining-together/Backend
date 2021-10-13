@@ -2,10 +2,8 @@ package kr.or.dining_together.member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,7 +47,6 @@ import kr.or.dining_together.member.service.KafkaProducer;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.StorageService;
 import kr.or.dining_together.member.service.StoreService;
-import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.FacilityRequest;
 import kr.or.dining_together.member.vo.StoreListResponse;
 import kr.or.dining_together.member.vo.StoreRequest;
@@ -104,7 +101,7 @@ public class StoreController {
 	})
 	@GetMapping(value = "/store/{storeId}")
 	public SingleResult<Store> getStore(@RequestHeader("X-AUTH-TOKEN") String xAuthToken,
-		@PathVariable long storeId){
+		@PathVariable long storeId) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
@@ -112,9 +109,9 @@ public class StoreController {
 		Optional<User> user = userRepository.findByEmail(email);
 
 		/**
-		* Make Tracking log when customer request endpoint.
-    */
-		if(user.get().getType().equals("CUSTOMER")){
+		 * Make Tracking log when customer request endpoint.
+		 */
+		if (user.get().getType().equals("CUSTOMER")) {
 			Store store = storeService.getStore(storeId);
 			Gson gson = new Gson();
 			Optional<Customer> customer = userRepository.findByEmail(email);
@@ -125,13 +122,13 @@ public class StoreController {
 			/*
 			 ** 현재시간을 포맷팅하여 추가.
 			 */
-			jsonObject.addProperty("msgType","tracking");
-			jsonObject.addProperty("logType","info");
-			jsonObject.addProperty("actionType","view");
-			jsonObject.addProperty("target","store_log");
-			jsonObject.addProperty("storeId",storeId);
+			jsonObject.addProperty("msgType", "tracking");
+			jsonObject.addProperty("logType", "info");
+			jsonObject.addProperty("actionType", "view");
+			jsonObject.addProperty("target", "store_log");
+			jsonObject.addProperty("storeId", storeId);
 			jsonObject.addProperty("email", email);
-			jsonObject.addProperty("gender",customer.get().getGender());
+			jsonObject.addProperty("gender", customer.get().getGender());
 
 			log.info(String.valueOf(jsonObject));
 		}

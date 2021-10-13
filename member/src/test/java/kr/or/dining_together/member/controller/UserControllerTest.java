@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -88,7 +87,6 @@ class UserControllerTest {
 			.email("jifrozen@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 
@@ -112,7 +110,6 @@ class UserControllerTest {
 			.email("jifrozen1@naver.com")
 			.name("문지언")
 			.password(passwordEncoder.encode("test1111"))
-			.joinDate(new Date())
 			.roles(Collections.singletonList("ROLE_USER"))
 			.build();
 

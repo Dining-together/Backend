@@ -14,21 +14,21 @@
         <filter class="kr.or.dining_together.member.logback.LogbackFilter"/>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-                <mdc />
+                <mdc/>
                 <pattern>
                     <!-- 아래와 같은 키밸류 타입이 들어가면서 나중에 키바나에서 찾기 수월함-->
                     <pattern>{"serviceID":"myServiceName"}</pattern>
                 </pattern>
-                <timestamp />
+                <timestamp/>
                 <!--<version />-->
-                <context />
-                <threadName />
-                <logLevel />
-                <message />
-                <loggerName />
-                <logstashMarkers />
-                <stackTrace />
-                <callerData />
+                <context/>
+                <threadName/>
+                <logLevel/>
+                <message/>
+                <loggerName/>
+                <logstashMarkers/>
+                <stackTrace/>
+                <callerData/>
             </providers>
         </encoder>
     </appender>

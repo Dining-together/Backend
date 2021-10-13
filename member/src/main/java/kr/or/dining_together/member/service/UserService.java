@@ -66,6 +66,7 @@ public class UserService {
 				.addr(signUpRequest.getAddr())
 				.age(signUpRequest.getAge())
 				.type("CUSTOMER")
+				.provider("application")
 				.build());
 		} else if (userType == UserType.STORE) {
 			userRepository.save(Store.builder()
@@ -74,6 +75,7 @@ public class UserService {
 				.name(signUpRequest.getName())
 				.documentChecked(false)
 				.type("STORE")
+				.provider("application")
 				.build());
 		}
 
@@ -123,7 +125,7 @@ public class UserService {
 
 	public UserIdDto getUserId(String email) throws Throwable {
 		User user = (User)userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-		UserIdDto userIdDto=UserIdDto.builder()
+		UserIdDto userIdDto = UserIdDto.builder()
 			.path(user.getPath())
 			.id(user.getId())
 			.email(user.getEmail())
