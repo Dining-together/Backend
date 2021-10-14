@@ -1,5 +1,9 @@
 package kr.or.dining_together.chat.controller;
 
+import java.util.ArrayList;
+
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +31,7 @@ public class ChatRoomController {
 	private final ChatService chatService;
 	private final ResponseService responseService;
 	private final UserServiceClient userServiceClient;
+	private final CircuitBreakerFactory circuitBreakerFactory;
 
 	@ApiOperation(value = "room 전체 조회", notes = "채팅 룸 전체를 조회한다.")
 	@GetMapping("/rooms")
@@ -60,7 +65,12 @@ public class ChatRoomController {
 	@ApiOperation(value = "사용자 별 방 조회")
 	@GetMapping("/user_room")
 	public ListResult<ChatRoom> getRoomsByCustomer(@RequestHeader("X-AUTH-TOKEN") String xAuthToken){
-		UserIdDto me=userServiceClient.getUserId(xAuthToken);
+		CircuitBreaker circuitBreaker= circuitBreakerFactory.create("circuitbreaker");
+		UserIdDto me=circuitBreaker.run(()->userServiceClient.getUserId(xAuthToken),
+			throwable -> null);
+		if(me==null){
+			return responseService.getListResult(new ArrayList<>());
+		}
 		return responseService.getListResult(chatService.getUserEnterRooms(me));
 	}
 

@@ -5,6 +5,12 @@ server:
 spring:
   profiles:
     active: local
+  zipkin:
+    base-url: http://49.50.163.150:9411
+    enabled: true
+  sleuth:
+    sampler:
+      probability: 1.0
   redis:
     host: 49.50.160.149
     port: 6379
