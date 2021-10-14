@@ -192,9 +192,10 @@ public class UserController {
 	@ApiOperation(value = "회원 정보 조회 (다른 서비스 호출)", notes = "인증된 사용자 조회")
 	@GetMapping(value = "/userId")
 	public UserIdDto getUserId() throws Throwable {
+		log.info("Before retrieve user data");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String email = authentication.getName();
-
+		log.info("Add retrieved user data");
 		return userService.getUserId(email);
 	}
 
