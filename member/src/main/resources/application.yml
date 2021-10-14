@@ -45,8 +45,6 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
-  url:
-    base: https://localhost:8000
   social:
     kakao:
       url:
