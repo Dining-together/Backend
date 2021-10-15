@@ -11,6 +11,12 @@ eureka:
 spring:
   application:
     name: gateway-server
+  zipkin:
+    base-url: http://49.50.163.150:9411
+    enabled : true
+  sleuth:
+    sampler:
+      probability: 1.0
   rabbitmq:
     host: 49.50.163.150
     port: 5672
