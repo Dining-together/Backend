@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.micrometer.core.annotation.Timed;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -69,6 +70,7 @@ public class UserController {
 	private final StorageService storageService;
 
 	@GetMapping("/health_check")
+	@Timed(value = "users.status",longTask = true)
 	public String status(HttpServletRequest httpServletRequest) {
 		return String.format("It's Working in Member Service"
 			+ ", port(server.port)=" + env.getProperty("server.port")
