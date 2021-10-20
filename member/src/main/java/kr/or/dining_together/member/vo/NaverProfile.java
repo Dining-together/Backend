@@ -17,7 +17,6 @@ public class NaverProfile {
 	@ToString
 	public static class Response {
 		private String id;
-		private String name;
 		private String email;
 
 	}

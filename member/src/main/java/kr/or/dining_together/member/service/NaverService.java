@@ -102,14 +102,15 @@ public class NaverService {
 
 	public NaverProfile getNaverProfile(String accessToken) {
 		String header = "Bearer " + accessToken; // Bearer 다음에 공백 추가
-
+		System.out.println(header);
 		Map<String, String> requestHeaders = new HashMap<>();
 		requestHeaders.put("Authorization", header);
 		String responseBody = get(naverProfile, requestHeaders);
+		System.out.println(responseBody);
 		return gson.fromJson(responseBody, NaverProfile.class);
 	}
 
-	public RetNaverAuth getNaverTokenInfo(String code, String state) {
+	public RetNaverAuth getNaverTokenInfo(String code) {
 		// Set header : Content-type: application/x-www-form-urlencoded
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -118,14 +119,16 @@ public class NaverService {
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", naverClientId);
 		params.add("client_secret", naverClientSecret);
-		params.add("redirect_uri", baseUrl + naverRedirect);
+		params.add("redirect_uri", "http://192.168.219.109:8000/member/social/login/naver");
 		params.add("code", code);
-		params.add("state", state);
+		params.add("state", "dining");
 		// Set http entity
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 		ResponseEntity<String> response = restTemplate.postForEntity(env.getProperty("spring.social.naver.url.token"),
 			request, String.class);
+		System.out.println(response.getStatusCode());
 		if (response.getStatusCode() == HttpStatus.OK) {
+			System.out.println(response.getBody());
 			return gson.fromJson(response.getBody(), RetNaverAuth.class);
 		}
 		return null;

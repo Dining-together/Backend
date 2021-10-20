@@ -24,10 +24,12 @@ import kr.or.dining_together.member.model.SingleResult;
 import kr.or.dining_together.member.service.EmailService;
 import kr.or.dining_together.member.service.KakaoService;
 import kr.or.dining_together.member.service.MailgunEmailService;
+import kr.or.dining_together.member.service.NaverService;
 import kr.or.dining_together.member.service.ResponseService;
 import kr.or.dining_together.member.service.UserService;
 import kr.or.dining_together.member.vo.LoginRequest;
 import kr.or.dining_together.member.vo.RetKakaoAuth;
+import kr.or.dining_together.member.vo.RetNaverAuth;
 import kr.or.dining_together.member.vo.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -52,6 +54,7 @@ public class SignController {
 	private final EmailService emailService;
 	private final MailgunEmailService sendgridEmailService;
 	private final KakaoService kakaoService;
+	private final NaverService naverService;
 
 	@ApiOperation(value = "로그인", notes = "이메일을 통해 로그인한다.")
 	@PostMapping(value = "/signin")
@@ -135,7 +138,8 @@ public class SignController {
 
 		switch (provider) {
 			case "naver":
-				// signedUser = userService.signupByNaver(accessToken, provider);
+				RetNaverAuth retNaverAuth=naverService.getNaverTokenInfo(code);
+				signedUser = userService.signupByNaver(retNaverAuth.getAccess_token(), provider);
 				break;
 			case "kakao":
 				RetKakaoAuth retKakaoAuth = kakaoService.getKakaoTokenInfo(code);

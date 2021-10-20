@@ -104,16 +104,18 @@ public class UserService {
 		}
 	}
 
-	public User signupByNaver(String provider, String accessToken) {
+	public User signupByNaver(String accessToken, String provider) {
+		System.out.print(accessToken);
 		NaverProfile naverProfile = naverService.getNaverProfile(accessToken);
 		NaverProfile.Response naverAccount = naverProfile.getResponse();
+		System.out.print(naverAccount.getEmail());
 		Optional<User> user = userRepository.findByEmailAndProvider(naverAccount.getEmail(), provider);
 		if (user.isPresent()) {
 			return user.get();
 		} else {
 			Customer naverUser = Customer.builder()
 				.email(naverAccount.getEmail())
-				.name(naverAccount.getName())
+				.name(naverAccount.getEmail())
 				.provider(provider)
 				.build();
 
