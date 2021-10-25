@@ -70,7 +70,7 @@ public class KakaoService {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", kakaoClientId);
-		params.add("redirect_uri", "http://localhost:8000/member/social/login/kakao");
+		params.add("redirect_uri", "http://192.168.219.109:8000/member/social/login/kakao");
 		params.add("code", code);
 		System.out.print(params.values().toString());
 		// Set http entity

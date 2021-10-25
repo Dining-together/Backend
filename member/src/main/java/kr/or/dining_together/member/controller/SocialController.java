@@ -1,8 +1,10 @@
 package kr.or.dining_together.member.controller;
 
+import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
@@ -83,11 +85,17 @@ public class SocialController {
 	// 	return kakaoService.getKakaoTokenInfo(code);
 	// }
 	//
-	// @GetMapping(value = "/naver")
-	// public ModelAndView redirectNaver(ModelAndView mav, @RequestParam String code, @RequestParam String state) {
-	// 	mav.addObject("authInfo", naverService.getNaverTokenInfo(code, state));
-	// 	mav.setViewName("social/redirectNaver");
-	// 	return mav;
-	// }
+	@GetMapping(value = "/kakao")
+	public String kakaoLoading(Model model)
+	{
+		return "LoginLoading";
+	}
+
+	 @GetMapping(value = "/naver")
+	 public String naverLoading(Model model)
+	 {
+		 return "LoginLoading";
+	 }
+
 
 }
